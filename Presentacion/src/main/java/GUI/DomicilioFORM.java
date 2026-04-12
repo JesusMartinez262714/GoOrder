@@ -47,7 +47,6 @@ public class DomicilioFORM extends JFrame {
         contentPanel.add(btnMapa);
         contentPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 
-        // Inputs limpios, sin los ejemplos
         txtColonia = crearCampoTexto("Colonia", "Colonia o Fraccionamiento");
         txtCalle = crearCampoTexto("Calle", "Nombre de la calle");
         txtDireccion = crearCampoTexto("Dirección / Número", "Número exterior");
