@@ -94,4 +94,12 @@ public class Control {
     public void mostrarAjustarDireccionMapa(){
         mostrarPantallas(new AjustarDireccionMapa(this));
     }
+
+    public void mostrarTotalPrecioProductos(){
+        this.agregarProducto(new ProductoDTO("Baguel", 85.00));
+        this.agregarProducto(new ProductoDTO("Frappe Mocha", 65.00));
+        this.setDescuento(30.00);
+
+        mostrarPantallas(new TotalPrecioProductos(this));
+    }
 }

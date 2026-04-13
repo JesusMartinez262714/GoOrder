@@ -7,7 +7,6 @@ package GoOrderDTO;
  */
 public class ProductoDTO {
     
-    //private byte[] imagen;
     private String nombre;
     private Double precio;
 

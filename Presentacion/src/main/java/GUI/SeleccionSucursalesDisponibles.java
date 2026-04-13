@@ -60,6 +60,7 @@ public class SeleccionSucursalesDisponibles extends JFrame {
         footerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         btnConfirmar = new BotonConfirmar("CONFIRMAR");
         btnConfirmar.setEnabled(false);
+        btnConfirmar.addActionListener(e -> control.mostrarTotalPrecioProductos());
         footerPanel.add(btnConfirmar);
         add(footerPanel, BorderLayout.SOUTH);
     }

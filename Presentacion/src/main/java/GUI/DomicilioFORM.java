@@ -107,6 +107,7 @@ public class DomicilioFORM extends JFrame {
         BotonNeon btnConfirmar = new BotonNeon("CONFIRMAR");
         btnConfirmar.setPreferredSize(new Dimension(340, 50));
         btnConfirmar.setMaximumSize(new Dimension(340, 50));
+        btnConfirmar.addActionListener(e -> control.mostrarTotalPrecioProductos());
         footerPanel.add(btnConfirmar);
 
         add(footerPanel, BorderLayout.SOUTH);
