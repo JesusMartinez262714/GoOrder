@@ -1,5 +1,7 @@
 package GUI;
 
+import Control.Control;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
@@ -20,7 +22,7 @@ public class DomicilioFORM extends JFrame {
     private JTextField txtDireccion;
     private JTextArea txtEspecificaciones;
 
-    public DomicilioFORM() {
+    public DomicilioFORM(Control control) {
         setTitle("GoOrder - Domicilio");
         setSize(400, 650);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,6 +46,8 @@ public class DomicilioFORM extends JFrame {
         btnMapa.setPreferredSize(new Dimension(340, 45));
         btnMapa.setMaximumSize(new Dimension(340, 45));
         btnMapa.setFont(new Font("Arial", Font.BOLD, 12));
+
+        btnMapa.addActionListener(e -> control.mostrarAjustarDireccionMapa());
         contentPanel.add(btnMapa);
         contentPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 
@@ -243,11 +247,5 @@ public class DomicilioFORM extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception ignored) {}
 
-        SwingUtilities.invokeLater(() -> new DomicilioFORM().setVisible(true));
-    }
 }

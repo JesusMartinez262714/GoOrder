@@ -1,5 +1,6 @@
 package GUI;
 
+import Control.Control;
 import Entitys.Sucursal;
 import Entitys.SucursalesDisponibles;
 
@@ -20,7 +21,7 @@ public class SeleccionSucursalesDisponibles extends JFrame {
     private List<TarjetaSucursal> listaTarjetas = new ArrayList<>();
     private BotonConfirmar btnConfirmar;
 
-    public SeleccionSucursalesDisponibles(SucursalesDisponibles sucursalesDisponiblesEntity) {
+    public SeleccionSucursalesDisponibles(Control control, SucursalesDisponibles sucursalesDisponiblesEntity) {
         setTitle("GoOrder - Sucursales");
         setSize(400, 650);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -191,16 +192,5 @@ public class SeleccionSucursalesDisponibles extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception ignored) {}
 
-        SucursalesDisponibles mockSucursales = new SucursalesDisponibles();
-        mockSucursales.agregarSucursal(new Sucursal(1, "Cafe del compa miguel", "Colonia Diamante", "Casa blanca #456", "Sucursal mas cercana", "sucursal_casa.png"));
-        mockSucursales.agregarSucursal(new Sucursal(2, "Cafe del compa miguel", "Colonia Esperanza", "Paris #765", " ", "sucursal_miguel.png"));
-        mockSucursales.agregarSucursal(new Sucursal(3, "Cafe del compa miguel", "Colonia Libertad", "Boulevard Lincon", " ", "sucursal_cafesito.png"));
-
-        SwingUtilities.invokeLater(() -> new SeleccionSucursalesDisponibles(mockSucursales).setVisible(true));
-    }
 }

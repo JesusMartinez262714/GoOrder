@@ -42,7 +42,8 @@ public class SeleccionMetodoEntrega extends JFrame {
 
         BotonNeon btnSucursal = new BotonNeon("PICK UP");
         BotonNeon btnDomicilio = new BotonNeon("A DOMICLIO");
-
+        btnSucursal.addActionListener(e -> control.mostrarSeleccionSucursalesDisponibles());
+        btnDomicilio.addActionListener(e -> control.mostrarDomicilioFORM());
         contentPanel.add(btnSucursal);
         contentPanel.add(Box.createRigidArea(new Dimension(0, 25)));
         contentPanel.add(btnDomicilio);

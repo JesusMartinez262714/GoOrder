@@ -180,7 +180,7 @@ public class ProductosFORM extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void btnAñadirCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirCarritoActionPerformed
-        // TODO add your handling code here:
+        control.mostrarCarrito();
     }//GEN-LAST:event_btnAñadirCarritoActionPerformed
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed

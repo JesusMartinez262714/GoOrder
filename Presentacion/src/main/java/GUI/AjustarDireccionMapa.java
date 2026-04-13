@@ -1,5 +1,6 @@
 package GUI;
 
+import Control.Control;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.input.PanMouseInputListener;
 import org.jxmapviewer.input.ZoomMouseWheelListenerCenter;
@@ -23,7 +24,7 @@ public class AjustarDireccionMapa extends JFrame {
     private WaypointPainter<Waypoint> waypointPainter;
     private GeoPosition ubicacionSeleccionada = null;
 
-    public AjustarDireccionMapa() {
+    public AjustarDireccionMapa(Control control) {
         setTitle("GoOrder - Seleccionar Ubicación");
         setSize(400, 650);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
