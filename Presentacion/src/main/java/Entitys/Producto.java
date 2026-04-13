@@ -1,18 +1,19 @@
-
-package GoOrderDTO;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package Entitys;
 
 /**
  *
- * @author 
+ * @author juanl
  */
-public class ProductoDTO {
-    
-    
+public class Producto {
     private String nombre;
     private Double precio;
     private byte[] imagen;
 
-    public ProductoDTO(String nombre, Double precio, byte[] imagen) {
+    public Producto(String nombre, Double precio, byte[] imagen) {
         this.nombre = nombre;
         this.precio = precio;
         this.imagen = imagen;
