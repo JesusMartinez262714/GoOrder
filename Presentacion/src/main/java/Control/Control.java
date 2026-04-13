@@ -78,7 +78,7 @@ public class Control {
         mostrarPantallas(new SeleccionMetodoEntrega(this));
     }
     public void mostrarCarrito(){
-        mostrarPantallas(new Carrito(this));
+        mostrarPantallas(new Carrito2(this));
     }
     public void mostrarSeleccionSucursalesDisponibles(){
         SucursalesDisponibles mockSucursales = new SucursalesDisponibles();
