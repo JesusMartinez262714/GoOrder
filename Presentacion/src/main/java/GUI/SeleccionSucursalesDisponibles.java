@@ -32,9 +32,30 @@ public class SeleccionSucursalesDisponibles extends JFrame {
         JPanel headerPanel = new JPanel();
         headerPanel.setBackground(COLOR_FONDO);
         headerPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
+        JButton btnRegresar = new JButton("←");
+        btnRegresar.setFont(new Font("Arial", Font.BOLD, 24));
+        btnRegresar.setForeground(Color.LIGHT_GRAY);
+        btnRegresar.setContentAreaFilled(false);
+        btnRegresar.setBorderPainted(false);
+        btnRegresar.setFocusPainted(false);
+        btnRegresar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        btnRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                btnRegresar.setForeground(new Color(0, 255, 150));
+            }
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                btnRegresar.setForeground(Color.LIGHT_GRAY);
+            }
+        });
+
+        btnRegresar.addActionListener(e -> {
+                control.mostrarInicio();
+        });
         JLabel lblTitulo = new JLabel("SUCURSALES DISPONIBLES");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 20));
         lblTitulo.setForeground(COLOR_NEON);
+        headerPanel.add(btnRegresar, BorderLayout.WEST);
         headerPanel.add(lblTitulo);
         add(headerPanel, BorderLayout.NORTH);
 
