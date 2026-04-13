@@ -1,8 +1,8 @@
 
-package org.example;
+package GUI;
 
 import Control.Control;
-import java.awt.event.MouseAdapter;
+
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 

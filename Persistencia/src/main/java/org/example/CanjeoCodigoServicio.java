@@ -18,4 +18,9 @@ public class CanjeoCodigoServicio implements ICodigoDescuentoServicio {
 
         return new ResultadoCanjeoDTO(false, 0);
     }
+
+    @Override
+    public double validarCodigo(String codigo) {
+        return 0;
+    }
 }

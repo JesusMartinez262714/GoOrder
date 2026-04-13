@@ -25,14 +25,26 @@ public class PagoRechazado extends javax.swing.JFrame {
     public PagoRechazado() {
         initComponents();
         this.getContentPane().setBackground(Color.green);
-        String ruta2 = "Resources/sin_dinero.png";
-        java.io.File archivoImagen = new java.io.File(ruta2);
-        
-        ImageIcon icon = new ImageIcon(archivoImagen.getAbsolutePath());
-        Image img = icon.getImage();
-        JLabel lblImagen = new JLabel(new ImageIcon(img));
-        lblImagen.setAlignmentX(Component.CENTER_ALIGNMENT);
-        this.getContentPane().add(lblImagen);
+
+        try {
+            java.io.File archivoImagen = new java.io.File(".." + java.io.File.separator + "Resources" + java.io.File.separator + "sin_dinero.png");
+            if (!archivoImagen.exists()) {
+                archivoImagen = new java.io.File("Resources" + java.io.File.separator + "sin_dinero.png");
+            }
+
+            if (archivoImagen.exists()) {
+                ImageIcon originalIcon = new ImageIcon(archivoImagen.getAbsolutePath());
+                Image imgEscalada = originalIcon.getImage().getScaledInstance(150, 150, Image.SCALE_SMOOTH);
+
+                lblImagen.setIcon(new ImageIcon(imgEscalada));
+                lblImagen.setText("");
+
+            } else {
+                System.out.println("No se encontró la imagen en: " + archivoImagen.getAbsolutePath());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -46,6 +58,7 @@ public class PagoRechazado extends javax.swing.JFrame {
 
         btnRegresar = new javax.swing.JButton();
         lblInfo = new javax.swing.JLabel();
+        lblImagen = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -58,19 +71,26 @@ public class PagoRechazado extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(146, 146, 146)
-                .addComponent(btnRegresar)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(72, Short.MAX_VALUE)
                 .addComponent(lblInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(56, 56, 56))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(146, 146, 146)
+                        .addComponent(btnRegresar))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(161, 161, 161)
+                        .addComponent(lblImagen)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(367, Short.MAX_VALUE)
+                .addGap(158, 158, 158)
+                .addComponent(lblImagen)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 209, Short.MAX_VALUE)
                 .addComponent(lblInfo)
                 .addGap(119, 119, 119)
                 .addComponent(btnRegresar)
@@ -87,7 +107,7 @@ public class PagoRechazado extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -107,6 +127,7 @@ public class PagoRechazado extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRegresar;
+    private javax.swing.JLabel lblImagen;
     private javax.swing.JLabel lblInfo;
     // End of variables declaration//GEN-END:variables
 }

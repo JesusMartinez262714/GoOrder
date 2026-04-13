@@ -15,7 +15,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="DTOs" options="--enable-preview" />
+      <module name="DTOs" options="" />
       <module name="Negocio" options="--enable-preview" />
       <module name="Persistencia" options="--enable-preview" />
     </option>

@@ -3,23 +3,16 @@ package Control;
 import GoOrderDTO.ProductoDTO;
 import java.util.ArrayList;
 import java.util.List;
-import org.example.DescripcionProductoFORM;
-import org.example.InicioFORM;
-import org.example.ProductosFORM;
+import GUI.DescripcionProductoFORM;
+import GUI.InicioFORM;
+import GUI.ProductosFORM;
+
+import javax.swing.*;
 
 public class Control {
 
     private double descuento = 0;
     private List<ProductoDTO> carrito = new ArrayList<>();
-
-    public void mostrarInicioFORM() {
-        new InicioFORM(this).setVisible(true);
-    }
-
-    public void mostrarProductosFORM() {
-        new ProductosFORM(this).setVisible(true);
-    }
-
     public void mostrarDescripcionFORM() {
         new DescripcionProductoFORM(this).setVisible(true);
     }
@@ -36,16 +29,12 @@ public class Control {
         new DescripcionProductoFORM(this).setVisible(true);
     }
 
-    public void mostrarPantallaCanjeo() {
-        new GUI.CodigoDescuentoFORM(this).setVisible(true);
-    }
+   // public void mostrarPantallaCanjeo() {
+    //    new GUI.CodigoDescuentoFORM(this).setVisible(true);
+   // }
 
     //Simulacion de informacion del producto
-    public void DescripcionProducto(String nombre, String precio) {
-        DescripcionProductoFORM form = new DescripcionProductoFORM(this);
-        form.DescripcionProductoFORM(nombre, precio);
-        form.setVisible(true);
-    }
+
 
     public void setDescuento(double descuento) {
         this.descuento = descuento;
@@ -53,5 +42,36 @@ public class Control {
 
     public double getDescuento() {
         return descuento;
+    }
+
+    public void mostrarCodigoDescuento() {
+    }
+
+    public void mostrarFormaPago() {
+    }
+
+
+
+
+
+    //NAVEGACION DEL SISTEMA
+    private JFrame ventanaActual = null;
+    private void mostrarPantallas(JFrame nuevaVentana){
+        if(ventanaActual != null){
+            ventanaActual.dispose();
+        }
+        ventanaActual = nuevaVentana;
+        ventanaActual.setVisible(true);
+    }
+    public void mostrarInicio(){
+        mostrarPantallas(new InicioFORM(this));
+    }
+    public void mostrarProductosFORM(){
+        mostrarPantallas(new ProductosFORM(this));
+    }
+    public void DescripcionProducto(String nombre, String precio) {
+        DescripcionProductoFORM form = new DescripcionProductoFORM(this);
+        form.DescripcionProductoFORM(nombre, precio);
+        form.setVisible(true);
     }
 }
