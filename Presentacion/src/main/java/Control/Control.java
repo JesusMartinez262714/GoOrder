@@ -13,29 +13,12 @@ public class Control {
 
     private double descuento = 0;
     private List<ProductoDTO> carrito = new ArrayList<>();
-    public void mostrarDescripcionFORM() {
-        new DescripcionProductoFORM(this).setVisible(true);
-    }
-
     public void agregarProducto(ProductoDTO producto) {
         carrito.add(producto);
     }
-
     public List<ProductoDTO> getCarrito() {
         return carrito;
     }
-
-    public void mostrarDescripcionProductoFORM() {
-        new DescripcionProductoFORM(this).setVisible(true);
-    }
-
-   // public void mostrarPantallaCanjeo() {
-    //    new GUI.CodigoDescuentoFORM(this).setVisible(true);
-   // }
-
-    //Simulacion de informacion del producto
-
-
     public void setDescuento(double descuento) {
         this.descuento = descuento;
     }
@@ -43,16 +26,6 @@ public class Control {
     public double getDescuento() {
         return descuento;
     }
-
-    public void mostrarCodigoDescuento() {
-    }
-
-    public void mostrarFormaPago() {
-    }
-
-
-
-
 
     //NAVEGACION DEL SISTEMA
     private JFrame ventanaActual = null;
@@ -64,7 +37,7 @@ public class Control {
         ventanaActual.setVisible(true);
     }
     public void mostrarInicio(){
-        mostrarPantallas(new InicioFORM(this));
+        mostrarPantallas(new Inicio(this));
     }
     public void mostrarProductosFORM(){
         mostrarPantallas(new ProductosFORM(this));
@@ -78,7 +51,10 @@ public class Control {
         mostrarPantallas(new SeleccionMetodoEntrega(this));
     }
     public void mostrarCarrito(){
-        mostrarPantallas(new Carrito2(this));
+        this.agregarProducto(new ProductoDTO("Panini Clasico", 95.00));
+        this.agregarProducto(new ProductoDTO("Latte Vainilla", 55.00));
+        this.agregarProducto(new ProductoDTO("Galleta de Chispas", 25.00));
+        mostrarPantallas(new Carrito(this));
     }
     public void mostrarSeleccionSucursalesDisponibles(){
         SucursalesDisponibles mockSucursales = new SucursalesDisponibles();
@@ -96,10 +72,36 @@ public class Control {
     }
 
     public void mostrarTotalPrecioProductos(){
-        this.agregarProducto(new ProductoDTO("Baguel", 85.00));
-        this.agregarProducto(new ProductoDTO("Frappe Mocha", 65.00));
+
         this.setDescuento(30.00);
 
         mostrarPantallas(new TotalPrecioProductos(this));
+    }
+    public void mostrarSeleccionFormaPago(){
+        mostrarPantallas(new SeleccionFormaPago(this));
+    }
+
+    public void mostrarCodigoDescuento() {
+
+        mostrarPantallas(new CodigoDescuentoFORM(this));
+    }
+
+    public void mostrarPagoEfectivo(){
+        mostrarPantallas(new PagoEfectivo(this));
+    }
+    public void mostrarPagoTarjeta(){
+        mostrarPantallas(new PagoTarjeta(this));
+    }
+    public void mostrarPagoRechazado(){
+        mostrarPantallas(new PagoRechazado(this));
+    }
+    public void mostrarPagoReferencia(){
+        mostrarPantallas(new PagoReferencia(this));
+    }
+    public void mostrarAgradecimiento(){
+        mostrarPantallas(new Agradecimiento(this));
+    }
+    public void mostrarCodigoDescuentoRechazado(){
+        mostrarPantallas(new CodigoDescuentoRechazado(this));
     }
 }

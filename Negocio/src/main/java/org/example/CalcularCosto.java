@@ -4,11 +4,11 @@ import GoOrderDTO.ProductoDTO;
 import GoOrderDTO.CostoDTO;
 import java.util.List;
 
-public class CalcularCostoCasoDeUso {
+public class CalcularCosto {
 
     private ICostoServicio servicio;
 
-    public CalcularCostoCasoDeUso(ICostoServicio servicio) {
+    public CalcularCosto(ICostoServicio servicio) {
         this.servicio = servicio;
     }
 

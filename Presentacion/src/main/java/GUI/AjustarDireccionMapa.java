@@ -104,13 +104,7 @@ public class AjustarDireccionMapa extends JFrame {
         btnConfirmar.setMaximumSize(new Dimension(340, 50));
 
         btnConfirmar.addActionListener(e -> {
-            if (ubicacionSeleccionada != null) {
-                //Luego regresare las cordenadas y extraere los datos
-                System.out.println("Coordenadas seleccionadas: " + ubicacionSeleccionada.getLatitude() + ", " + ubicacionSeleccionada.getLongitude());
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(this, "Por favor, haz doble clic en el mapa para marcar una ubicación antes de confirmar.");
-            }
+          control.mostrarTotalPrecioProductos();
         });
 
         footerPanel.add(btnConfirmar);

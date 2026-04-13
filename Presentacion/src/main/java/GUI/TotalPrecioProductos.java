@@ -33,7 +33,26 @@ public class TotalPrecioProductos extends JFrame {
         JPanel panelImagen = new JPanel(new BorderLayout());
         panelImagen.setBackground(COLOR_FONDO);
         panelImagen.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
+        JButton btnRegresar = new JButton("←");
+        btnRegresar.setFont(new Font("Arial", Font.BOLD, 24));
+        btnRegresar.setForeground(Color.LIGHT_GRAY);
+        btnRegresar.setContentAreaFilled(false);
+        btnRegresar.setBorderPainted(false);
+        btnRegresar.setFocusPainted(false);
+        btnRegresar.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
+        btnRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                btnRegresar.setForeground(new Color(0, 255, 150));
+            }
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                btnRegresar.setForeground(Color.LIGHT_GRAY);
+            }
+        });
+
+        btnRegresar.addActionListener(e -> {
+            control.mostrarInicio();
+        });
         JLabel lblImagen = new JLabel();
         lblImagen.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -139,15 +158,11 @@ public class TotalPrecioProductos extends JFrame {
         BotonNeon btnPago = new BotonNeon("FORMA DE PAGO");
 
         btnDescuento.addActionListener(e -> {
-            if (this.control != null) {
-                this.control.mostrarCodigoDescuento();
-            }
+           control.mostrarCodigoDescuento();
         });
 
         btnPago.addActionListener(e -> {
-            if (this.control != null) {
-                this.control.mostrarFormaPago();
-            }
+        control.mostrarSeleccionFormaPago();
         });
 
         footerPanel.add(btnDescuento);

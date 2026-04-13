@@ -4,6 +4,8 @@
  */
 package GUI;
 
+import Control.Control;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
@@ -22,10 +24,10 @@ public class PagoRechazado extends javax.swing.JFrame {
     /**
      * Creates new form PagoRechazado
      */
-    public PagoRechazado() {
+    public PagoRechazado(Control control) {
         initComponents();
         this.getContentPane().setBackground(Color.green);
-
+        btnRegresar.addActionListener(e-> control.mostrarPagoTarjeta());
         try {
             java.io.File archivoImagen = new java.io.File(".." + java.io.File.separator + "Resources" + java.io.File.separator + "sin_dinero.png");
             if (!archivoImagen.exists()) {
@@ -38,6 +40,7 @@ public class PagoRechazado extends javax.swing.JFrame {
 
                 lblImagen.setIcon(new ImageIcon(imgEscalada));
                 lblImagen.setText("");
+
 
             } else {
                 System.out.println("No se encontró la imagen en: " + archivoImagen.getAbsolutePath());
@@ -100,34 +103,11 @@ public class PagoRechazado extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new PagoRechazado().setVisible(true));
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRegresar;
     private javax.swing.JLabel lblImagen;
     private javax.swing.JLabel lblInfo;
     // End of variables declaration//GEN-END:variables
+
 }
