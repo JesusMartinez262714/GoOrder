@@ -2,6 +2,7 @@ package GUI;
 
 import javax.swing.*;
 import java.awt.*;
+import Control.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -11,7 +12,7 @@ public class SeleccionMetodoEntrega extends JFrame {
     private final Color COLOR_NEON = new Color(0, 255, 150);
     private final Color COLOR_BOTON = new Color(35, 35, 35);
 
-    public SeleccionMetodoEntrega() {
+    public SeleccionMetodoEntrega(Control control) {
         setTitle("Seleccionar Metodo de Entrega");
         setSize(400, 650);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -120,11 +121,5 @@ public class SeleccionMetodoEntrega extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception ignored) {}
 
-        SwingUtilities.invokeLater(() -> new SeleccionMetodoEntrega().setVisible(true));
-    }
 }

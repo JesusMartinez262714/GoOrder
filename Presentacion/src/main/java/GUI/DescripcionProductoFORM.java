@@ -173,7 +173,7 @@ public class DescripcionProductoFORM extends javax.swing.JFrame {
     }//GEN-LAST:event_btnReturnActionPerformed
 
     private void btnAñadirCarrito1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirCarrito1ActionPerformed
-        // TODO add your handling code here:
+        control.mostrarCarrito();
     }//GEN-LAST:event_btnAñadirCarrito1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

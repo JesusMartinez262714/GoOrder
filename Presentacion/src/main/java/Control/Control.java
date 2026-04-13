@@ -1,11 +1,9 @@
 package Control;
 
+import GUI.*;
 import GoOrderDTO.ProductoDTO;
 import java.util.ArrayList;
 import java.util.List;
-import GUI.DescripcionProductoFORM;
-import GUI.InicioFORM;
-import GUI.ProductosFORM;
 
 import javax.swing.*;
 
@@ -73,5 +71,11 @@ public class Control {
         DescripcionProductoFORM form = new DescripcionProductoFORM(this);
         form.DescripcionProductoFORM(nombre, precio);
         form.setVisible(true);
+    }
+    public void mostrarSeleccionMetodoEntrega(){
+        mostrarPantallas(new SeleccionMetodoEntrega(this));
+    }
+    public void mostrarCarrito(){
+        mostrarPantallas(new Carrito(this));
     }
 }
