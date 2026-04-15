@@ -3,216 +3,198 @@ package GUI;
 
 import Control.Control;
 
-import javax.swing.JOptionPane;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-/**
- *
- * @author maild
- */
-public class ProductosFORM extends javax.swing.JFrame {
+public class ProductosFORM extends JFrame {
+
+    private final Color COLOR_FONDO = new Color(18, 18, 18);
+    private final Color COLOR_NEON = new Color(0, 255, 150);
+    private final Color COLOR_TARJETA = new Color(30, 30, 30); 
+    private final Color COLOR_BOTON = new Color(35, 35, 35);
 
     private final Control control;
-    
+
     public ProductosFORM(Control control) {
         this.control = control;
-        initComponents();
-        simulacionProductos();
-        System.out.println("hOLA");
-    }
-    
-    
-    public void simulacionProductos() {
-        DefaultTableModel modelo = (DefaultTableModel) tbProductos.getModel();
-        modelo.setRowCount(0);
+
+        setTitle("GoOrder - Menú");
+        setSize(400, 700); 
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setResizable(false);
+        setLayout(new BorderLayout());
+        getContentPane().setBackground(COLOR_FONDO);
+
+        JPanel pnlNorte = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 15));
+        pnlNorte.setBackground(COLOR_FONDO);
         
-        //Productos Simulados
-        modelo.addRow(new Object[] {null, "Baguel", 70.0});
-        modelo.addRow(new Object[] {null, "Sandwich de huevo con catsup", 40.32});
-        modelo.addRow(new Object[] {null, "Papas de crema con cebolla", 33.44});
+        JTextField txtBuscar = new JTextField(20);
+        txtBuscar.setPreferredSize(new Dimension(300, 35));
+        txtBuscar.setBackground(COLOR_TARJETA);
+        txtBuscar.setForeground(Color.WHITE);
+        txtBuscar.setCaretColor(COLOR_NEON);
+        txtBuscar.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(COLOR_NEON, 1, true),
+                new EmptyBorder(5, 10, 5, 10)
+        ));
+        txtBuscar.setText("Buscar producto...");
+        pnlNorte.add(txtBuscar);
+
+        JPanel pnlGrid = new JPanel(new GridLayout(0, 2, 15, 15));
+        pnlGrid.setBackground(COLOR_FONDO);
+        pnlGrid.setBorder(new EmptyBorder(10, 15, 10, 15));
+
+        pnlGrid.add(crearTarjetaProducto("Sandwich", "$40.00"));
+        pnlGrid.add(crearTarjetaProducto("Cafe Americano", "$30.00"));
+        pnlGrid.add(crearTarjetaProducto("Frappe", "$50.00"));
+        pnlGrid.add(crearTarjetaProducto("Bagel", "$70.00"));
+        pnlGrid.add(crearTarjetaProducto("Paquete 1", "$100.00"));
+        pnlGrid.add(crearTarjetaProducto("Paquete 2", "$120.00"));
+
+        JScrollPane scrollPane = new JScrollPane(pnlGrid);
+        scrollPane.setBorder(null);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.setBackground(COLOR_FONDO);
+
+        JPanel pnlSur = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 15));
+        pnlSur.setBackground(COLOR_FONDO);
+        
+        BotonNeon btnCarrito = new BotonNeon("VER CARRITO");
+        btnCarrito.setPreferredSize(new Dimension(350, 50));
+        pnlSur.add(btnCarrito);
+
+        add(pnlNorte, BorderLayout.NORTH);
+        add(scrollPane, BorderLayout.CENTER);
+        add(pnlSur, BorderLayout.SOUTH);
     }
-    
-    public void mostrarInformacionProducto() {
-        int fila = tbProductos.getSelectedRow();
-        if (fila != -1) {                        
-            String nombre = tbProductos.getValueAt(fila, 1).toString();
-            String precio = tbProductos.getValueAt(fila, 2).toString();            
-            this.dispose();
-            control.DescripcionProducto(nombre, precio);
-        } else {
-            JOptionPane.showMessageDialog(this, "Seleccione un producto para ver su información.");
+
+    private JPanel crearTarjetaProducto(String nombre, String precio) {
+        JPanel tarjeta = new JPanel();
+        tarjeta.setLayout(new BorderLayout());
+        tarjeta.setBackground(COLOR_TARJETA);
+        tarjeta.setBorder(BorderFactory.createLineBorder(new Color(50, 50, 50), 1, true));
+
+        JLabel lblImagen = new JLabel("Imagen", SwingConstants.CENTER);
+        lblImagen.setOpaque(true);
+        lblImagen.setBackground(new Color(45, 45, 45));
+        lblImagen.setForeground(Color.GRAY);
+        lblImagen.setPreferredSize(new Dimension(150, 100));
+        tarjeta.add(lblImagen, BorderLayout.NORTH);
+
+        JPanel pnlInfo = new JPanel(new GridBagLayout());
+        pnlInfo.setBackground(COLOR_TARJETA);
+        pnlInfo.setBorder(new EmptyBorder(10, 10, 10, 10));
+        GridBagConstraints gbc = new GridBagConstraints();
+        
+        JLabel lblNombre = new JLabel(nombre);
+        lblNombre.setFont(new Font("Arial", Font.PLAIN, 14));
+        lblNombre.setForeground(Color.WHITE);
+        
+        JLabel lblPrecio = new JLabel(precio);
+        lblPrecio.setFont(new Font("Arial", Font.BOLD, 14));
+        lblPrecio.setForeground(COLOR_NEON);
+
+        BotonAgregar btnAdd = new BotonAgregar();
+
+        gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 1.0; gbc.anchor = GridBagConstraints.WEST;
+        pnlInfo.add(lblNombre, gbc);
+        
+        gbc.gridy = 1; 
+        pnlInfo.add(lblPrecio, gbc);
+
+        gbc.gridx = 1; gbc.gridy = 0; gbc.gridheight = 2; gbc.weightx = 0; gbc.anchor = GridBagConstraints.CENTER;
+        pnlInfo.add(btnAdd, gbc);
+
+        tarjeta.add(pnlInfo, BorderLayout.CENTER);
+
+        return tarjeta;
+    }
+
+    class BotonAgregar extends JButton {
+        private boolean over = false;
+
+        public BotonAgregar() {
+            super("+");
+            setFont(new Font("Arial", Font.BOLD, 20));
+            setForeground(COLOR_NEON);
+            setOpaque(false);
+            setContentAreaFilled(false);
+            setFocusPainted(false);
+            setBorderPainted(false);
+            setCursor(new Cursor(Cursor.HAND_CURSOR));
+            setPreferredSize(new Dimension(35, 35));
+
+            addMouseListener(new MouseAdapter() {
+                public void mouseEntered(MouseEvent e) { over = true; repaint(); }
+                public void mouseExited(MouseEvent e) { over = false; repaint(); }
+            });
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+            if (over) {
+                g2.setColor(COLOR_NEON);
+                setForeground(Color.BLACK);
+            } else {
+                g2.setColor(COLOR_BOTON);
+                setForeground(COLOR_NEON);
+            }
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
+            
+            super.paintComponent(g);
+            g2.dispose();
         }
     }
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jPanel1 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
-        btnBuscar = new javax.swing.JButton();
-        btnAñadirCarrito = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tbProductos = new javax.swing.JTable();
-        btnDescripcion = new javax.swing.JButton();
+    class BotonNeon extends JButton {
+        private boolean over = false;
 
-        jButton1.setText("jButton1");
+        public BotonNeon(String texto) {
+            super(texto);
+            setOpaque(false);
+            setContentAreaFilled(false);
+            setFocusPainted(false);
+            setBorderPainted(false);
+            setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+            addMouseListener(new MouseAdapter() {
+                public void mouseEntered(MouseEvent e) { over = true; repaint(); }
+                public void mouseExited(MouseEvent e) { over = false; repaint(); }
+            });
+        }
 
-        jPanel1.setBackground(new java.awt.Color(0, 0, 0));
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+            if (over) {
+                g2.setColor(COLOR_NEON);
+            } else {
+                g2.setColor(COLOR_BOTON);
             }
-        });
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
 
-        btnBuscar.setBackground(new java.awt.Color(0, 255, 0));
-        btnBuscar.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        btnBuscar.setForeground(new java.awt.Color(255, 255, 255));
-        btnBuscar.setText("Buscar");
-        btnBuscar.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
+            g2.setFont(new Font("Arial", Font.BOLD, 16));
+            if (over) {
+                g2.setColor(Color.BLACK);
+            } else {
+                g2.setColor(COLOR_NEON); 
             }
-        });
 
-        btnAñadirCarrito.setBackground(new java.awt.Color(0, 255, 0));
-        btnAñadirCarrito.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnAñadirCarrito.setForeground(new java.awt.Color(255, 255, 255));
-        btnAñadirCarrito.setText("Añadir al carrito");
-        btnAñadirCarrito.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        btnAñadirCarrito.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAñadirCarritoActionPerformed(evt);
-            }
-        });
+            FontMetrics fm = g2.getFontMetrics();
+            int x = (getWidth() - fm.stringWidth(getText())) / 2;
+            int y = (getHeight() + fm.getAscent()) / 2 - 2;
+            g2.drawString(getText(), x, y);
 
-        tbProductos.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Imagen", "Producto", "Precio"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        tbProductos.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tbProductosMouseClicked(evt);
-            }
-        });
-        jScrollPane1.setViewportView(tbProductos);
-
-        btnDescripcion.setBackground(new java.awt.Color(0, 255, 0));
-        btnDescripcion.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnDescripcion.setForeground(new java.awt.Color(255, 255, 255));
-        btnDescripcion.setText("Ver descripción");
-        btnDescripcion.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        btnDescripcion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDescripcionActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(53, 53, 53)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1)))
-                .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(174, 174, 174)
-                .addComponent(btnAñadirCarrito, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(80, 80, 80)
-                .addComponent(btnDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1))
-                .addGap(18, 18, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAñadirCarrito, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(15, 15, 15))
-        );
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
-
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
-    private void btnAñadirCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirCarritoActionPerformed
-        control.mostrarCarrito();
-    }//GEN-LAST:event_btnAñadirCarritoActionPerformed
-
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnBuscarActionPerformed
-
-    private void btnDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescripcionActionPerformed
-        this.dispose();
-        mostrarInformacionProducto();
-    }//GEN-LAST:event_btnDescripcionActionPerformed
-
-    private void tbProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbProductosMouseClicked
-        if (evt.getClickCount() == 2) {
-            mostrarInformacionProducto();
-        }        
-    }//GEN-LAST:event_tbProductosMouseClicked
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAñadirCarrito;
-    private javax.swing.JButton btnBuscar;
-    private javax.swing.JButton btnDescripcion;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTable tbProductos;
-    // End of variables declaration//GEN-END:variables
+            g2.dispose();
+        }
+    }
 }
