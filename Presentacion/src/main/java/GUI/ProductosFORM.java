@@ -18,6 +18,7 @@ public class ProductosFORM extends javax.swing.JFrame {
         this.control = control;
         initComponents();
         simulacionProductos();
+        System.out.println("hOLA");
     }
     
     
