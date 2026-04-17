@@ -7,18 +7,33 @@ import GUI.*;
 import GoOrderDTO.ProductoDTO;
 import GoOrderDTO.SucursalDTO;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
 
 public class Control {
+    public final Color COLOR_FONDO = new Color(18, 18, 18);
+    public final Color COLOR_NEON = new Color(0, 255, 150);
+    public final Color COLOR_TARJETA = new Color(35, 35, 35);
+    public final Color COLOR_BOTON = new Color(35, 35, 35);
+    public final Color COLOR_ERROR = new Color(255, 80, 80);
+    public final Color COLOR_INPUT = new Color(25, 25, 25);
+    public final Color COLOR_BORDE = new Color(60, 60, 60);
+    private final String rutaImagenes = "Resources/";
 
     private double descuento = 0;
     private List<ProductoDTO> carrito = new ArrayList<>();
     List<ProductoDTO> listaProductos = new ArrayList<>();
     public Control() {
         cargarMenuProductos();
+    }
+
+    public ImageIcon obtenerImagen(String nombreImagen) {
+        String rutaCompleta = "Resources/" + nombreImagen;
+        ImageIcon icono = new ImageIcon(rutaCompleta);
+        return icono;
     }
 
     private void cargarMenuProductos() {

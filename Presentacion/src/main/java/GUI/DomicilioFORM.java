@@ -11,12 +11,7 @@ import java.awt.event.MouseEvent;
 
 public class DomicilioFORM extends JFrame {
 
-    private final Color COLOR_FONDO = new Color(18, 18, 18);
-    private final Color COLOR_NEON = new Color(0, 255, 150);
-    private final Color COLOR_BOTON = new Color(35, 35, 35);
-    private final Color COLOR_INPUT = new Color(25, 25, 25);
-    private final Color COLOR_BORDE = new Color(60, 60, 60);
-
+    private Control control;
     private JTextField txtColonia;
     private JTextField txtCalle;
     private JTextField txtDireccion;
@@ -31,13 +26,13 @@ public class DomicilioFORM extends JFrame {
         setLayout(new BorderLayout());
 
         JPanel contentPanel = new JPanel();
-        contentPanel.setBackground(COLOR_FONDO);
+        contentPanel.setBackground(control.COLOR_FONDO);
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 20, 30));
 
         JLabel lblTitulo = new JLabel("DATOS DE ENTREGA");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 20));
-        lblTitulo.setForeground(COLOR_NEON);
+        lblTitulo.setForeground(control.COLOR_NEON);
         lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
         contentPanel.add(lblTitulo);
         contentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
@@ -66,7 +61,7 @@ public class DomicilioFORM extends JFrame {
 
         JPanel panelEspecificaciones = new JPanel();
         panelEspecificaciones.setLayout(new BoxLayout(panelEspecificaciones, BoxLayout.Y_AXIS));
-        panelEspecificaciones.setBackground(COLOR_FONDO);
+        panelEspecificaciones.setBackground(control.COLOR_FONDO);
         panelEspecificaciones.setAlignmentX(Component.CENTER_ALIGNMENT);
         panelEspecificaciones.setMaximumSize(new Dimension(340, 120));
 
@@ -77,15 +72,15 @@ public class DomicilioFORM extends JFrame {
 
         txtEspecificaciones = new JTextArea("Referencias de la casa");
         txtEspecificaciones.setFont(new Font("Arial", Font.PLAIN, 14));
-        txtEspecificaciones.setBackground(COLOR_INPUT);
+        txtEspecificaciones.setBackground(control.COLOR_INPUT);
         txtEspecificaciones.setForeground(Color.LIGHT_GRAY);
-        txtEspecificaciones.setCaretColor(COLOR_NEON);
+        txtEspecificaciones.setCaretColor(control.COLOR_NEON);
         txtEspecificaciones.setLineWrap(true);
         txtEspecificaciones.setWrapStyleWord(true);
         txtEspecificaciones.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JScrollPane scrollEspec = new JScrollPane(txtEspecificaciones);
-        scrollEspec.setBorder(BorderFactory.createLineBorder(COLOR_BORDE, 1));
+        scrollEspec.setBorder(BorderFactory.createLineBorder(control.COLOR_BORDE, 1));
         scrollEspec.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         agregarEfectoFoco(txtEspecificaciones, scrollEspec, "Referencias de la casa");
@@ -100,7 +95,7 @@ public class DomicilioFORM extends JFrame {
         add(contentPanel, BorderLayout.CENTER);
 
         JPanel footerPanel = new JPanel();
-        footerPanel.setBackground(COLOR_FONDO);
+        footerPanel.setBackground(control.COLOR_FONDO);
         footerPanel.setBorder(BorderFactory.createEmptyBorder(10, 30, 30, 30));
         footerPanel.setLayout(new BoxLayout(footerPanel, BoxLayout.Y_AXIS));
 
@@ -116,7 +111,7 @@ public class DomicilioFORM extends JFrame {
     private JPanel crearPanelInput(String labelText, JTextField textField) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(COLOR_FONDO);
+        panel.setBackground(control.COLOR_FONDO);
         panel.setAlignmentX(Component.CENTER_ALIGNMENT);
         panel.setMaximumSize(new Dimension(340, 60));
 
@@ -138,11 +133,11 @@ public class DomicilioFORM extends JFrame {
     private JTextField crearCampoTexto(String nombre, String placeholder) {
         JTextField txt = new JTextField(placeholder);
         txt.setFont(new Font("Arial", Font.PLAIN, 14));
-        txt.setBackground(COLOR_INPUT);
+        txt.setBackground(control.COLOR_INPUT);
         txt.setForeground(Color.LIGHT_GRAY);
-        txt.setCaretColor(COLOR_NEON);
+        txt.setCaretColor(control.COLOR_NEON);
         txt.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(COLOR_BORDE, 1),
+                BorderFactory.createLineBorder(control.COLOR_BORDE, 1),
                 BorderFactory.createEmptyBorder(5, 10, 5, 10)
         ));
 
@@ -155,7 +150,7 @@ public class DomicilioFORM extends JFrame {
             @Override
             public void focusGained(FocusEvent e) {
                 componenteBorde.setBorder(BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(COLOR_NEON, 1),
+                        BorderFactory.createLineBorder(control.COLOR_NEON, 1),
                         BorderFactory.createEmptyBorder(5, 10, 5, 10)
                 ));
 
@@ -177,7 +172,7 @@ public class DomicilioFORM extends JFrame {
             @Override
             public void focusLost(FocusEvent e) {
                 componenteBorde.setBorder(BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(COLOR_BORDE, 1),
+                        BorderFactory.createLineBorder(control.COLOR_BORDE, 1),
                         BorderFactory.createEmptyBorder(5, 10, 5, 10)
                 ));
 
@@ -222,9 +217,9 @@ public class DomicilioFORM extends JFrame {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
             if (over) {
-                g2.setColor(COLOR_NEON);
+                g2.setColor(control.COLOR_NEON);
             } else {
-                g2.setColor(COLOR_BOTON);
+                g2.setColor(control.COLOR_BOTON);
             }
             g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
 

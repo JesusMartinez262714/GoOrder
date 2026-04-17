@@ -16,9 +16,7 @@ import java.util.Set;
 
 public class AjustarDireccionMapa extends JFrame {
 
-    private final Color COLOR_FONDO = new Color(18, 18, 18);
-    private final Color COLOR_NEON = new Color(0, 255, 150);
-    private final Color COLOR_BOTON = new Color(35, 35, 35);
+    private Control control;
 
     private JXMapViewer mapViewer;
     private WaypointPainter<Waypoint> waypointPainter;
@@ -33,11 +31,11 @@ public class AjustarDireccionMapa extends JFrame {
         setLayout(new BorderLayout());
 
         JPanel headerPanel = new JPanel();
-        headerPanel.setBackground(COLOR_FONDO);
+        headerPanel.setBackground(control.COLOR_FONDO);
         headerPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
         JLabel lblTitulo = new JLabel("UBICA TU ENTREGA");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 20));
-        lblTitulo.setForeground(COLOR_NEON);
+        lblTitulo.setForeground(control.COLOR_NEON);
         headerPanel.add(lblTitulo);
         add(headerPanel, BorderLayout.NORTH);
 
@@ -78,11 +76,11 @@ public class AjustarDireccionMapa extends JFrame {
         });
 
         JPanel mapContainer = new JPanel(new BorderLayout());
-        mapContainer.setBorder(BorderFactory.createLineBorder(COLOR_NEON, 2));
+        mapContainer.setBorder(BorderFactory.createLineBorder(control.COLOR_NEON, 2));
         mapContainer.add(mapViewer, BorderLayout.CENTER);
 
         JPanel wrapperPanel = new JPanel(new BorderLayout());
-        wrapperPanel.setBackground(COLOR_FONDO);
+        wrapperPanel.setBackground(control.COLOR_FONDO);
         wrapperPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
         wrapperPanel.add(mapContainer, BorderLayout.CENTER);
 
@@ -95,7 +93,7 @@ public class AjustarDireccionMapa extends JFrame {
         add(wrapperPanel, BorderLayout.CENTER);
 
         JPanel footerPanel = new JPanel();
-        footerPanel.setBackground(COLOR_FONDO);
+        footerPanel.setBackground(control.COLOR_FONDO);
         footerPanel.setBorder(BorderFactory.createEmptyBorder(10, 30, 30, 30));
         footerPanel.setLayout(new BoxLayout(footerPanel, BoxLayout.Y_AXIS));
 
@@ -142,9 +140,9 @@ public class AjustarDireccionMapa extends JFrame {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
             if (over) {
-                g2.setColor(COLOR_NEON);
+                g2.setColor(control.COLOR_NEON);
             } else {
-                g2.setColor(COLOR_BOTON);
+                g2.setColor(control.COLOR_BOTON);
             }
             g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
 

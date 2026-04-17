@@ -10,11 +10,7 @@ import java.awt.event.MouseEvent;
 
 public class CodigoDescuentoRechazado extends JFrame {
 
-    private final Color COLOR_FONDO = new Color(18, 18, 18);
-    private final Color COLOR_NEON = new Color(0, 255, 150);
-    private final Color COLOR_TARJETA = new Color(35, 35, 35);
 
-    private final Color COLOR_ERROR = new Color(255, 80, 80);
 
     private Control control;
 
@@ -27,12 +23,12 @@ public class CodigoDescuentoRechazado extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
         setLayout(new BorderLayout());
-        getContentPane().setBackground(COLOR_FONDO);
+        getContentPane().setBackground(control.COLOR_FONDO);
 
 
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-        contentPanel.setBackground(COLOR_FONDO);
+        contentPanel.setBackground(control.COLOR_FONDO);
         contentPanel.setBorder(new EmptyBorder(20, 30, 20, 30));
 
         contentPanel.add(Box.createVerticalGlue());
@@ -41,7 +37,7 @@ public class CodigoDescuentoRechazado extends JFrame {
 
         JLabel lblTitulo = new JLabel("CÓDIGO NO VÁLIDO");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 24));
-        lblTitulo.setForeground(COLOR_ERROR);
+        lblTitulo.setForeground(control.COLOR_ERROR);
         lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel lblSubtitulo = new JLabel("Intenta volver a ingresar el código.");
@@ -60,7 +56,7 @@ public class CodigoDescuentoRechazado extends JFrame {
 
 
         JPanel footerPanel = new JPanel();
-        footerPanel.setBackground(COLOR_FONDO);
+        footerPanel.setBackground(control.COLOR_FONDO);
         footerPanel.setBorder(new EmptyBorder(10, 30, 30, 30));
         footerPanel.setLayout(new BoxLayout(footerPanel, BoxLayout.Y_AXIS));
 
@@ -101,9 +97,9 @@ public class CodigoDescuentoRechazado extends JFrame {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
             if (over) {
-                g2.setColor(COLOR_TARJETA.brighter());
+                g2.setColor(control.COLOR_TARJETA.brighter());
             } else {
-                g2.setColor(COLOR_TARJETA);
+                g2.setColor(control.COLOR_TARJETA);
             }
             g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
 

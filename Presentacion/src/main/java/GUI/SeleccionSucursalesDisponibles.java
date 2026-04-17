@@ -1,28 +1,24 @@
 package GUI;
 
 import Control.Control;
-import Entitys.Sucursal;
 import Entitys.SucursalesDisponibles;
 import GoOrderDTO.SucursalDTO;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SeleccionSucursalesDisponibles extends JFrame {
 
-    private final Color COLOR_FONDO = new Color(18, 18, 18);
-    private final Color COLOR_NEON = new Color(0, 255, 150);
-    private final Color COLOR_TARJETA = new Color(35, 35, 35);
-
+    private Control control;
     private SucursalDTO sucursalSeleccionada = null;
-    private List<TarjetaSucursal> listaTarjetas = new ArrayList<>();
+    private List<PanelSucursal> listaTarjetas = new ArrayList<>();
     private BotonConfirmar btnConfirmar;
 
     public SeleccionSucursalesDisponibles(Control control, SucursalesDisponibles sucursalesDisponiblesEntity) {
+        this.control = control;
+
         setTitle("GoOrder - Sucursales");
         setSize(400, 650);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,8 +27,9 @@ public class SeleccionSucursalesDisponibles extends JFrame {
         setLayout(new BorderLayout());
 
         JPanel headerPanel = new JPanel();
-        headerPanel.setBackground(COLOR_FONDO);
+        headerPanel.setBackground(control.COLOR_FONDO);
         headerPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
+
         JButton btnRegresar = new JButton("←");
         btnRegresar.setFont(new Font("Arial", Font.BOLD, 24));
         btnRegresar.setForeground(Color.LIGHT_GRAY);
@@ -41,32 +38,23 @@ public class SeleccionSucursalesDisponibles extends JFrame {
         btnRegresar.setFocusPainted(false);
         btnRegresar.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        btnRegresar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent e) {
-                btnRegresar.setForeground(new Color(0, 255, 150));
-            }
-            public void mouseExited(java.awt.event.MouseEvent e) {
-                btnRegresar.setForeground(Color.LIGHT_GRAY);
-            }
-        });
+        btnRegresar.addActionListener(e -> control.mostrarSeleccionMetodoEntrega());
 
-        btnRegresar.addActionListener(e -> {
-                control.mostrarInicio();
-        });
         JLabel lblTitulo = new JLabel("SUCURSALES DISPONIBLES");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 20));
-        lblTitulo.setForeground(COLOR_NEON);
-        headerPanel.add(btnRegresar, BorderLayout.WEST);
+        lblTitulo.setForeground(control.COLOR_NEON);
+
+        headerPanel.add(btnRegresar);
         headerPanel.add(lblTitulo);
         add(headerPanel, BorderLayout.NORTH);
 
         JPanel panelLista = new JPanel();
         panelLista.setLayout(new BoxLayout(panelLista, BoxLayout.Y_AXIS));
-        panelLista.setBackground(COLOR_FONDO);
+        panelLista.setBackground(control.COLOR_FONDO);
         panelLista.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
         for (SucursalDTO s : sucursalesDisponiblesEntity.getSucursalesDisponibles()) {
-            TarjetaSucursal tarjeta = new TarjetaSucursal(s);
+            PanelSucursal tarjeta = new PanelSucursal(s, control, this);
             listaTarjetas.add(tarjeta);
             panelLista.add(tarjeta);
             panelLista.add(Box.createRigidArea(new Dimension(0, 15)));
@@ -75,109 +63,35 @@ public class SeleccionSucursalesDisponibles extends JFrame {
         JScrollPane scrollPane = new JScrollPane(panelLista);
         scrollPane.setBorder(null);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.getViewport().setBackground(control.COLOR_FONDO);
         add(scrollPane, BorderLayout.CENTER);
 
         JPanel footerPanel = new JPanel();
-        footerPanel.setBackground(COLOR_FONDO);
+        footerPanel.setBackground(control.COLOR_FONDO);
         footerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
         btnConfirmar = new BotonConfirmar("CONFIRMAR");
         btnConfirmar.setEnabled(false);
         btnConfirmar.addActionListener(e -> control.mostrarTotalPrecioProductos());
+
         footerPanel.add(btnConfirmar);
         add(footerPanel, BorderLayout.SOUTH);
     }
 
-    class TarjetaSucursal extends JPanel {
-        private SucursalDTO sucursal;
-        private boolean seleccionada = false;
-
-        public TarjetaSucursal(SucursalDTO s) {
-            this.sucursal = s;
-            setLayout(new BorderLayout(15, 0));
-            setBackground(COLOR_TARJETA);
-            setBorder(BorderFactory.createLineBorder(COLOR_TARJETA, 2, true));
-            setMaximumSize(new Dimension(350, 120));
-            setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-            ImageIcon icono = cargarImagenSucursal(s.getNombreImagen());
-            JLabel lblIcono = new JLabel(icono);
-            lblIcono.setPreferredSize(new Dimension(80, 80));
-            add(lblIcono, BorderLayout.WEST);
-
-            JPanel infoPanel = new JPanel();
-            infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
-            infoPanel.setBackground(COLOR_TARJETA);
-            infoPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 10));
-
-            JLabel lblNombre = new JLabel(s.getNombre());
-            lblNombre.setFont(new Font("Arial", Font.BOLD, 16));
-            lblNombre.setForeground(Color.WHITE);
-
-            JLabel lblDireccion = new JLabel("Direccion: " + s.getCalle());
-            lblDireccion.setFont(new Font("Arial", Font.PLAIN, 12));
-            lblDireccion.setForeground(Color.LIGHT_GRAY);
-
-            JLabel lblColonia = new JLabel("Colonia: " + s.getColonia());
-            lblColonia.setFont(new Font("Arial", Font.PLAIN, 12));
-            lblColonia.setForeground(Color.LIGHT_GRAY);
-
-            infoPanel.add(lblNombre);
-            infoPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-            infoPanel.add(lblDireccion);
-            infoPanel.add(Box.createRigidArea(new Dimension(0, 2)));
-            infoPanel.add(lblColonia);
-
-            if (s.getDescripcion() != null && !s.getDescripcion().isEmpty()) {
-                JLabel lblDescripcion = new JLabel( s.getDescripcion());
-                lblDescripcion.setFont(new Font("Arial", Font.ITALIC, 11));
-                lblDescripcion.setForeground(COLOR_NEON);
-                infoPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-                infoPanel.add(lblDescripcion);
-            }
-
-            add(infoPanel, BorderLayout.CENTER);
-
-            addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    seleccionarEstaTarjeta();
-                }
-            });
+    public void gestionarSeleccion(PanelSucursal tarjetaSeleccionada) {
+        for (PanelSucursal t : listaTarjetas) {
+            t.desmarcar();
         }
 
-        private ImageIcon cargarImagenSucursal(String nombreImagen) {
-            try {
-                java.io.File archivoImagen = new java.io.File(".." + java.io.File.separator + "Resources" + java.io.File.separator + nombreImagen);
+        tarjetaSeleccionada.marcarComoSeleccionada();
 
-                if (!archivoImagen.exists()) {
-                    archivoImagen = new java.io.File("Resources" + java.io.File.separator + nombreImagen);
-                }
+        this.sucursalSeleccionada = tarjetaSeleccionada.getSucursal();
+        btnConfirmar.setEnabled(true);
+        btnConfirmar.repaint();
+    }
 
-                if (!archivoImagen.exists()) {
-                    throw new Exception();
-                }
-
-                ImageIcon originalIcon = new ImageIcon(archivoImagen.getAbsolutePath());
-                Image img = originalIcon.getImage();
-                Image newImg = img.getScaledInstance(80, 80, Image.SCALE_SMOOTH);
-                return new ImageIcon(newImg);
-
-            } catch (Exception e) {
-                return new ImageIcon();
-            }
-        }
-
-        private void seleccionarEstaTarjeta() {
-            for (TarjetaSucursal t : listaTarjetas) {
-                t.setBorder(BorderFactory.createLineBorder(COLOR_TARJETA, 2, true));
-                t.seleccionada = false;
-            }
-            this.setBorder(BorderFactory.createLineBorder(COLOR_NEON, 2, true));
-            this.seleccionada = true;
-            sucursalSeleccionada = this.sucursal;
-            btnConfirmar.setEnabled(true);
-            btnConfirmar.repaint();
-        }
+    public SucursalDTO getSucursalSeleccionada() {
+        return sucursalSeleccionada;
     }
 
     class BotonConfirmar extends JButton {
@@ -197,11 +111,11 @@ public class SeleccionSucursalesDisponibles extends JFrame {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
             if (isEnabled()) {
-                g2.setColor(COLOR_NEON);
+                g2.setColor(control.COLOR_NEON);
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
                 g2.setColor(Color.BLACK);
             } else {
-                g2.setColor(COLOR_TARJETA);
+                g2.setColor(control.COLOR_TARJETA);
                 g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
                 g2.setColor(Color.GRAY);
             }
@@ -214,6 +128,4 @@ public class SeleccionSucursalesDisponibles extends JFrame {
             g2.dispose();
         }
     }
-
-
 }

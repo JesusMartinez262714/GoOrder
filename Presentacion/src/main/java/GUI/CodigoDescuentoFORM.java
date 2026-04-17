@@ -11,11 +11,6 @@ import java.awt.event.MouseEvent;
 
 public class CodigoDescuentoFORM extends JFrame {
 
-    private final Color COLOR_FONDO = new Color(18, 18, 18);
-    private final Color COLOR_NEON = new Color(0, 255, 150);
-    private final Color COLOR_TARJETA = new Color(35, 35, 35);
-    private final Color COLOR_BOTON = new Color(35, 35, 35);
-
     private Control control;
     private double descuentoActual = 0.0;
 
@@ -31,11 +26,11 @@ public class CodigoDescuentoFORM extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
         setLayout(new BorderLayout());
-        getContentPane().setBackground(COLOR_FONDO);
+        getContentPane().setBackground(control.COLOR_FONDO);
 
 
         JPanel headerPanel = new JPanel(new BorderLayout());
-        headerPanel.setBackground(COLOR_FONDO);
+        headerPanel.setBackground(control.COLOR_FONDO);
         headerPanel.setBorder(new EmptyBorder(20, 20, 10, 20));
 
         JButton btnRegresar = new JButton("←");
@@ -47,7 +42,7 @@ public class CodigoDescuentoFORM extends JFrame {
         btnRegresar.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         btnRegresar.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnRegresar.setForeground(COLOR_NEON); }
+            public void mouseEntered(MouseEvent e) { btnRegresar.setForeground(control.COLOR_NEON); }
             public void mouseExited(MouseEvent e) { btnRegresar.setForeground(Color.LIGHT_GRAY); }
         });
 
@@ -57,7 +52,7 @@ public class CodigoDescuentoFORM extends JFrame {
 
         JLabel lblTitulo = new JLabel("CÓDIGO DESCUENTO");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-        lblTitulo.setForeground(COLOR_NEON);
+        lblTitulo.setForeground(control.COLOR_NEON);
         lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 
         JLabel lblEspacio = new JLabel("    ");
@@ -72,25 +67,25 @@ public class CodigoDescuentoFORM extends JFrame {
 
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-        contentPanel.setBackground(COLOR_FONDO);
+        contentPanel.setBackground(control.COLOR_FONDO);
         contentPanel.setBorder(new EmptyBorder(10, 30, 10, 30));
 
         JPanel panelInput = new JPanel(new BorderLayout(10, 0));
-        panelInput.setBackground(COLOR_FONDO);
+        panelInput.setBackground(control.COLOR_FONDO);
         panelInput.setMaximumSize(new Dimension(340, 45));
 
         txtCodigo = new JTextField();
-        txtCodigo.setBackground(COLOR_TARJETA);
+        txtCodigo.setBackground(control.COLOR_TARJETA);
         txtCodigo.setForeground(Color.WHITE);
         txtCodigo.setFont(new Font("Arial", Font.BOLD, 16));
-        txtCodigo.setCaretColor(COLOR_NEON);
+        txtCodigo.setCaretColor(control.COLOR_NEON);
         txtCodigo.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.DARK_GRAY, 2, true),
                 new EmptyBorder(5, 10, 5, 10)
         ));
 
         JButton btnVerificar = new JButton("VERIFICAR");
-        btnVerificar.setBackground(COLOR_TARJETA);
+        btnVerificar.setBackground(control.COLOR_TARJETA);
         btnVerificar.setForeground(Color.WHITE);
         btnVerificar.setFont(new Font("Arial", Font.BOLD, 12));
         btnVerificar.setFocusPainted(false);
@@ -106,9 +101,9 @@ public class CodigoDescuentoFORM extends JFrame {
 
         JPanel panelResumen = new JPanel();
         panelResumen.setLayout(new BoxLayout(panelResumen, BoxLayout.Y_AXIS));
-        panelResumen.setBackground(COLOR_TARJETA);
+        panelResumen.setBackground(control.COLOR_TARJETA);
         panelResumen.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(COLOR_BOTON, 2, true),
+                BorderFactory.createLineBorder(control.COLOR_BOTON, 2, true),
                 new EmptyBorder(15, 15, 15, 15)
         ));
 
@@ -148,7 +143,7 @@ public class CodigoDescuentoFORM extends JFrame {
 
         lblCantidadDescuento = new JLabel("$0.00 MXN");
         lblCantidadDescuento.setFont(new Font("Arial", Font.BOLD, 36));
-        lblCantidadDescuento.setForeground(COLOR_NEON);
+        lblCantidadDescuento.setForeground(control.COLOR_NEON);
         lblCantidadDescuento.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         contentPanel.add(lblTextoDescuento);
@@ -160,7 +155,7 @@ public class CodigoDescuentoFORM extends JFrame {
 
 
         JPanel footerPanel = new JPanel();
-        footerPanel.setBackground(COLOR_FONDO);
+        footerPanel.setBackground(control.COLOR_FONDO);
         footerPanel.setBorder(new EmptyBorder(10, 30, 30, 30));
         footerPanel.setLayout(new BoxLayout(footerPanel, BoxLayout.Y_AXIS));
 
@@ -227,8 +222,8 @@ public class CodigoDescuentoFORM extends JFrame {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            if (over) g2.setColor(COLOR_NEON);
-            else g2.setColor(COLOR_TARJETA);
+            if (over) g2.setColor(control.COLOR_NEON);
+            else g2.setColor(control.COLOR_TARJETA);
 
             g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
 

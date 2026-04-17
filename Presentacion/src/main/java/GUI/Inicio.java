@@ -8,11 +8,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class Inicio extends JFrame {
-
-    private final Color COLOR_FONDO = new Color(18, 18, 18);
-    private final Color COLOR_NEON = new Color(0, 255, 150);
-    private final Color COLOR_BOTON = new Color(35, 35, 35);
-
     private final Control control;
 
     public Inicio(Control control) {
@@ -24,17 +19,17 @@ public class Inicio extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
         setLayout(new BorderLayout());
-        getContentPane().setBackground(COLOR_FONDO);
+        getContentPane().setBackground(control.COLOR_FONDO);
 
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-        contentPanel.setBackground(COLOR_FONDO);
+        contentPanel.setBackground(control.COLOR_FONDO);
 
         contentPanel.add(Box.createVerticalGlue());
 
         JLabel lblTitulo = new JLabel("GoOrder");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 56));
-        lblTitulo.setForeground(COLOR_NEON);
+        lblTitulo.setForeground(control.COLOR_NEON);
         lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel lblSubtitulo = new JLabel("Tu comida, al instante.");
@@ -90,9 +85,9 @@ public class Inicio extends JFrame {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
             if (over) {
-                g2.setColor(COLOR_NEON);
+                g2.setColor(control.COLOR_NEON);
             } else {
-                g2.setColor(COLOR_BOTON);
+                g2.setColor(control.COLOR_BOTON);
             }
             g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
 

@@ -10,9 +10,6 @@ import java.awt.event.MouseEvent;
 
 public class Agradecimiento extends JFrame {
 
-    private final Color COLOR_FONDO = new Color(18, 18, 18);
-    private final Color COLOR_NEON = new Color(0, 255, 150);
-    private final Color COLOR_TARJETA = new Color(35, 35, 35);
 
     private Control control;
 
@@ -25,28 +22,28 @@ public class Agradecimiento extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
         setLayout(new BorderLayout());
-        getContentPane().setBackground(COLOR_FONDO);
+        getContentPane().setBackground(control.COLOR_FONDO);
 
 
         JPanel headerPanel = new JPanel();
-        headerPanel.setBackground(COLOR_FONDO);
+        headerPanel.setBackground(control.COLOR_FONDO);
         headerPanel.setBorder(new EmptyBorder(30, 20, 10, 20));
 
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-        contentPanel.setBackground(COLOR_FONDO);
+        contentPanel.setBackground(control.COLOR_FONDO);
         contentPanel.setBorder(new EmptyBorder(20, 30, 20, 30));
 
         contentPanel.add(Box.createVerticalGlue());
 
         JLabel lblGracias = new JLabel("¡GRACIAS POR");
         lblGracias.setFont(new Font("Arial", Font.BOLD, 32));
-        lblGracias.setForeground(COLOR_NEON);
+        lblGracias.setForeground(control.COLOR_NEON);
         lblGracias.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel lblPedido = new JLabel("TU PEDIDO!");
         lblPedido.setFont(new Font("Arial", Font.BOLD, 32));
-        lblPedido.setForeground(COLOR_NEON);
+        lblPedido.setForeground(control.COLOR_NEON);
         lblPedido.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel lblEsperamos = new JLabel("TE ESPERAMOS");
@@ -66,7 +63,7 @@ public class Agradecimiento extends JFrame {
 
 
         JPanel footerPanel = new JPanel();
-        footerPanel.setBackground(COLOR_FONDO);
+        footerPanel.setBackground(control.COLOR_FONDO);
         footerPanel.setBorder(new EmptyBorder(10, 30, 30, 30));
         footerPanel.setLayout(new BoxLayout(footerPanel, BoxLayout.Y_AXIS));
 
@@ -108,8 +105,8 @@ public class Agradecimiento extends JFrame {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            if (over) g2.setColor(COLOR_NEON);
-            else g2.setColor(COLOR_TARJETA);
+            if (over) g2.setColor(control.COLOR_NEON);
+            else g2.setColor(control.COLOR_TARJETA);
 
             g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
 

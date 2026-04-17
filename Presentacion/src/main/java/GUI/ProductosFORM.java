@@ -11,11 +11,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class ProductosFORM extends JFrame {
-    private final String rutaImagenes = "Resources/";
-    private final Color COLOR_FONDO = new Color(18, 18, 18);
-    private final Color COLOR_NEON = new Color(0, 255, 150);
-    private final Color COLOR_TARJETA = new Color(30, 30, 30); 
-    private final Color COLOR_BOTON = new Color(35, 35, 35);
 
     private final Control control;
 
@@ -28,25 +23,25 @@ public class ProductosFORM extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
         setLayout(new BorderLayout());
-        getContentPane().setBackground(COLOR_FONDO);
+        getContentPane().setBackground(control.COLOR_FONDO);
 
         JPanel pnlNorte = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 15));
-        pnlNorte.setBackground(COLOR_FONDO);
+        pnlNorte.setBackground(control.COLOR_FONDO);
         
         JTextField txtBuscar = new JTextField(20);
         txtBuscar.setPreferredSize(new Dimension(300, 35));
-        txtBuscar.setBackground(COLOR_TARJETA);
+        txtBuscar.setBackground(control.COLOR_TARJETA);
         txtBuscar.setForeground(Color.WHITE);
-        txtBuscar.setCaretColor(COLOR_NEON);
+        txtBuscar.setCaretColor(control.COLOR_NEON);
         txtBuscar.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(COLOR_NEON, 1, true),
+                BorderFactory.createLineBorder(control.COLOR_NEON, 1, true),
                 new EmptyBorder(5, 10, 5, 10)
         ));
         txtBuscar.setText("Buscar producto...");
         pnlNorte.add(txtBuscar);
 
         JPanel pnlGrid = new JPanel(new GridLayout(0, 2, 15, 15));
-        pnlGrid.setBackground(COLOR_FONDO);
+        pnlGrid.setBackground(control.COLOR_FONDO);
         pnlGrid.setBorder(new EmptyBorder(10, 15, 10, 15));
 
         for (ProductoDTO producto : control.obtenerListaProductos()){
@@ -57,10 +52,10 @@ public class ProductosFORM extends JFrame {
         scrollPane.setBorder(null);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.setBackground(COLOR_FONDO);
+        scrollPane.setBackground(control.COLOR_FONDO);
 
         JPanel pnlSur = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 15));
-        pnlSur.setBackground(COLOR_FONDO);
+        pnlSur.setBackground(control.COLOR_FONDO);
         
         BotonNeon btnCarrito = new BotonNeon("VER CARRITO");
         btnCarrito.setPreferredSize(new Dimension(350, 50));
@@ -73,36 +68,23 @@ public class ProductosFORM extends JFrame {
     }
 
     private JPanel crearTarjetaProducto(ProductoDTO producto) {
-        String rutaImagen = rutaImagenes + producto.getImagen();
-        System.out.println(rutaImagen);
         JPanel tarjeta = new JPanel();
         tarjeta.setLayout(new BorderLayout());
-        tarjeta.setBackground(COLOR_TARJETA);
+        tarjeta.setBackground(control.COLOR_TARJETA);
         tarjeta.setBorder(BorderFactory.createLineBorder(new Color(50, 50, 50), 1, true));
 
-        JLabel lblImagen = new JLabel("..", SwingConstants.CENTER);
+        JLabel lblImagen = new JLabel("", SwingConstants.CENTER);
         lblImagen.setOpaque(true);
         lblImagen.setBackground(new Color(45, 45, 45));
         lblImagen.setForeground(Color.GRAY);
         lblImagen.setPreferredSize(new Dimension(150, 100));
-
-        try{
-            ImageIcon iconoProducto = new ImageIcon(rutaImagen);
-            if(iconoProducto.getIconWidth() != -1){
-                Image img = iconoProducto.getImage();
-                Image imgEscalada = img.getScaledInstance(150,100,Image.SCALE_SMOOTH);
-                lblImagen.setIcon(new ImageIcon(imgEscalada));
-                lblImagen.setText("");
-            }else{
-                lblImagen.setText("SinFoto");
-            }
-        }catch (Exception e) {
-            lblImagen.setText(e.getMessage());
-        }
+        ImageIcon imagen = control.obtenerImagen(producto.getImagen());
+        Image imgEscalada = imagen.getImage().getScaledInstance(170, 100, Image.SCALE_SMOOTH);
+        lblImagen.setIcon(new ImageIcon(imgEscalada));
         tarjeta.add(lblImagen, BorderLayout.NORTH);
 
         JPanel pnlInfo = new JPanel(new GridBagLayout());
-        pnlInfo.setBackground(COLOR_TARJETA);
+        pnlInfo.setBackground(control.COLOR_TARJETA);
         pnlInfo.setBorder(new EmptyBorder(10, 10, 10, 10));
         GridBagConstraints gbc = new GridBagConstraints();
         
@@ -112,7 +94,7 @@ public class ProductosFORM extends JFrame {
         
         JLabel lblPrecio = new JLabel(String.valueOf(producto.getPrecio()));
         lblPrecio.setFont(new Font("Arial", Font.BOLD, 14));
-        lblPrecio.setForeground(COLOR_NEON);
+        lblPrecio.setForeground(control.COLOR_NEON);
 
         BotonAgregar btnAdd = new BotonAgregar(producto);
 
@@ -137,7 +119,7 @@ public class ProductosFORM extends JFrame {
             super("+");
             setFont(new Font("Arial", Font.BOLD, 22));
             setMargin(new Insets(0, 0, 0, 0));
-            setForeground(COLOR_NEON);
+            setForeground(control.COLOR_NEON);
             setOpaque(false);
             setContentAreaFilled(false);
             setFocusPainted(false);
@@ -159,11 +141,11 @@ public class ProductosFORM extends JFrame {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
             if (over) {
-                g2.setColor(COLOR_NEON);
+                g2.setColor(control.COLOR_NEON);
                 setForeground(Color.BLACK);
             } else {
-                g2.setColor(COLOR_BOTON);
-                setForeground(COLOR_NEON);
+                g2.setColor(control.COLOR_BOTON);
+                setForeground(control.COLOR_NEON);
             }
             g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
             
@@ -195,9 +177,9 @@ public class ProductosFORM extends JFrame {
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
             if (over) {
-                g2.setColor(COLOR_NEON);
+                g2.setColor(control.COLOR_NEON);
             } else {
-                g2.setColor(COLOR_BOTON);
+                g2.setColor(control.COLOR_BOTON);
             }
             g2.fillRoundRect(0, 0, getWidth(), getHeight(), 10, 10);
 
@@ -206,7 +188,7 @@ public class ProductosFORM extends JFrame {
             if (over) {
                 g2.setColor(Color.BLACK);
             } else {
-                g2.setColor(COLOR_NEON);
+                g2.setColor(control.COLOR_NEON);
             }
 
             FontMetrics fm = g2.getFontMetrics();

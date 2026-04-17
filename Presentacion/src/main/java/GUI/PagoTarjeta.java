@@ -10,9 +10,6 @@ import java.awt.event.MouseEvent;
 
 public class PagoTarjeta extends JFrame {
 
-    private final Color COLOR_FONDO = new Color(18, 18, 18);
-    private final Color COLOR_NEON = new Color(0, 255, 150);
-    private final Color COLOR_TARJETA = new Color(35, 35, 35);
 
     private Control control;
 
@@ -31,10 +28,10 @@ public class PagoTarjeta extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
         setLayout(new BorderLayout());
-        getContentPane().setBackground(COLOR_FONDO);
+        getContentPane().setBackground(control.COLOR_FONDO);
 
         JPanel headerPanel = new JPanel(new BorderLayout());
-        headerPanel.setBackground(COLOR_FONDO);
+        headerPanel.setBackground(control.COLOR_FONDO);
         headerPanel.setBorder(new EmptyBorder(20, 20, 10, 20));
 
         JButton btnRegresar = new JButton("←");
@@ -46,7 +43,7 @@ public class PagoTarjeta extends JFrame {
         btnRegresar.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         btnRegresar.addMouseListener(new MouseAdapter() {
-            public void mouseEntered(MouseEvent e) { btnRegresar.setForeground(COLOR_NEON); }
+            public void mouseEntered(MouseEvent e) { btnRegresar.setForeground(control.COLOR_NEON); }
             public void mouseExited(MouseEvent e) { btnRegresar.setForeground(Color.LIGHT_GRAY); }
         });
 
@@ -56,7 +53,7 @@ public class PagoTarjeta extends JFrame {
 
         JLabel lblTitulo = new JLabel("PAGO CON TARJETA");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
-        lblTitulo.setForeground(COLOR_NEON);
+        lblTitulo.setForeground(control.COLOR_NEON);
         lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
 
         JLabel lblEspacio = new JLabel("    ");
@@ -69,7 +66,7 @@ public class PagoTarjeta extends JFrame {
 
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-        contentPanel.setBackground(COLOR_FONDO);
+        contentPanel.setBackground(control.COLOR_FONDO);
         contentPanel.setBorder(new EmptyBorder(10, 30, 20, 30));
 
         txtNombre = crearTextFieldEstilizado();
@@ -83,7 +80,7 @@ public class PagoTarjeta extends JFrame {
         cbAnio = crearComboBoxEstilizado(anios);
 
         JPanel panelFecha = new JPanel(new GridLayout(1, 2, 15, 0));
-        panelFecha.setBackground(COLOR_FONDO);
+        panelFecha.setBackground(control.COLOR_FONDO);
         panelFecha.add(cbMes);
         panelFecha.add(cbAnio);
 
@@ -95,17 +92,17 @@ public class PagoTarjeta extends JFrame {
         contentPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
         txtCVV = new JPasswordField();
-        txtCVV.setBackground(COLOR_TARJETA);
+        txtCVV.setBackground(control.COLOR_TARJETA);
         txtCVV.setForeground(Color.WHITE);
         txtCVV.setFont(new Font("Arial", Font.BOLD, 16));
-        txtCVV.setCaretColor(COLOR_NEON);
+        txtCVV.setCaretColor(control.COLOR_NEON);
         txtCVV.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.DARK_GRAY, 2, true),
                 new EmptyBorder(10, 10, 10, 10)
         ));
 
         JPanel panelCVV = new JPanel(new BorderLayout());
-        panelCVV.setBackground(COLOR_FONDO);
+        panelCVV.setBackground(control.COLOR_FONDO);
         panelCVV.add(txtCVV, BorderLayout.WEST);
         txtCVV.setPreferredSize(new Dimension(100, 45));
 
@@ -116,7 +113,7 @@ public class PagoTarjeta extends JFrame {
 
 
         JPanel footerPanel = new JPanel();
-        footerPanel.setBackground(COLOR_FONDO);
+        footerPanel.setBackground(control.COLOR_FONDO);
         footerPanel.setBorder(new EmptyBorder(10, 30, 30, 30));
         footerPanel.setLayout(new BoxLayout(footerPanel, BoxLayout.Y_AXIS));
 
@@ -144,7 +141,7 @@ public class PagoTarjeta extends JFrame {
     private JPanel crearSeccion(String titulo, JComponent input) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(COLOR_FONDO);
+        panel.setBackground(control.COLOR_FONDO);
         panel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         JLabel lblTitulo = new JLabel(titulo);
@@ -163,10 +160,10 @@ public class PagoTarjeta extends JFrame {
 
     private JTextField crearTextFieldEstilizado() {
         JTextField txt = new JTextField();
-        txt.setBackground(COLOR_TARJETA);
+        txt.setBackground(control.COLOR_TARJETA);
         txt.setForeground(Color.WHITE);
         txt.setFont(new Font("Arial", Font.BOLD, 16));
-        txt.setCaretColor(COLOR_NEON);
+        txt.setCaretColor(control.COLOR_NEON);
         txt.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.DARK_GRAY, 2, true),
                 new EmptyBorder(10, 10, 10, 10)
@@ -176,7 +173,7 @@ public class PagoTarjeta extends JFrame {
 
     private JComboBox<String> crearComboBoxEstilizado(String[] items) {
         JComboBox<String> cb = new JComboBox<>(items);
-        cb.setBackground(COLOR_TARJETA);
+        cb.setBackground(control.COLOR_TARJETA);
         cb.setForeground(Color.WHITE);
         cb.setFont(new Font("Arial", Font.PLAIN, 14));
         cb.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 1, true));
@@ -209,8 +206,8 @@ public class PagoTarjeta extends JFrame {
             Graphics2D g2 = (Graphics2D) g.create();
             g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-            if (over) g2.setColor(COLOR_NEON);
-            else g2.setColor(COLOR_TARJETA);
+            if (over) g2.setColor(control.COLOR_NEON);
+            else g2.setColor(control.COLOR_TARJETA);
 
             g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
 
