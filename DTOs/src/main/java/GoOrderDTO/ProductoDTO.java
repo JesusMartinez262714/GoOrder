@@ -10,13 +10,13 @@ public class ProductoDTO {
     
     private String nombre;
     private Double precio;
-    private byte[] imagen;
+    private String imagen;
 
     public ProductoDTO(String nombre, Double precio) {
         this.nombre = nombre;
         this.precio = precio;
     }
-    public ProductoDTO(String nombre, Double precio, byte[] imagen) {
+    public ProductoDTO(String nombre, Double precio, String imagen) {
         this.nombre = nombre;
         this.precio = precio;
         this.imagen = imagen;
@@ -32,7 +32,7 @@ public class ProductoDTO {
         return precio;
     }
 
-    public byte[] getImagen() {
+    public String getImagen() {
         return imagen;
     }
 

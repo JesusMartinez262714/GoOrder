@@ -1,9 +1,12 @@
 package Control;
 
+import Entitys.Producto;
 import Entitys.Sucursal;
 import Entitys.SucursalesDisponibles;
 import GUI.*;
 import GoOrderDTO.ProductoDTO;
+import GoOrderDTO.SucursalDTO;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,6 +16,19 @@ public class Control {
 
     private double descuento = 0;
     private List<ProductoDTO> carrito = new ArrayList<>();
+    List<ProductoDTO> listaProductos = new ArrayList<>();
+    public Control() {
+        cargarMenuProductos();
+    }
+
+    private void cargarMenuProductos() {
+        listaProductos.add(new ProductoDTO("Panini Clasico", 95.00, "panini_clasico.png"));
+        listaProductos.add(new ProductoDTO("Latte Vainilla", 55.00, "latte_vainilla.png"));
+        listaProductos.add(new ProductoDTO("Galleta de Chispas", 25.00, "galleta_chispas.png"));
+    }
+    public List<ProductoDTO> obtenerListaProductos() {
+        return listaProductos;
+    }
     public void agregarProducto(ProductoDTO producto) {
         carrito.add(producto);
     }
@@ -51,16 +67,13 @@ public class Control {
         mostrarPantallas(new SeleccionMetodoEntrega(this));
     }
     public void mostrarCarrito(){
-        this.agregarProducto(new ProductoDTO("Panini Clasico", 95.00));
-        this.agregarProducto(new ProductoDTO("Latte Vainilla", 55.00));
-        this.agregarProducto(new ProductoDTO("Galleta de Chispas", 25.00));
         mostrarPantallas(new Carrito(this));
     }
     public void mostrarSeleccionSucursalesDisponibles(){
         SucursalesDisponibles mockSucursales = new SucursalesDisponibles();
-        mockSucursales.agregarSucursal(new Sucursal(1, "Cafe del compa miguel", "Colonia Diamante", "Casa blanca #456", "Sucursal mas cercana", "sucursal_casa.png"));
-        mockSucursales.agregarSucursal(new Sucursal(2, "Cafe del compa miguel", "Colonia Esperanza", "Paris #765", " ", "sucursal_miguel.png"));
-        mockSucursales.agregarSucursal(new Sucursal(3, "Cafe del compa miguel", "Colonia Libertad", "Boulevard Lincon", " ", "sucursal_cafesito.png"));
+        mockSucursales.agregarSucursal(new SucursalDTO(1, "Cafe del compa miguel", "Colonia Diamante", "Casa blanca #456", "Sucursal mas cercana", "sucursal_casa.png"));
+        mockSucursales.agregarSucursal(new SucursalDTO(2, "Cafe del compa miguel", "Colonia Esperanza", "Paris #765", " ", "sucursal_miguel.png"));
+        mockSucursales.agregarSucursal(new SucursalDTO(3, "Cafe del compa miguel", "Colonia Libertad", "Boulevard Lincon", " ", "sucursal_cafesito.png"));
         mostrarPantallas(new SeleccionSucursalesDisponibles(this,mockSucursales));
     }
     public void mostrarDomicilioFORM(){

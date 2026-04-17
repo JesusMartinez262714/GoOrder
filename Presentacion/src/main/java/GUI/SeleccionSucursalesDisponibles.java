@@ -3,6 +3,7 @@ package GUI;
 import Control.Control;
 import Entitys.Sucursal;
 import Entitys.SucursalesDisponibles;
+import GoOrderDTO.SucursalDTO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +18,7 @@ public class SeleccionSucursalesDisponibles extends JFrame {
     private final Color COLOR_NEON = new Color(0, 255, 150);
     private final Color COLOR_TARJETA = new Color(35, 35, 35);
 
-    private Sucursal sucursalSeleccionada = null;
+    private SucursalDTO sucursalSeleccionada = null;
     private List<TarjetaSucursal> listaTarjetas = new ArrayList<>();
     private BotonConfirmar btnConfirmar;
 
@@ -64,7 +65,7 @@ public class SeleccionSucursalesDisponibles extends JFrame {
         panelLista.setBackground(COLOR_FONDO);
         panelLista.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        for (Sucursal s : sucursalesDisponiblesEntity.getSucursalesDisponibles()) {
+        for (SucursalDTO s : sucursalesDisponiblesEntity.getSucursalesDisponibles()) {
             TarjetaSucursal tarjeta = new TarjetaSucursal(s);
             listaTarjetas.add(tarjeta);
             panelLista.add(tarjeta);
@@ -87,10 +88,10 @@ public class SeleccionSucursalesDisponibles extends JFrame {
     }
 
     class TarjetaSucursal extends JPanel {
-        private Sucursal sucursal;
+        private SucursalDTO sucursal;
         private boolean seleccionada = false;
 
-        public TarjetaSucursal(Sucursal s) {
+        public TarjetaSucursal(SucursalDTO s) {
             this.sucursal = s;
             setLayout(new BorderLayout(15, 0));
             setBackground(COLOR_TARJETA);
