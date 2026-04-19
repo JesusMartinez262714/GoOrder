@@ -6,9 +6,9 @@ package GoOrderDTO;
  * @author 
  */
 public class ProductoDTO {
-    
-    
+        
     private String nombre;
+    private String descripcion;
     private Double precio;
     private String imagen;
 
@@ -22,7 +22,15 @@ public class ProductoDTO {
         this.imagen = imagen;
     }
 
+    public ProductoDTO(String nombre, String descripcion, Double precio) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.precio = precio;
+    }
 
+    public ProductoDTO(String nombre) {
+        this.nombre = nombre;
+    }        
 
     public String getNombre() {
         return nombre;
@@ -35,6 +43,12 @@ public class ProductoDTO {
     public String getImagen() {
         return imagen;
     }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+    
+    
 
    
 }
