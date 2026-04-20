@@ -2,6 +2,9 @@
 package GUI;
 
 import Control.Control;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.example.NegocioException;
 
 /**
  *
@@ -171,7 +174,11 @@ public class DescripcionProductoFORM extends javax.swing.JFrame {
 
     private void btnReturnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReturnActionPerformed
         this.dispose();
-        control.mostrarProductosFORM();       
+        try {       
+            control.mostrarProductosFORM();
+        } catch (NegocioException ex) {
+            Logger.getLogger(DescripcionProductoFORM.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnReturnActionPerformed
 
     private void btnAñadirCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirCarritoActionPerformed

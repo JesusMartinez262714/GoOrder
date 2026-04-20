@@ -8,6 +8,9 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.example.NegocioException;
 
 public class Carrito extends JFrame {
 
@@ -45,7 +48,11 @@ public class Carrito extends JFrame {
         });
 
         btnRegresar.addActionListener(e -> {
-            control.mostrarProductosFORM();
+            try {
+                control.mostrarProductosFORM();
+            } catch (NegocioException ex) {
+                Logger.getLogger(Carrito.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
 
         JLabel lblTitulo = new JLabel("MI CARRITO");

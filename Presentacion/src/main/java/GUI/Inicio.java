@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.example.NegocioException;
 
 public class Inicio extends JFrame {
     private final Control control;
@@ -48,7 +51,11 @@ public class Inicio extends JFrame {
         btnOrdenar.addActionListener(e -> {
             if (this.control != null) {
 
-                this.control.mostrarProductosFORM();
+                try {
+                    this.control.mostrarProductosFORM();
+                } catch (NegocioException ex) {
+                    Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
 

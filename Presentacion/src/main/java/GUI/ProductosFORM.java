@@ -9,12 +9,15 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import org.example.NegocioException;
 
 public class ProductosFORM extends JFrame {
 
     private final Control control;
-
-    public ProductosFORM(Control control) {
+    private JPanel pnlGrid;
+    
+    
+    public ProductosFORM(Control control) throws NegocioException {
         this.control = control;
 
         setTitle("GoOrder - Menú");
@@ -37,14 +40,18 @@ public class ProductosFORM extends JFrame {
                 BorderFactory.createLineBorder(control.COLOR_NEON, 1, true),
                 new EmptyBorder(5, 10, 5, 10)
         ));
-        txtBuscar.setText("Buscar producto...");
+        
+        BotonNeon btnBuscar = new BotonNeon("Buscar");
+        btnBuscar.setPreferredSize(new Dimension(100, 35));
+        
         pnlNorte.add(txtBuscar);
-
-        JPanel pnlGrid = new JPanel(new GridLayout(0, 2, 15, 15));
+        pnlNorte.add(btnBuscar);
+                        
+        pnlGrid = new JPanel(new GridLayout(0, 2, 15, 15));
         pnlGrid.setBackground(control.COLOR_FONDO);
         pnlGrid.setBorder(new EmptyBorder(10, 15, 10, 15));
 
-        for (ProductoDTO producto : control.obtenerListaProductos()){
+        for (ProductoDTO producto : control.listarProductos()){
             pnlGrid.add(crearTarjetaProducto(producto));
         }
 

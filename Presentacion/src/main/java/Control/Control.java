@@ -1,17 +1,19 @@
 package Control;
 
+import CURealizarPedido.IRealizarPedidoCU;
 import Entitys.Producto;
-import Entitys.Sucursal;
 import Entitys.SucursalesDisponibles;
 import GUI.*;
 import GoOrderDTO.ProductoDTO;
 import GoOrderDTO.SucursalDTO;
+import RealizarPedido.RealizarPedido;
 
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
+import org.example.NegocioException;
 
 public class Control {
     public final Color COLOR_FONDO = new Color(18, 18, 18);
@@ -23,17 +25,32 @@ public class Control {
     public final Color COLOR_BORDE = new Color(60, 60, 60);
     private final String rutaImagenes = "Resources/";
 
+    
+    private IRealizarPedidoCU realizarPedido;
+    
     private double descuento = 0;
     private List<ProductoDTO> carrito = new ArrayList<>();
     List<ProductoDTO> listaProductos = new ArrayList<>();
+    
+    
+    
     public Control() {
         cargarMenuProductos();
+        realizarPedido = new RealizarPedido();
     }
 
     public ImageIcon obtenerImagen(String nombreImagen) {
         String rutaCompleta = "Resources/" + nombreImagen;
         ImageIcon icono = new ImageIcon(rutaCompleta);
         return icono;
+    }
+    
+    public ProductoDTO buscarProducto(String nombreProducto) throws NegocioException {
+        return realizarPedido.buscarProducto(nombreProducto);
+    }
+    
+    public List<ProductoDTO> listarProductos() throws NegocioException {
+        return realizarPedido.listarProductos();
     }
 
     private void cargarMenuProductos() {
@@ -70,7 +87,7 @@ public class Control {
     public void mostrarInicio(){
         mostrarPantallas(new Inicio(this));
     }
-    public void mostrarProductosFORM(){
+    public void mostrarProductosFORM() throws NegocioException{
         mostrarPantallas(new ProductosFORM(this));
     }
     public void DescripcionProducto(String nombre, String precio) {

@@ -2,8 +2,10 @@
 package RealizarPedido;
 
 import CURealizarPedido.IRealizarPedidoCU;
+import Entidades.Producto;
 import GoOrderDTO.ProductoDTO;
 import Interfaces.IProductoBO;
+import java.util.List;
 import org.example.NegocioException;
 import org.example.ProductoBO;
 
@@ -35,4 +37,18 @@ public class RealizarPedido implements IRealizarPedidoCU {
             throw new NegocioException("No fue posible realizar busqueda.");
         }
     }    
+
+    @Override
+    public List<ProductoDTO> listarProductos() throws NegocioException {
+        List<ProductoDTO> lista = productoBO.listarProductos();
+        
+        if (lista.isEmpty()) {
+            throw new NegocioException("No existen productos.");
+        }
+        try {
+            return productoBO.listarProductos();
+        } catch (NegocioException e) {
+            throw new NegocioException("No fue posible realizar listado de productos.");
+        }
+    }
 }

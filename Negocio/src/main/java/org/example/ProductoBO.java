@@ -8,6 +8,8 @@ import Interfaces.IProductoBO;
 import Interfaces.IProductoDAO;
 import goorderpersistencia.PersistenciaException;
 import goorderpersistencia.ProductoDAO;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -30,4 +32,20 @@ public class ProductoBO implements IProductoBO {
             throw new NegocioException("No fue posible realizar busqueda.");
         }
     }    
+
+    @Override
+    public List<ProductoDTO> listarProductos() throws NegocioException {
+        try {
+            List<Producto> lista = productoDAO.listarProductos();
+            List<ProductoDTO> listaDTO = new ArrayList<>();
+            
+            for (Producto p: lista) {
+                listaDTO.add(DtoEntityProduct.toDTO(p));
+            }
+            return listaDTO;
+        } catch (PersistenciaException e) {
+            throw new NegocioException("No fue posible consultar productos.");
+        }
+    }
+
 }

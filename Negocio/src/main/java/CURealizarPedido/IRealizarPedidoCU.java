@@ -1,7 +1,9 @@
 
 package CURealizarPedido;
 
+import Entidades.Producto;
 import GoOrderDTO.ProductoDTO;
+import java.util.List;
 import org.example.NegocioException;
 
 /**
@@ -11,5 +13,7 @@ import org.example.NegocioException;
 public interface IRealizarPedidoCU {
     
     public abstract ProductoDTO buscarProducto(String nombreProducto) throws NegocioException;
+    
+    public abstract List<ProductoDTO> listarProductos() throws NegocioException;
     
 }
