@@ -24,7 +24,7 @@ public class ProductoDAO implements IProductoDAO {
     @Override
     public Producto buscarProducto(String nombreProducto) throws PersistenciaException {
         for (Producto p: productos) {
-            if (p.getNombre().equalsIgnoreCase(nombreProducto)) {
+            if (p.getNombre().toLowerCase().contains(nombreProducto.toLowerCase())) {
                 return p;
             }
         }

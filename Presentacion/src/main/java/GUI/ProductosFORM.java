@@ -47,7 +47,8 @@ public class ProductosFORM extends JFrame {
         pnlNorte.add(txtBuscar);
         pnlNorte.add(btnBuscar);
                         
-        pnlGrid = new JPanel(new GridLayout(0, 2, 15, 15));
+        pnlGrid = new JPanel();
+        pnlGrid.setLayout(new BoxLayout(pnlGrid, BoxLayout.Y_AXIS));
         pnlGrid.setBackground(control.COLOR_FONDO);
         pnlGrid.setBorder(new EmptyBorder(10, 15, 10, 15));
 
@@ -69,6 +70,30 @@ public class ProductosFORM extends JFrame {
         btnCarrito.addActionListener(e -> control.mostrarCarrito());
         pnlSur.add(btnCarrito);
 
+        btnBuscar.addActionListener(e -> {
+            String nombre = txtBuscar.getText().trim();
+            
+            pnlGrid.removeAll();
+            if (nombre.isEmpty()) {
+                try {
+                    for (ProductoDTO pDto: control.listarProductos()) {
+                        pnlGrid.add(crearTarjetaProducto(pDto));
+                    }
+                } catch (NegocioException ex) {
+                    JOptionPane.showMessageDialog(this, "No se pudo mostrar el producto: " + ex.getMessage());
+                }
+            } else {
+                try {
+                    ProductoDTO producto = control.buscarProducto(nombre);
+                    pnlGrid.add(crearTarjetaProducto(producto));
+                    pnlGrid.revalidate();
+                    pnlGrid.repaint();
+                } catch (NegocioException exm) {
+                    JOptionPane.showMessageDialog(this, "Producto no encontrado: " + exm.getMessage());
+                }
+            }
+        });
+        
         add(pnlNorte, BorderLayout.NORTH);
         add(scrollPane, BorderLayout.CENTER);
         add(pnlSur, BorderLayout.SOUTH);
@@ -116,6 +141,9 @@ public class ProductosFORM extends JFrame {
 
         tarjeta.add(pnlInfo, BorderLayout.CENTER);
 
+        tarjeta.setMaximumSize(new Dimension(Integer.MAX_VALUE, 180));
+        tarjeta.setAlignmentX(Component.LEFT_ALIGNMENT);
+        
         return tarjeta;
     }
 
