@@ -28,6 +28,13 @@ public class ProductoDTO {
         this.precio = precio;
     }
 
+    public ProductoDTO(String nombre, String descripcion, Double precio, String imagen) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.precio = precio;
+        this.imagen = imagen;
+    }
+
     public ProductoDTO(String nombre) {
         this.nombre = nombre;
     }        

@@ -9,6 +9,7 @@ import GoOrderDTO.SucursalDTO;
 import RealizarPedido.RealizarPedido;
 
 import java.awt.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,9 +55,6 @@ public class Control {
     }
 
     private void cargarMenuProductos() {
-        listaProductos.add(new ProductoDTO("Panini Clasico", 95.00, "panini_clasico.png"));
-        listaProductos.add(new ProductoDTO("Latte Vainilla", 55.00, "latte_vainilla.png"));
-        listaProductos.add(new ProductoDTO("Galleta de Chispas", 25.00, "galleta_chispas.png"));
     }
     public List<ProductoDTO> obtenerListaProductos() {
         return listaProductos;

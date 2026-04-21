@@ -1,7 +1,7 @@
 
 package Interfaces;
 
-import Entidades.Producto;
+import Entitys.Producto;
 import goorderpersistencia.PersistenciaException;
 import java.util.List;
 

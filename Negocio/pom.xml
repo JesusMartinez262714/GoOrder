@@ -7,6 +7,7 @@
     <groupId>org.example</groupId>
     <artifactId>Negocio</artifactId>
     <version>1.0-SNAPSHOT</version>
+
     <build>
         <plugins>
             <plugin>
@@ -21,18 +22,20 @@
             </plugin>
         </plugins>
     </build>
+
     <dependencies>
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>DTOs</artifactId>
             <version>${project.version}</version>
         </dependency>
+
         <dependency>
-            <groupId>com.mycompany</groupId>
+            <groupId>${project.groupId}</groupId>
             <artifactId>Persistencia</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
+            <version>1.0-SNAPSHOT</version> </dependency>
     </dependencies>
+
     <properties>
         <maven.compiler.source>25</maven.compiler.source>
         <maven.compiler.target>25</maven.compiler.target>

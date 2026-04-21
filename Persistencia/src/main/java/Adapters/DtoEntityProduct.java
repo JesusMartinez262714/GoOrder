@@ -1,7 +1,7 @@
 
 package Adapters;
 
-import Entidades.Producto;
+import Entitys.Producto;
 import GoOrderDTO.ProductoDTO;
 
 /**
@@ -19,7 +19,7 @@ public class DtoEntityProduct {
         if (producto == null) {
             return null;
         }
-        return new Producto(producto.getNombre(), producto.getDescripcion(), producto.getPrecio());        
+        return new Producto(producto.getNombre(),producto.getDescripcion(),producto.getPrecio(),producto.getImagen());
     }
     
     /**
@@ -31,6 +31,6 @@ public class DtoEntityProduct {
         if (producto == null) {
             return null;
         }
-        return new ProductoDTO(producto.getNombre(), producto.getDescripcion(), producto.getPrecio());
+        return new ProductoDTO(producto.getNombre(), producto.getDescripcion(), producto.getPrecio(),producto.getImagen());
     }    
 }

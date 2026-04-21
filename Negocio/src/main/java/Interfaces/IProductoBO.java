@@ -1,7 +1,6 @@
 
 package Interfaces;
 
-import Entidades.Producto;
 import GoOrderDTO.ProductoDTO;
 import java.util.List;
 import org.example.NegocioException;

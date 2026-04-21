@@ -1,7 +1,7 @@
 
 package goorderpersistencia;
 
-import Entidades.Producto;
+import Entitys.Producto;
 import Interfaces.IProductoDAO;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,12 +13,12 @@ import java.util.List;
 public class ProductoDAO implements IProductoDAO {
 
     private List<Producto> productos;
-    
+
     public ProductoDAO() {
         productos = new ArrayList<>();
-        productos.add(new Producto("Latte", "Un tipo de cafe", 50.00));
-        productos.add(new Producto("Paninni", "Queso y Jamon", 50.00));
-        productos.add(new Producto("Frappe", "Sabor Oreo", 30.00));
+        productos.add(new Producto("Latte", "Un tipo de cafe", 50.00,"latte_vainilla.png"));
+        productos.add(new Producto("Paninni", "Queso y Jamon", 50.00,"panini_clasico.png"));
+        productos.add(new Producto("galleta", "con chispas de chocolate", 15.00,"galleta_chispas.png"));
     }
 
     @Override

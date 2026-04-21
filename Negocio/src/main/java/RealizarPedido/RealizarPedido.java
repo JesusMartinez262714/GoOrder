@@ -2,7 +2,6 @@
 package RealizarPedido;
 
 import CURealizarPedido.IRealizarPedidoCU;
-import Entidades.Producto;
 import GoOrderDTO.ProductoDTO;
 import Interfaces.IProductoBO;
 import java.util.List;
