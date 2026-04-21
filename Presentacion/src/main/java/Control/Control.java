@@ -60,8 +60,42 @@ public class Control {
         return listaProductos;
     }
     public void agregarProducto(ProductoDTO producto) {
+        for (ProductoDTO p : carrito) {
+            if (p.getNombre().equalsIgnoreCase(producto.getNombre())) {
+                p.setCantidad(p.getCantidad() + 1); 
+                return;
+            }
+        }
+        producto.setCantidad(1);
         carrito.add(producto);
     }
+    
+    public void incrementarCantidad(ProductoDTO producto) {
+        for (ProductoDTO p : carrito) {
+            if (p.getNombre().equalsIgnoreCase(producto.getNombre())) {
+                p.setCantidad(p.getCantidad() + 1);
+                return;
+            }
+        }
+    }
+    
+    public void decrementarCantidad(ProductoDTO producto) {
+        for (ProductoDTO p : carrito) {
+            if (p.getNombre().equalsIgnoreCase(producto.getNombre())) {
+                if (p.getCantidad() > 1) {
+                    p.setCantidad(p.getCantidad() - 1);
+                } else {
+                    carrito.remove(p);
+                }
+                return;
+            }
+        }
+    }
+    
+    public void eliminarProducto(ProductoDTO producto) {
+        carrito.removeIf(p -> p.getNombre().equalsIgnoreCase(producto.getNombre()));
+    }
+    
     public List<ProductoDTO> getCarrito() {
         return carrito;
     }

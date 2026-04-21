@@ -11,6 +11,8 @@ public class ProductoDTO {
     private String descripcion;
     private Double precio;
     private String imagen;
+    
+    private int cantidad = 1;
 
     public ProductoDTO(String nombre, Double precio) {
         this.nombre = nombre;
@@ -54,6 +56,16 @@ public class ProductoDTO {
     public String getDescripcion() {
         return descripcion;
     }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+    
+    
     
     
 
