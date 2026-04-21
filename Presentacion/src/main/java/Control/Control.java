@@ -100,11 +100,14 @@ public class Control {
         mostrarPantallas(new Carrito(this));
     }
     public void mostrarSeleccionSucursalesDisponibles(){
-        SucursalesDisponibles mockSucursales = new SucursalesDisponibles();
-        mockSucursales.agregarSucursal(new SucursalDTO(1, "Cafe del compa miguel", "Colonia Diamante", "Casa blanca #456", "Sucursal mas cercana", "sucursal_casa.png"));
-        mockSucursales.agregarSucursal(new SucursalDTO(2, "Cafe del compa miguel", "Colonia Esperanza", "Paris #765", " ", "sucursal_miguel.png"));
-        mockSucursales.agregarSucursal(new SucursalDTO(3, "Cafe del compa miguel", "Colonia Libertad", "Boulevard Lincon", " ", "sucursal_cafesito.png"));
-        mostrarPantallas(new SeleccionSucursalesDisponibles(this,mockSucursales));
+
+        try {
+            List<SucursalDTO>  sucursales = realizarPedido.consultarSucursales();
+            mostrarPantallas(new SeleccionSucursalesDisponibles(this,sucursales));
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar sucursales: " + e.getMessage());
+        }
+
     }
     public void mostrarDomicilioFORM(){
         mostrarPantallas(new DomicilioFORM(this));

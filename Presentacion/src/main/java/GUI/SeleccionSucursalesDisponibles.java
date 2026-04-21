@@ -16,7 +16,7 @@ public class SeleccionSucursalesDisponibles extends JFrame {
     private List<PanelSucursal> listaTarjetas = new ArrayList<>();
     private BotonConfirmar btnConfirmar;
 
-    public SeleccionSucursalesDisponibles(Control control, SucursalesDisponibles sucursalesDisponiblesEntity) {
+    public SeleccionSucursalesDisponibles(Control control, List<SucursalDTO> sucursalesDisponibles) {
         this.control = control;
 
         setTitle("GoOrder - Sucursales");
@@ -53,7 +53,7 @@ public class SeleccionSucursalesDisponibles extends JFrame {
         panelLista.setBackground(control.COLOR_FONDO);
         panelLista.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
 
-        for (SucursalDTO s : sucursalesDisponiblesEntity.getSucursalesDisponibles()) {
+        for (SucursalDTO s : sucursalesDisponibles) {
             PanelSucursal tarjeta = new PanelSucursal(s, control, this);
             listaTarjetas.add(tarjeta);
             panelLista.add(tarjeta);

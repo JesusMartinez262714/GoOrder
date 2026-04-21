@@ -18,6 +18,8 @@ public class DomicilioFORM extends JFrame {
     private JTextArea txtEspecificaciones;
 
     public DomicilioFORM(Control control) {
+        this.control = control;
+
         setTitle("GoOrder - Domicilio");
         setSize(400, 650);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -25,10 +27,39 @@ public class DomicilioFORM extends JFrame {
         setResizable(false);
         setLayout(new BorderLayout());
 
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        headerPanel.setBackground(control.COLOR_FONDO);
+        headerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
+
+        JButton btnRegresar = new JButton("←");
+        btnRegresar.setFont(new Font("Arial", Font.BOLD, 24));
+        btnRegresar.setForeground(Color.LIGHT_GRAY);
+        btnRegresar.setContentAreaFilled(false);
+        btnRegresar.setBorderPainted(false);
+        btnRegresar.setFocusPainted(false);
+        btnRegresar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        btnRegresar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnRegresar.setForeground(control.COLOR_NEON); }
+            public void mouseExited(MouseEvent e) { btnRegresar.setForeground(Color.LIGHT_GRAY); }
+        });
+
+        btnRegresar.addActionListener(e -> {
+            try {
+                control.mostrarSeleccionMetodoEntrega();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error al regresar: " + ex.getMessage());
+            }
+        });
+
+        headerPanel.add(btnRegresar, BorderLayout.WEST);
+        add(headerPanel, BorderLayout.NORTH);
+
+
         JPanel contentPanel = new JPanel();
         contentPanel.setBackground(control.COLOR_FONDO);
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-        contentPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 20, 30));
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 30, 20, 30));
 
         JLabel lblTitulo = new JLabel("DATOS DE ENTREGA");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 20));
@@ -41,14 +72,13 @@ public class DomicilioFORM extends JFrame {
         btnMapa.setPreferredSize(new Dimension(340, 45));
         btnMapa.setMaximumSize(new Dimension(340, 45));
         btnMapa.setFont(new Font("Arial", Font.BOLD, 12));
-
         btnMapa.addActionListener(e -> control.mostrarAjustarDireccionMapa());
         contentPanel.add(btnMapa);
         contentPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 
-        txtColonia = crearCampoTexto("Colonia", "Colonia o Fraccionamiento");
-        txtCalle = crearCampoTexto("Calle", "Nombre de la calle");
-        txtDireccion = crearCampoTexto("Dirección / Número", "Número exterior");
+        txtColonia = crearCampoTexto("Colonia o Fraccionamiento");
+        txtCalle = crearCampoTexto("Nombre de la calle");
+        txtDireccion = crearCampoTexto("Número exterior");
 
         contentPanel.add(crearPanelInput("Colonia", txtColonia));
         contentPanel.add(Box.createRigidArea(new Dimension(0, 15)));
@@ -102,11 +132,38 @@ public class DomicilioFORM extends JFrame {
         BotonNeon btnConfirmar = new BotonNeon("CONFIRMAR");
         btnConfirmar.setPreferredSize(new Dimension(340, 50));
         btnConfirmar.setMaximumSize(new Dimension(340, 50));
-        btnConfirmar.addActionListener(e -> control.mostrarTotalPrecioProductos());
-        footerPanel.add(btnConfirmar);
 
+        btnConfirmar.addActionListener(e -> {
+            String colonia = txtColonia.getText().trim();
+            String calle = txtCalle.getText().trim();
+            String direccion = txtDireccion.getText().trim();
+
+            boolean hayError = false;
+
+            if (colonia.isEmpty() || colonia.equals("Colonia o Fraccionamiento")){
+                hayError = true;
+            }
+            if (calle.isEmpty() || calle.equals("Nombre de la calle")) {
+                hayError = true;
+            }
+            if (direccion.isEmpty() || direccion.equals("Número exterior")) {
+                hayError = true;
+            }
+
+            if(hayError){
+                JOptionPane.showMessageDialog(this,
+                        "Por favor, llena todos los datos obligatorios de tu domicilio.",
+                        "Datos incompletos",
+                        JOptionPane.WARNING_MESSAGE);
+            } else {
+                control.mostrarTotalPrecioProductos();
+            }
+        });
+
+        footerPanel.add(btnConfirmar);
         add(footerPanel, BorderLayout.SOUTH);
     }
+
 
     private JPanel crearPanelInput(String labelText, JTextField textField) {
         JPanel panel = new JPanel();
@@ -130,7 +187,7 @@ public class DomicilioFORM extends JFrame {
         return panel;
     }
 
-    private JTextField crearCampoTexto(String nombre, String placeholder) {
+    private JTextField crearCampoTexto(String placeholder) {
         JTextField txt = new JTextField(placeholder);
         txt.setFont(new Font("Arial", Font.PLAIN, 14));
         txt.setBackground(control.COLOR_INPUT);
@@ -171,27 +228,33 @@ public class DomicilioFORM extends JFrame {
 
             @Override
             public void focusLost(FocusEvent e) {
-                componenteBorde.setBorder(BorderFactory.createCompoundBorder(
-                        BorderFactory.createLineBorder(control.COLOR_BORDE, 1),
-                        BorderFactory.createEmptyBorder(5, 10, 5, 10)
-                ));
+                boolean esInvalido = false;
 
                 if (componenteTexto instanceof JTextField) {
                     JTextField txt = (JTextField) componenteTexto;
-                    if (txt.getText().isEmpty()) {
+                    if (txt.getText().trim().isEmpty() || txt.getText().equals(placeholder)) {
                         txt.setForeground(Color.LIGHT_GRAY);
                         txt.setText(placeholder);
+                        esInvalido = true;
                     }
                 } else if (componenteTexto instanceof JTextArea) {
                     JTextArea txt = (JTextArea) componenteTexto;
-                    if (txt.getText().isEmpty()) {
+                    if (txt.getText().trim().isEmpty() || txt.getText().equals(placeholder)) {
                         txt.setForeground(Color.LIGHT_GRAY);
                         txt.setText(placeholder);
                     }
                 }
+
+                Color colorBorde = esInvalido ? control.COLOR_ERROR : control.COLOR_BORDE;
+
+                componenteBorde.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(colorBorde, 1),
+                        BorderFactory.createEmptyBorder(5, 10, 5, 10)
+                ));
             }
         });
     }
+
 
     class BotonNeon extends JButton {
         private boolean over = false;
@@ -242,6 +305,4 @@ public class DomicilioFORM extends JFrame {
             g2.dispose();
         }
     }
-
-
 }

@@ -20,10 +20,37 @@ public class SeleccionMetodoEntrega extends JFrame {
         setResizable(false);
         setLayout(new BorderLayout());
 
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        headerPanel.setBackground(COLOR_FONDO);
+        headerPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 10, 20));
+
+        JButton btnRegresar = new JButton("←");
+        btnRegresar.setFont(new Font("Arial", Font.BOLD, 24));
+        btnRegresar.setForeground(Color.LIGHT_GRAY);
+        btnRegresar.setContentAreaFilled(false);
+        btnRegresar.setBorderPainted(false);
+        btnRegresar.setFocusPainted(false);
+        btnRegresar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        btnRegresar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnRegresar.setForeground(COLOR_NEON); }
+            public void mouseExited(MouseEvent e) { btnRegresar.setForeground(Color.LIGHT_GRAY); }
+        });
+        btnRegresar.addActionListener(e -> {
+            try {
+                control.mostrarCarrito();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error al regresar: " + ex.getMessage());
+            }
+        });
+        headerPanel.add(btnRegresar, BorderLayout.WEST);
+        add(headerPanel, BorderLayout.NORTH);
+
+
         JPanel contentPanel = new JPanel();
         contentPanel.setBackground(COLOR_FONDO);
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
-        contentPanel.setBorder(BorderFactory.createEmptyBorder(40, 30, 40, 30));
+        contentPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 40, 30));
 
         JLabel lblTitulo = new JLabel("GO-ORDER");
         lblTitulo.setFont(new Font("Arial", Font.ITALIC, 32));
@@ -41,35 +68,27 @@ public class SeleccionMetodoEntrega extends JFrame {
         contentPanel.add(Box.createRigidArea(new Dimension(0, 60)));
 
         BotonNeon btnSucursal = new BotonNeon("PICK UP");
-        BotonNeon btnDomicilio = new BotonNeon("A DOMICLIO");
+        BotonNeon btnDomicilio = new BotonNeon("A DOMICILIO");
+
         btnSucursal.addActionListener(e -> control.mostrarSeleccionSucursalesDisponibles());
         btnDomicilio.addActionListener(e -> control.mostrarDomicilioFORM());
+
         contentPanel.add(btnSucursal);
         contentPanel.add(Box.createRigidArea(new Dimension(0, 25)));
         contentPanel.add(btnDomicilio);
 
         contentPanel.add(Box.createVerticalGlue());
 
-        try {
-            String ruta2 = "Resources/ImagenMetodoEntrega.png";
-
-            java.io.File archivoImagen = new java.io.File(ruta2);
-
-            ImageIcon originalIcon = new ImageIcon(archivoImagen.getAbsolutePath());
-            Image img = originalIcon.getImage();
-            Image newImg = img.getScaledInstance(340, 160, Image.SCALE_SMOOTH);
-
-            JLabel lblImagen = new JLabel(new ImageIcon(newImg));
-            lblImagen.setAlignmentX(Component.CENTER_ALIGNMENT);
-            contentPanel.add(lblImagen);
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
+        ImageIcon icono = control.obtenerImagen("ImagenMetodoEntrega.png");
+        Image newImg = icono.getImage().getScaledInstance(340, 160, Image.SCALE_SMOOTH);
+        JLabel lblImagen = new JLabel(new ImageIcon(newImg));
+        lblImagen.setAlignmentX(Component.CENTER_ALIGNMENT);
+        contentPanel.add(lblImagen);
         contentPanel.add(Box.createRigidArea(new Dimension(0, 90)));
         add(contentPanel);
     }
+
+
 
     class BotonNeon extends JButton {
         private boolean over = false;
@@ -121,6 +140,4 @@ public class SeleccionMetodoEntrega extends JFrame {
             g2.dispose();
         }
     }
-
-
 }

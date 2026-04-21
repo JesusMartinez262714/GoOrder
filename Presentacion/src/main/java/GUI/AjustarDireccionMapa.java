@@ -29,13 +29,34 @@ public class AjustarDireccionMapa extends JFrame {
         setLocationRelativeTo(null);
         setResizable(false);
         setLayout(new BorderLayout());
-
-        JPanel headerPanel = new JPanel();
+        this.control = control;
+        JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(control.COLOR_FONDO);
         headerPanel.setBorder(BorderFactory.createEmptyBorder(20, 0, 10, 0));
+        JButton btnRegresar = new JButton("←");
+        btnRegresar.setFont(new Font("Arial", Font.BOLD, 24));
+        btnRegresar.setForeground(Color.LIGHT_GRAY);
+        btnRegresar.setContentAreaFilled(false);
+        btnRegresar.setBorderPainted(false);
+        btnRegresar.setFocusPainted(false);
+        btnRegresar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnRegresar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnRegresar.setForeground(control.COLOR_NEON); }
+            public void mouseExited(MouseEvent e) { btnRegresar.setForeground(Color.LIGHT_GRAY); }
+        });
+
+        btnRegresar.addActionListener(e -> {
+            try {
+                control.mostrarDomicilioFORM();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error al regresar: " + ex.getMessage());
+            }
+        });
+
         JLabel lblTitulo = new JLabel("UBICA TU ENTREGA");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 20));
         lblTitulo.setForeground(control.COLOR_NEON);
+        headerPanel.add(btnRegresar, BorderLayout.WEST);
         headerPanel.add(lblTitulo);
         add(headerPanel, BorderLayout.NORTH);
 

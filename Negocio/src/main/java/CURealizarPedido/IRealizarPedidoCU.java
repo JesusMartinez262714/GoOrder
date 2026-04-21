@@ -4,6 +4,8 @@ package CURealizarPedido;
 
 import GoOrderDTO.ProductoDTO;
 import java.util.List;
+
+import GoOrderDTO.SucursalDTO;
 import org.example.NegocioException;
 
 /**
@@ -15,5 +17,6 @@ public interface IRealizarPedidoCU {
     public abstract ProductoDTO buscarProducto(String nombreProducto) throws NegocioException;
     
     public abstract List<ProductoDTO> listarProductos() throws NegocioException;
-    
+
+    List<SucursalDTO> consultarSucursales() throws NegocioException;
 }
