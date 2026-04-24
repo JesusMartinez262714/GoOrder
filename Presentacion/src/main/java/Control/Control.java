@@ -2,7 +2,6 @@
 package Control;
 
 import CURealizarPedido.IRealizarPedidoCU;
-import Entitys.SucursalesDisponibles;
 import GUI.*;
 import GoOrderDTO.ProductoDTO;
 import GoOrderDTO.SucursalDTO;

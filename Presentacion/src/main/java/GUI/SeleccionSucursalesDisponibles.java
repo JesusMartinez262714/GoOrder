@@ -1,7 +1,6 @@
 package GUI;
 
 import Control.Control;
-import Entitys.SucursalesDisponibles;
 import GoOrderDTO.SucursalDTO;
 
 import javax.swing.*;

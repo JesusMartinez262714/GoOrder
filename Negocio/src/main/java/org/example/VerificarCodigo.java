@@ -1,6 +1,6 @@
 package org.example;
 
-import GoOrderDTO.ResultadoCanjeoDTO;
+import GoOrderDTO.CodigoDescuentoDTO;
 
 public class VerificarCodigo {
 
@@ -10,7 +10,7 @@ public class VerificarCodigo {
         this.servicio = servicio;
     }
 
-    public ResultadoCanjeoDTO ejecutar(String codigo) {
+    public CodigoDescuentoDTO ejecutar(String codigo) {
         return servicio.verificarCodigo(codigo);
     }
 }

@@ -1,7 +1,7 @@
 package org.example;
 
-import GoOrderDTO.ResultadoCanjeoDTO;
+import GoOrderDTO.CodigoDescuentoDTO;
 
 public interface ICodigoDescuentoServicio {
-    ResultadoCanjeoDTO verificarCodigo(String codigo);
+    CodigoDescuentoDTO verificarCodigo(String codigo);
 }

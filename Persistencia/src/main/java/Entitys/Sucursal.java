@@ -1,4 +1,4 @@
-package Entitys;
+ package Entitys;
 
 public class Sucursal {
     private int sucursal_id;
