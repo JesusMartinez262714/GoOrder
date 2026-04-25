@@ -26,7 +26,7 @@ public class Control {
     private final String rutaImagenes = "Resources/";
 
     
-    private IRealizarPedidoCU realizarPedido;
+    private IRealizarPedidoCUE realizarPedido;
     
     private double descuento = 0;
     private List<ProductoDTO> carrito = new ArrayList<>();
@@ -140,31 +140,23 @@ public class Control {
         } catch (NegocioException e) {
             JOptionPane.showMessageDialog(null, "Error al cargar sucursales: " + e.getMessage());
         }
-
     }
     public void mostrarDomicilioFORM(){
         mostrarPantallas(new DomicilioFORM(this));
     }
-
     public void mostrarAjustarDireccionMapa(){
         mostrarPantallas(new AjustarDireccionMapa(this));
     }
-
     public void mostrarTotalPrecioProductos(){
-
         this.setDescuento(30.00);
-
         mostrarPantallas(new TotalPrecioProductos(this));
     }
     public void mostrarSeleccionFormaPago(){
         mostrarPantallas(new SeleccionFormaPago(this));
     }
-
     public void mostrarCodigoDescuento() {
-
         mostrarPantallas(new CodigoDescuentoFORM(this));
     }
-
     public void mostrarPagoEfectivo(){
         mostrarPantallas(new PagoEfectivo(this));
     }
@@ -182,5 +174,9 @@ public class Control {
     }
     public void mostrarCodigoDescuentoRechazado(){
         mostrarPantallas(new CodigoDescuentoRechazado(this));
+    }
+    
+    public void mostrarDescripcionProducto(){
+        mostrarPantallas(new DescripcionProductoFORM(this));
     }
 }
