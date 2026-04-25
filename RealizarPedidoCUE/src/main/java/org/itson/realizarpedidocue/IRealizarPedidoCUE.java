@@ -12,7 +12,7 @@ import org.example.NegocioException;
  *
  * @author
  */
-public interface IRealizarPedidoCU {
+public interface IRealizarPedidoCUE {
     
     public abstract ProductoDTO buscarProducto(String nombreProducto) throws NegocioException;
     

@@ -13,6 +13,6 @@ import goorderpersistencia.PersistenciaException;
  */
 public interface IDescuentosDAO {
     
-    public CodigoDescuentoDTO AplicarCodigo(String codigo) throws PersistenciaException; 
+    public abstract CodigoDescuentoDTO AplicarCodigo(String codigo) throws PersistenciaException; 
     
 }

@@ -18,7 +18,7 @@ import org.example.ProductoBO;
  *
  * @author juanl
  */
-public class RealizarPedidoCUE implements IRealizarPedidoCU {
+public class RealizarPedidoCUE implements IRealizarPedidoCUE {
     
    private IProductoBO productoBO;
    private ISucursalesDAO sucursalesDAO;
@@ -72,4 +72,7 @@ public class RealizarPedidoCUE implements IRealizarPedidoCU {
            throw new NegocioException("No se pudo establecer conexion con la base de datos");
        }
     }
+    
+    
+    
 }

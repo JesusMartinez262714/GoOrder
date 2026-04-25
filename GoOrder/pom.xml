@@ -9,6 +9,7 @@
         <module>../Dominio</module>
         <module>../DTOs</module>
         <module>../Negocio</module>
+        <module>../RealizarPedidoCUE</module>
         <module>../Persistencia</module>
         <module>../Presentacion</module>
     </modules>
