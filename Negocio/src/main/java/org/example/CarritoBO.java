@@ -1,10 +1,6 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package org.example;
 
-import Entidades.ProductoSeleccionado;
 import GoOrderDTO.CarritoDTO;
 import GoOrderDTO.CodigoDescuentoDTO;
 import GoOrderDTO.ProductoSeleccionadoDTO;
@@ -31,25 +27,33 @@ public class CarritoBO implements ICarritoBO{
         this.carritoDAO = new CarritoDAO();
         this.descuentosBO = new DescuentosBO();
     }
-
     
     @Override
-    public CarritoDTO AgregarProductoCarrito(ProductoSeleccionadoDTO producto) throws NegocioException {
-        
+    public CarritoDTO AgregarProductoCarrito(ProductoSeleccionadoDTO producto) throws NegocioException {        
         try {
             carrito = carritoDAO.ObtenerCarrito();
             if (this.carrito == null) {
                 this.carrito = new CarritoDTO();
+            }            
+            boolean existe = false;
+            for (ProductoSeleccionadoDTO pro: carrito.getProductos()) {
+                if (pro.equals(producto)) {
+                    pro.setCantidad(pro.getCantidad()+1);
+                    pro.setImporte(pro.getPrecioActual() * pro.getCantidad());
+                    existe = true;
+                    break;
+                }
             }
-            carrito.getProductos().add(producto);
-            carrito.setSubTotal(carrito.getSubTotal()+producto.getImporte());
-            carrito.setTotal(carrito.getSubTotal()-carrito.getDescuento());
+            if (!existe) {            
+                carrito.getProductos().add(producto);
+            }
+            carrito.setSubTotal(carrito.getSubTotal() + producto.getPrecioActual());
+            carrito.setTotal(carrito.getSubTotal() - carrito.getDescuento());            
             carritoDAO.ActualizarCarrito(carrito);
             return carrito;
         } catch (PersistenciaException ex) {
             throw new NegocioException("No se pudo agregar el producto al carrito");
-        }
-            
+        }            
     }
 
     @Override

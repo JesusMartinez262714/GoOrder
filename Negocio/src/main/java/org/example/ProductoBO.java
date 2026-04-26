@@ -7,7 +7,6 @@ import GoOrderDTO.ProductoDTO;
 import Interfaces.IProductoBO;
 import Interfaces.IProductoDAO;
 import goorderpersistencia.PersistenciaException;
-import goorderpersistencia.ProductoDAO;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,16 +18,19 @@ public class ProductoBO implements IProductoBO {
 
     private IProductoDAO productoDAO;
 
-    public ProductoBO() {
-        productoDAO = new ProductoDAO();
+    public ProductoBO(IProductoDAO productoDAO) {
+        this.productoDAO = productoDAO;
     }
 
     @Override
-    public ProductoDTO buscarProducto(String nombreProducto) throws NegocioException {
+    public List<ProductoDTO> buscarProducto(String nombreProducto) throws NegocioException {
         try {
-            Producto producto = productoDAO.buscarProducto(nombreProducto);
-
-            return DtoEntityProduct.toDTO(producto);
+            List<Producto> listaEntity = productoDAO.buscarProducto(nombreProducto);
+            List<ProductoDTO> listaDTo = new ArrayList<>();
+            for (Producto p: listaEntity) {
+                listaDTo.add(DtoEntityProduct.toDTO(p));
+            }
+            return listaDTo;
         } catch (PersistenciaException e) {
             throw new NegocioException("No fue posible realizar busqueda.");
         }
@@ -48,5 +50,4 @@ public class ProductoBO implements IProductoBO {
             throw new NegocioException("No fue posible consultar productos.");
         }
     }
-
 }

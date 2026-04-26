@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package GoOrderDTO;
 
 /**
@@ -16,6 +13,10 @@ public class ProductoSeleccionadoDTO {
     private Double precioActual;
     private ProductoDTO producto;
 
+    public ProductoSeleccionadoDTO(){
+        
+    }
+    
     public ProductoSeleccionadoDTO(String nombre, Integer cantidad, Double importe, Double precioActual, ProductoDTO producto) {
         this.nombre = nombre;
         this.cantidad = cantidad;
@@ -62,7 +63,5 @@ public class ProductoSeleccionadoDTO {
 
     public void setProducto(ProductoDTO producto) {
         this.producto = producto;
-    }
-
-   
+    }   
 }

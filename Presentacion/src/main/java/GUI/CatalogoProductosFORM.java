@@ -7,33 +7,70 @@ import Pattern.BotonRedondeado;
 import Pattern.FactoriaPaneles;
 import Pattern.IPaneles;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import org.example.NegocioException;
 
 /**
  *
- * @author
+ * @author Alex García Trejo
  */
 public class CatalogoProductosFORM extends javax.swing.JFrame {
-    
+
+    private Control control;
     private Color colorOriginal;
     private Color colorIluminado;
-    private Control control;
+    private ProductoDTO prod;
     
     public CatalogoProductosFORM(Control control) {
         this.control = control;
         initComponents();
+        setLocationRelativeTo(null);
         jPanel2.setLayout(new GridLayout(0, 2, 10, 10));
-        jScrollPane1.setViewportView(jPanel2);        
+        
+        jPanel2.setOpaque(false);
+        JPanel panelContener = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        panelContener.setBackground(new Color(18, 18, 18));
+        panelContener.add(jPanel2);
+        
+        jScrollPane1.setViewportView(panelContener);
+        jScrollPane1.getViewport().setBackground(new Color(18, 18, 18));
+        jScrollPane1.setBorder(null);
+        
+        cargarProductos("");
+    }      
+    
+    private void cargarProductos(String producto) {
+        jPanel2.removeAll();     
+        try {
+            if (producto == null || producto.trim().isEmpty()) {
+                for (ProductoDTO prod: control.listarProductos()) {
+                    agregarProducto(prod);
+                }
+            } else {
+                for (ProductoDTO prod: control.buscarProducto(producto)) { 
+                    agregarProducto(prod);
+                }
+            }
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar producto(s): " + e.getMessage());
+        }        
+        jPanel2.revalidate();
+        jPanel2.repaint();
     }
     
     private void agregarProducto(ProductoDTO producto) {
-        IPaneles panelProducto = FactoriaPaneles.crearPanelProducto(producto, control);
-        jPanel2.add(panelProducto.getPanel());        
-    }  
+        IPaneles panelProducto = FactoriaPaneles.crearPanelProducto(control, producto);
+        jPanel2.add(panelProducto.getPanel());
+    }
     
-
+    private void limpiarCampo(){
+        txtProducto.setText("");
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -49,17 +86,18 @@ public class CatalogoProductosFORM extends javax.swing.JFrame {
         btnCarrito = new BotonRedondeado();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(400, 700));
+        setLocation(new java.awt.Point(0, 0));
         setResizable(false);
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
 
         txtProducto.setBackground(new java.awt.Color(0, 0, 0));
-        txtProducto.setText("jTextField1");
+        txtProducto.setForeground(new java.awt.Color(255, 255, 255));
         txtProducto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 236, 80)));
-        txtProducto.setCaretColor(new java.awt.Color(0, 255, 150));
+        txtProducto.setCaretColor(new java.awt.Color(255, 255, 255));
 
         btnBuscar.setBackground(new java.awt.Color(0, 0, 0));
         btnBuscar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -84,13 +122,13 @@ public class CatalogoProductosFORM extends javax.swing.JFrame {
         });
 
         btnCarrito.setBackground(new java.awt.Color(0, 0, 0));
-        btnCarrito.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnCarrito.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         btnCarrito.setForeground(new java.awt.Color(0, 255, 150));
         btnCarrito.setText("VER CARRITO");
+        btnCarrito.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 255, 150)));
         btnCarrito.setBorderPainted(false);
         btnCarrito.setContentAreaFilled(false);
         btnCarrito.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnCarrito.setFocusPainted(false);
         btnCarrito.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 btnCarritoMouseEntered(evt);
@@ -105,48 +143,60 @@ public class CatalogoProductosFORM extends javax.swing.JFrame {
             }
         });
 
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 236, 80)));
+
+        jPanel2.setBackground(new java.awt.Color(102, 102, 102));
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 387, Short.MAX_VALUE)
+            .addGap(0, 532, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 551, Short.MAX_VALUE)
+            .addGap(0, 556, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(jPanel2);
+
+        jLabel1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(0, 255, 150));
+        jLabel1.setText("Catalogo de Productos");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(txtProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnCarrito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnCarrito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(txtProducto)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(15, 15, 15))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(150, 150, 150))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(txtProducto)
-                    .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1)
-                .addGap(18, 18, 18)
-                .addComponent(btnCarrito, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnCarrito, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -164,9 +214,15 @@ public class CatalogoProductosFORM extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        String producto = txtProducto.getText();
+        cargarProductos(producto);
+        limpiarCampo();
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
     private void btnBuscarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseEntered
-        colorIluminado = new Color(51, 136, 20);
-        btnBuscar.setBackground(colorIluminado);
+        colorIluminado = new Color(51, 136, 20); 
+        btnBuscar.setBackground(colorIluminado); 
     }//GEN-LAST:event_btnBuscarMouseEntered
 
     private void btnBuscarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseExited
@@ -174,49 +230,24 @@ public class CatalogoProductosFORM extends javax.swing.JFrame {
         btnBuscar.setBackground(colorOriginal);
     }//GEN-LAST:event_btnBuscarMouseExited
 
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        String producto = this.txtProducto.getText();
-        
-        if (producto.isEmpty()) {
-            try {
-                jPanel2.removeAll();
-                for (ProductoDTO p: control.listarProductos()) {
-                    agregarProducto(p);
-                }
-                jPanel2.revalidate();
-                jPanel2.repaint();                
-            } catch (NegocioException e) {
-                JOptionPane.showMessageDialog(this, "Error al cargar productos: " + e.getMessage());
-            }
-        } else {
-            try {
-                ProductoDTO produ = control.buscarProducto(producto);
-                agregarProducto(produ);
-                jPanel2.revalidate();
-                jPanel2.repaint();
-            } catch (NegocioException e) {
-                JOptionPane.showMessageDialog(this, "Producto(s) no encontrado(s): " + e.getMessage());
-            }
-        }        
-    }//GEN-LAST:event_btnBuscarActionPerformed
-
-    private void btnCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCarritoActionPerformed
-        control.mostrarCarrito();
-    }//GEN-LAST:event_btnCarritoActionPerformed
-
     private void btnCarritoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCarritoMouseEntered
         colorIluminado = new Color(51, 136, 20);
-        btnBuscar.setBackground(colorIluminado);
+        btnCarrito.setBackground(colorIluminado);
     }//GEN-LAST:event_btnCarritoMouseEntered
 
     private void btnCarritoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCarritoMouseExited
         colorOriginal = new Color(35, 35, 35);
-        btnBuscar.setBackground(colorOriginal);
+        btnCarrito.setBackground(colorOriginal);
     }//GEN-LAST:event_btnCarritoMouseExited
+
+    private void btnCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCarritoActionPerformed
+        control.mostrarCarrito();        
+    }//GEN-LAST:event_btnCarritoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JButton btnCarrito;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;

@@ -12,7 +12,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.example.NegocioException;
 
 
 public class ProductosFORM extends JFrame {
@@ -94,7 +93,7 @@ public class ProductosFORM extends JFrame {
                 }
             } else {
                 try {
-                    ProductoDTO producto = control.buscarProducto(nombre);
+                    ProductoDTO producto = (ProductoDTO) control.buscarProducto(nombre);
                     if(producto != null) {
                         pnlGrid.add(crearTarjetaProducto(producto));
                     } else {

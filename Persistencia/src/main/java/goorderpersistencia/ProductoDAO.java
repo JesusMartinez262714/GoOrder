@@ -16,23 +16,28 @@ public class ProductoDAO implements IProductoDAO {
 
     public ProductoDAO() {
         productos = new ArrayList<>();
-        productos.add(new Producto("Latte", "Un tipo de cafe", 50.00,"latte_vainilla.png"));
-        productos.add(new Producto("Paninni", "Queso y Jamon", 50.00,"panini_clasico.png"));
-        productos.add(new Producto("galleta", "con chispas de chocolate", 15.00,"galleta_chispas.png"));
+        productos.add(new Producto("Latte", "Un tipo de cafe", 50.00, "latte_vainilla.png"));
+        productos.add(new Producto("Paninni", "Queso y Jamon", 50.00, "panini_clasico.png"));
+        productos.add(new Producto("galleta", "con chispas de chocolate", 15.00, "galleta_chispas.png"));
     }
 
     @Override
-    public Producto buscarProducto(String nombreProducto) throws PersistenciaException {
+    public List<Producto> buscarProducto(String nombreProducto) throws PersistenciaException {
+        List<Producto> resultado = new ArrayList<>();
         for (Producto p: productos) {
             if (p.getNombre().toLowerCase().contains(nombreProducto.toLowerCase())) {
-                return p;
+                resultado.add(p);
             }
         }
-        throw new PersistenciaException("Producto no encontrado.");
+        if (resultado.isEmpty()) {
+            throw new PersistenciaException("Producto(s) no encontrado(s)");
+        }
+        return resultado;        
     }
 
     @Override
     public List<Producto> listarProductos() throws PersistenciaException {
         return productos;
     }
+
 }

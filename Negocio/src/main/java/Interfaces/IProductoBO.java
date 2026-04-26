@@ -11,7 +11,7 @@ import org.example.NegocioException;
  */
 public interface IProductoBO {
     
-    public abstract ProductoDTO buscarProducto(String nombreProducto) throws NegocioException;
+    public abstract List<ProductoDTO> buscarProducto(String nombreProducto) throws NegocioException;
     
     public abstract List<ProductoDTO> listarProductos() throws NegocioException;
 

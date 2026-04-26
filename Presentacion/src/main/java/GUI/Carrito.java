@@ -2,17 +2,13 @@ package GUI;
 
 import Control.Control;
 import GoOrderDTO.CarritoDTO;
-import GoOrderDTO.ProductoDTO;
 import GoOrderDTO.ProductoSeleccionadoDTO;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.example.NegocioException;
 
 public class Carrito extends JFrame {
 

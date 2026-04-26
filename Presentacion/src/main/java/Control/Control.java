@@ -7,16 +7,14 @@ import GoOrderDTO.ProductoDTO;
 import GoOrderDTO.ProductoSeleccionadoDTO;
 import GoOrderDTO.SucursalDTO;
 import java.awt.*;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.swing.*;
 import org.example.NegocioException;
 import org.itson.realizarpedidocue.IRealizarPedidoCUE;
-import org.itson.realizarpedidocue.RealizarPedidoCUE;
 
 public class Control {
+    
     public final Color COLOR_FONDO = new Color(18, 18, 18);
     public final Color COLOR_NEON = new Color(0, 255, 150);
     public final Color COLOR_TARJETA = new Color(35, 35, 35);
@@ -25,17 +23,12 @@ public class Control {
     public final Color COLOR_INPUT = new Color(25, 25, 25);
     public final Color COLOR_BORDE = new Color(60, 60, 60);
     private final String rutaImagenes = "Resources/";
-
-    
     private IRealizarPedidoCUE realizarPedido;
-
     List<ProductoDTO> listaProductos = new ArrayList<>();
-    
-    
-    
-    public Control() {
+
+    public Control(IRealizarPedidoCUE realizarPedido) {
+        this.realizarPedido = realizarPedido;
         cargarMenuProductos();
-        realizarPedido = new RealizarPedidoCUE();
     }
 
     public ImageIcon obtenerImagen(String nombreImagen) {
@@ -44,7 +37,7 @@ public class Control {
         return icono;
     }
     
-    public ProductoDTO buscarProducto(String nombreProducto) throws NegocioException {
+    public List<ProductoDTO> buscarProducto(String nombreProducto) throws NegocioException {
         return realizarPedido.buscarProducto(nombreProducto);
     }
     
@@ -57,6 +50,7 @@ public class Control {
     public List<ProductoDTO> obtenerListaProductos() {
         return listaProductos;
     }
+    
     public void agregarProducto(ProductoSeleccionadoDTO producto) throws NegocioException {
         realizarPedido.AgregarProductoCarrito(producto);
     }
@@ -97,7 +91,7 @@ public class Control {
         mostrarPantallas(new Inicio(this));
     }
     public void mostrarProductosFORM() throws NegocioException, Exception{
-        mostrarPantallas(new ProductosFORM(this));
+        mostrarPantallas(new CatalogoProductosFORM(this));
     }
     public void DescripcionProducto(String nombre, String precio) {
         DescripcionProductoFORM form = new DescripcionProductoFORM(this);
@@ -152,8 +146,7 @@ public class Control {
     }
     public void mostrarCodigoDescuentoRechazado(){
         mostrarPantallas(new CodigoDescuentoRechazado(this));
-    }
-    
+    }    
     public void mostrarDescripcionProducto(){
         mostrarPantallas(new DescripcionProductoFORM(this));
     }

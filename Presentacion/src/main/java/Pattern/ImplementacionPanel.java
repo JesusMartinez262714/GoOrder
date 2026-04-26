@@ -3,9 +3,13 @@ package Pattern;
 
 import Control.Control;
 import GoOrderDTO.ProductoDTO;
+import GoOrderDTO.ProductoSeleccionadoDTO;
 import java.awt.Color;
+import java.awt.Dimension;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import org.example.NegocioException;
 
 /**
  *
@@ -14,20 +18,28 @@ import javax.swing.JPanel;
 public class ImplementacionPanel extends javax.swing.JPanel implements IPaneles {
     
     private JPanel panel;
-    private ProductoDTO producto;
+    private ProductoSeleccionadoDTO producto;
+    private ProductoDTO productoDescripcion;
     private Color colorOriginal;
     private Color colorIluminado; 
     private Control control;
     
-    public ImplementacionPanel(ProductoDTO producto, Control control) {
-        this.producto = producto;
+    public ImplementacionPanel(Control control, ProductoDTO productoDescripcion) {
         this.control = control;
-        panel = new JPanel();
-        initComponents();
+        this.productoDescripcion = productoDescripcion;
         
-        lbNombre.setText(producto.getNombre());
-        lbPrecio.setText("$"+producto.getPrecio());
-        lbImagen.setIcon(new ImageIcon(producto.getImagen()));
+        this.producto = new ProductoSeleccionadoDTO(
+            productoDescripcion.getNombre(), 
+            1,
+            productoDescripcion.getPrecio(), 
+            productoDescripcion.getPrecio(), 
+            productoDescripcion
+        );        
+        panel = new JPanel();
+        initComponents();       
+        lbNombre.setText(productoDescripcion.getNombre());
+        lbPrecio.setText("$"+productoDescripcion.getPrecio());
+        lbImagen.setIcon(new ImageIcon(productoDescripcion.getImagen()));
     }
 
     /**
@@ -42,7 +54,7 @@ public class ImplementacionPanel extends javax.swing.JPanel implements IPaneles 
         jPanel1 = new javax.swing.JPanel();
         lbNombre = new javax.swing.JLabel();
         lbPrecio = new javax.swing.JLabel();
-        btnBuscar = new BotonRedondeado();
+        btnAgregar = new BotonRedondeado();
         btnDescripcion = new BotonRedondeado();
         lbImagen = new javax.swing.JLabel();
 
@@ -50,29 +62,31 @@ public class ImplementacionPanel extends javax.swing.JPanel implements IPaneles 
 
         jPanel1.setBackground(new java.awt.Color(0, 0, 0));
 
+        lbNombre.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         lbNombre.setForeground(new java.awt.Color(255, 255, 255));
 
+        lbPrecio.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         lbPrecio.setForeground(new java.awt.Color(0, 255, 150));
 
-        btnBuscar.setBackground(new java.awt.Color(0, 0, 0));
-        btnBuscar.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        btnBuscar.setForeground(new java.awt.Color(0, 255, 150));
-        btnBuscar.setText("+");
-        btnBuscar.setBorderPainted(false);
-        btnBuscar.setContentAreaFilled(false);
-        btnBuscar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnBuscar.setFocusPainted(false);
-        btnBuscar.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnAgregar.setBackground(new java.awt.Color(0, 0, 0));
+        btnAgregar.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        btnAgregar.setForeground(new java.awt.Color(0, 255, 150));
+        btnAgregar.setText("+");
+        btnAgregar.setBorderPainted(false);
+        btnAgregar.setContentAreaFilled(false);
+        btnAgregar.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        btnAgregar.setFocusPainted(false);
+        btnAgregar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnBuscarMouseEntered(evt);
+                btnAgregarMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                btnBuscarMouseExited(evt);
+                btnAgregarMouseExited(evt);
             }
         });
-        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBuscarActionPerformed(evt);
+                btnAgregarActionPerformed(evt);
             }
         });
 
@@ -82,7 +96,7 @@ public class ImplementacionPanel extends javax.swing.JPanel implements IPaneles 
         btnDescripcion.setText("...");
         btnDescripcion.setBorderPainted(false);
         btnDescripcion.setContentAreaFilled(false);
-        btnDescripcion.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btnDescripcion.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnDescripcion.setFocusPainted(false);
         btnDescripcion.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -109,7 +123,7 @@ public class ImplementacionPanel extends javax.swing.JPanel implements IPaneles 
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(lbPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnAgregar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -122,9 +136,10 @@ public class ImplementacionPanel extends javax.swing.JPanel implements IPaneles 
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lbPrecio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnDescripcion, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(btnDescripcion, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(btnAgregar, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -148,39 +163,45 @@ public class ImplementacionPanel extends javax.swing.JPanel implements IPaneles 
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnBuscarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseEntered
+    private void btnAgregarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAgregarMouseEntered
         colorIluminado = new Color(51, 136, 20);
-        btnBuscar.setBackground(colorIluminado);
-    }//GEN-LAST:event_btnBuscarMouseEntered
+        btnAgregar.setBackground(colorIluminado);
+    }//GEN-LAST:event_btnAgregarMouseEntered
 
-    private void btnBuscarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseExited
+    private void btnAgregarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnAgregarMouseExited
         colorOriginal = new Color(35, 35, 35);
-        btnBuscar.setBackground(colorOriginal);
-    }//GEN-LAST:event_btnBuscarMouseExited
+        btnAgregar.setBackground(colorOriginal);
+    }//GEN-LAST:event_btnAgregarMouseExited
 
-    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-//        control.agregarProducto(producto);
-    }//GEN-LAST:event_btnBuscarActionPerformed
+    private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
+        try {
+            control.agregarProducto(producto);
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(this, "Error al agregar producto: " + ex.getMessage());
+        }
+    }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnDescripcionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDescripcionMouseEntered
-        // TODO add your handling code here:
+        colorIluminado = new Color(51, 136, 20);
+        btnDescripcion.setBackground(colorIluminado);
     }//GEN-LAST:event_btnDescripcionMouseEntered
 
     private void btnDescripcionMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDescripcionMouseExited
-        // TODO add your handling code here:
+        colorOriginal = new Color(35, 35, 35);
+        btnDescripcion.setBackground(colorOriginal);
     }//GEN-LAST:event_btnDescripcionMouseExited
 
     private void btnDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescripcionActionPerformed
-        control.mostrarDescripcionProducto();
-        
+        control.mostrarDescripcionProducto();        
     }//GEN-LAST:event_btnDescripcionActionPerformed
 
     @Override
     public JPanel getPanel() {
-        return panel;
+        return this;
     }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnDescripcion;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lbImagen;

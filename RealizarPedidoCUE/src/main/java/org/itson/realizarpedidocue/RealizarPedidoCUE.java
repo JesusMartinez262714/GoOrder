@@ -1,6 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
 
 package org.itson.realizarpedidocue;
 
@@ -16,7 +13,6 @@ import goorderpersistencia.SucursalesDAO;
 import java.util.List;
 import org.example.CarritoBO;
 import org.example.NegocioException;
-import org.example.ProductoBO;
 
 /**
  *
@@ -28,22 +24,21 @@ public class RealizarPedidoCUE implements IRealizarPedidoCUE {
    private ISucursalesDAO sucursalesDAO;
    private ICarritoBO carritoBO;
     
-   public RealizarPedidoCUE(){
-       productoBO = new ProductoBO();
+   public RealizarPedidoCUE(IProductoBO productoBO){
+       this.productoBO = productoBO;
        sucursalesDAO = new SucursalesDAO();
        carritoBO = new CarritoBO();
    }
    
     @Override
-    public ProductoDTO buscarProducto(String nombreProducto) throws NegocioException {
+    public List<ProductoDTO> buscarProducto(String nombreProducto) throws NegocioException {
         if (nombreProducto.isEmpty()) {
             throw new NegocioException("El nombre no puede quedar vacio al realizar busqueda.");
         }
         
         if (nombreProducto.matches("\\d+")) {
             throw new NegocioException("El nombre del producto no puede contener números.");
-        }
-        
+        }        
         try {
             return productoBO.buscarProducto(nombreProducto);
         } catch (NegocioException e) {
@@ -81,7 +76,8 @@ public class RealizarPedidoCUE implements IRealizarPedidoCUE {
 
     @Override
     public CarritoDTO AgregarProductoCarrito(ProductoSeleccionadoDTO producto) throws NegocioException {
-        if(producto == null){
+        if(producto == null) {
+            
             throw new NegocioException("El carrito no puede ser nulo");
         }
         return carritoBO.AgregarProductoCarrito(producto);

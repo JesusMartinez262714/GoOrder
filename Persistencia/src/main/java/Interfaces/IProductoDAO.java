@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface IProductoDAO {
     
-    public abstract Producto buscarProducto(String nombreProducto) throws PersistenciaException;
+    public abstract List<Producto> buscarProducto(String nombreProducto) throws PersistenciaException;
     
     public abstract List<Producto> listarProductos() throws PersistenciaException;
     

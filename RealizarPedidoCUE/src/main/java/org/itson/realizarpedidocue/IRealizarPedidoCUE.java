@@ -2,12 +2,10 @@
 package org.itson.realizarpedidocue;
 
 
-import Entidades.ProductoSeleccionado;
 import GoOrderDTO.CarritoDTO;
 import GoOrderDTO.ProductoDTO;
 import GoOrderDTO.ProductoSeleccionadoDTO;
 import java.util.List;
-
 import GoOrderDTO.SucursalDTO;
 import org.example.NegocioException;
 
@@ -17,7 +15,7 @@ import org.example.NegocioException;
  */
 public interface IRealizarPedidoCUE {
     
-    public abstract ProductoDTO buscarProducto(String nombreProducto) throws NegocioException;
+    public abstract List<ProductoDTO> buscarProducto(String nombreProducto) throws NegocioException;
     
     public abstract List<ProductoDTO> listarProductos() throws NegocioException;
 

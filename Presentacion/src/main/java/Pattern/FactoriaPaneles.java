@@ -3,6 +3,7 @@ package Pattern;
 
 import Control.Control;
 import GoOrderDTO.ProductoDTO;
+import GoOrderDTO.ProductoSeleccionadoDTO;
 
 
 /**
@@ -19,10 +20,11 @@ public class FactoriaPaneles {
      * ES DECIR, CONTRATO DICE QUE SE HACE
      * IMPLEMENTACION DICE COMO SE HACE
      * AL FINAL CREAMOS ESOS BLOQUES EN SERIE EN BASE A LAS ESPECIFICACIONES
-     * @param producto
+     * @param control
+     * @param productoDescripcion
      * @return 
      */
-    public static IPaneles crearPanelProducto(ProductoDTO producto, Control control) {
-        return new ImplementacionPanel(producto, control);
+    public static IPaneles crearPanelProducto(Control control, ProductoDTO productoDescripcion) {
+        return new ImplementacionPanel(control, productoDescripcion);
     }
 }
