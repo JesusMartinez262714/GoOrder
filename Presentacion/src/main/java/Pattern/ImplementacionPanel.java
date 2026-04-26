@@ -159,7 +159,7 @@ public class ImplementacionPanel extends javax.swing.JPanel implements IPaneles 
     }//GEN-LAST:event_btnBuscarMouseExited
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        control.agregarProducto(producto);
+//        control.agregarProducto(producto);
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnDescripcionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnDescripcionMouseEntered

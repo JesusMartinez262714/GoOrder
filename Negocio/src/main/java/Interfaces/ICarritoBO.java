@@ -1,27 +1,20 @@
-
-package org.itson.realizarpedidocue;
-
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
+ */
+package Interfaces;
 
 import Entidades.ProductoSeleccionado;
 import GoOrderDTO.CarritoDTO;
 import GoOrderDTO.ProductoDTO;
 import GoOrderDTO.ProductoSeleccionadoDTO;
-import java.util.List;
-
-import GoOrderDTO.SucursalDTO;
 import org.example.NegocioException;
 
 /**
  *
- * @author
+ * @author juanl
  */
-public interface IRealizarPedidoCUE {
-    
-    public abstract ProductoDTO buscarProducto(String nombreProducto) throws NegocioException;
-    
-    public abstract List<ProductoDTO> listarProductos() throws NegocioException;
-
-    List<SucursalDTO> consultarSucursales() throws NegocioException;
+public interface ICarritoBO {
     
     public abstract CarritoDTO AgregarProductoCarrito(ProductoSeleccionadoDTO producto) throws NegocioException;
     

@@ -3,21 +3,24 @@ package GUI;
 
 import Control.Control;
 import GoOrderDTO.ProductoDTO;
+import GoOrderDTO.ProductoSeleccionadoDTO;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.example.NegocioException;
+
 
 public class ProductosFORM extends JFrame {
 
     private final Control control;
     private JPanel pnlGrid;
     
-    
-    public ProductosFORM(Control control) throws NegocioException {
+    public ProductosFORM(Control control) throws Exception {
         this.control = control;
 
         setTitle("GoOrder - Menú");
@@ -28,6 +31,7 @@ public class ProductosFORM extends JFrame {
         setLayout(new BorderLayout());
         getContentPane().setBackground(control.COLOR_FONDO);
 
+        // --- NORTE: BÚSQUEDA ---
         JPanel pnlNorte = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 15));
         pnlNorte.setBackground(control.COLOR_FONDO);
         
@@ -47,13 +51,16 @@ public class ProductosFORM extends JFrame {
         pnlNorte.add(txtBuscar);
         pnlNorte.add(btnBuscar);
                         
+        // --- CENTRO: GRID DE PRODUCTOS ---
         pnlGrid = new JPanel();
         pnlGrid.setLayout(new BoxLayout(pnlGrid, BoxLayout.Y_AXIS));
         pnlGrid.setBackground(control.COLOR_FONDO);
         pnlGrid.setBorder(new EmptyBorder(10, 15, 10, 15));
 
+        // Cargamos el catálogo inicial usando ProductoDTO
         for (ProductoDTO producto : control.listarProductos()){
             pnlGrid.add(crearTarjetaProducto(producto));
+            pnlGrid.add(Box.createRigidArea(new Dimension(0, 10)));
         }
 
         JScrollPane scrollPane = new JScrollPane(pnlGrid);
@@ -62,6 +69,7 @@ public class ProductosFORM extends JFrame {
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBackground(control.COLOR_FONDO);
 
+        // --- SUR: BOTÓN CARRITO ---
         JPanel pnlSur = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 15));
         pnlSur.setBackground(control.COLOR_FONDO);
         
@@ -70,6 +78,7 @@ public class ProductosFORM extends JFrame {
         btnCarrito.addActionListener(e -> control.mostrarCarrito());
         pnlSur.add(btnCarrito);
 
+        // --- ACCIÓN DE BÚSQUEDA ---
         btnBuscar.addActionListener(e -> {
             String nombre = txtBuscar.getText().trim();
             
@@ -78,20 +87,25 @@ public class ProductosFORM extends JFrame {
                 try {
                     for (ProductoDTO pDto: control.listarProductos()) {
                         pnlGrid.add(crearTarjetaProducto(pDto));
+                        pnlGrid.add(Box.createRigidArea(new Dimension(0, 10)));
                     }
-                } catch (NegocioException ex) {
-                    JOptionPane.showMessageDialog(this, "No se pudo mostrar el producto: " + ex.getMessage());
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "No se pudo cargar el catálogo: " + ex.getMessage());
                 }
             } else {
                 try {
                     ProductoDTO producto = control.buscarProducto(nombre);
-                    pnlGrid.add(crearTarjetaProducto(producto));
-                    pnlGrid.revalidate();
-                    pnlGrid.repaint();
-                } catch (NegocioException exm) {
-                    JOptionPane.showMessageDialog(this, "Producto no encontrado: " + exm.getMessage());
+                    if(producto != null) {
+                        pnlGrid.add(crearTarjetaProducto(producto));
+                    } else {
+                        JOptionPane.showMessageDialog(this, "No se encontró ningún producto con ese nombre.");
+                    }
+                } catch (Exception exm) {
+                    JOptionPane.showMessageDialog(this, "Error en la búsqueda: " + exm.getMessage());
                 }
             }
+            pnlGrid.revalidate();
+            pnlGrid.repaint();
         });
         
         add(pnlNorte, BorderLayout.NORTH);
@@ -99,6 +113,7 @@ public class ProductosFORM extends JFrame {
         add(pnlSur, BorderLayout.SOUTH);
     }
 
+    // El diseño recibe la información del Catálogo (ProductoDTO)
     private JPanel crearTarjetaProducto(ProductoDTO producto) {
         JPanel tarjeta = new JPanel();
         tarjeta.setLayout(new BorderLayout());
@@ -110,6 +125,7 @@ public class ProductosFORM extends JFrame {
         lblImagen.setBackground(new Color(45, 45, 45));
         lblImagen.setForeground(Color.GRAY);
         lblImagen.setPreferredSize(new Dimension(150, 100));
+        
         ImageIcon imagen = control.obtenerImagen(producto.getImagen());
         Image imgEscalada = imagen.getImage().getScaledInstance(170, 100, Image.SCALE_SMOOTH);
         lblImagen.setIcon(new ImageIcon(imgEscalada));
@@ -124,7 +140,7 @@ public class ProductosFORM extends JFrame {
         lblNombre.setFont(new Font("Arial", Font.PLAIN, 14));
         lblNombre.setForeground(Color.WHITE);
         
-        JLabel lblPrecio = new JLabel(String.valueOf(producto.getPrecio()));
+        JLabel lblPrecio = new JLabel(String.format("$%.2f", producto.getPrecio()));
         lblPrecio.setFont(new Font("Arial", Font.BOLD, 14));
         lblPrecio.setForeground(control.COLOR_NEON);
 
@@ -166,8 +182,29 @@ public class ProductosFORM extends JFrame {
                 public void mouseEntered(MouseEvent e) { over = true; repaint(); }
                 public void mouseExited(MouseEvent e) { over = false; repaint(); }
             });
-            addActionListener(e -> control.agregarProducto(producto));
-
+            
+            addActionListener(e -> {
+                try {
+                    ProductoSeleccionadoDTO itemCarrito = new ProductoSeleccionadoDTO(producto.getNombre(),1,producto.getPrecio(),producto.getPrecio(),producto);
+                    itemCarrito.setProducto(producto); 
+                    itemCarrito.setNombre(producto.getNombre());
+                    itemCarrito.setPrecioActual(producto.getPrecio());
+                    itemCarrito.setCantidad(1); 
+                    control.agregarProducto(itemCarrito);
+                    
+                    JOptionPane.showMessageDialog(ProductosFORM.this, 
+                            "Se agregó " + producto.getNombre() + " al carrito.", 
+                            "¡Agregado!", 
+                            JOptionPane.INFORMATION_MESSAGE);
+                            
+                } catch (Exception ex) {
+                    Logger.getLogger(ProductosFORM.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(ProductosFORM.this, 
+                            "Error al agregar al carrito: " + ex.getMessage(), 
+                            "Error", 
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            });
         }
 
         @Override

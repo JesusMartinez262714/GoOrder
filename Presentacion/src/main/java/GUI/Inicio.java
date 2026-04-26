@@ -55,6 +55,8 @@ public class Inicio extends JFrame {
                     this.control.mostrarProductosFORM();
                 } catch (NegocioException ex) {
                     Logger.getLogger(Inicio.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (Exception ex) {
+                    System.getLogger(Inicio.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
                 }
             }
         });

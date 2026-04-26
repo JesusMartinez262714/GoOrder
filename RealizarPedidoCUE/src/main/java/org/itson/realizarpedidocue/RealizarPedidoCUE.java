@@ -4,13 +4,17 @@
 
 package org.itson.realizarpedidocue;
 
+import GoOrderDTO.CarritoDTO;
 import GoOrderDTO.ProductoDTO;
+import GoOrderDTO.ProductoSeleccionadoDTO;
 import GoOrderDTO.SucursalDTO;
+import Interfaces.ICarritoBO;
 import Interfaces.IProductoBO;
 import Interfaces.ISucursalesDAO;
 import goorderpersistencia.PersistenciaException;
 import goorderpersistencia.SucursalesDAO;
 import java.util.List;
+import org.example.CarritoBO;
 import org.example.NegocioException;
 import org.example.ProductoBO;
 
@@ -22,10 +26,12 @@ public class RealizarPedidoCUE implements IRealizarPedidoCUE {
     
    private IProductoBO productoBO;
    private ISucursalesDAO sucursalesDAO;
+   private ICarritoBO carritoBO;
     
    public RealizarPedidoCUE(){
        productoBO = new ProductoBO();
        sucursalesDAO = new SucursalesDAO();
+       carritoBO = new CarritoBO();
    }
    
     @Override
@@ -71,6 +77,51 @@ public class RealizarPedidoCUE implements IRealizarPedidoCUE {
        }catch (PersistenciaException e ){
            throw new NegocioException("No se pudo establecer conexion con la base de datos");
        }
+    }
+
+    @Override
+    public CarritoDTO AgregarProductoCarrito(ProductoSeleccionadoDTO producto) throws NegocioException {
+        if(producto == null){
+            throw new NegocioException("El carrito no puede ser nulo");
+        }
+        return carritoBO.AgregarProductoCarrito(producto);
+    }
+
+    @Override
+    public CarritoDTO LimpiarCarrito() throws NegocioException {
+        return carritoBO.LimpiarCarrito();
+    }
+
+    @Override
+    public CarritoDTO ObtenerCarrito() throws NegocioException {
+        return carritoBO.ObtenerCarrito();
+    }
+
+    @Override
+    public CarritoDTO IncrementarCantidad(ProductoSeleccionadoDTO producto) throws NegocioException {
+        if(producto == null){
+            throw new NegocioException("El carrito no puede ser nulo");
+        }
+        return carritoBO.IncrementarCantidad(producto);
+    }
+    
+
+    @Override
+    public CarritoDTO DescrementarCantidad(ProductoSeleccionadoDTO producto) throws NegocioException {
+        if(producto == null){
+            throw new NegocioException("El carrito no puede ser nulo");
+        }
+        return carritoBO.DescrementarCantidad(producto);
+    }
+
+    @Override
+    public CarritoDTO AplicarDescuento(String codigo) throws NegocioException {
+        return carritoBO.AplicarDescuento(codigo);
+    }
+
+    @Override
+    public CarritoDTO EliminarProductoCarrito(ProductoSeleccionadoDTO producto) throws NegocioException {
+        return carritoBO.EliminarProductoCarrito(producto);
     }
     
     

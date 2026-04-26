@@ -1,7 +1,9 @@
 package GUI;
 
 import Control.Control;
+import GoOrderDTO.CarritoDTO;
 import GoOrderDTO.ProductoDTO;
+import GoOrderDTO.ProductoSeleccionadoDTO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,7 +45,6 @@ public class Carrito extends JFrame {
             public void mouseEntered(MouseEvent e) {
                 btnRegresar.setForeground(control.COLOR_NEON);
             }
-
             public void mouseExited(MouseEvent e) {
                 btnRegresar.setForeground(Color.LIGHT_GRAY);
             }
@@ -52,7 +53,7 @@ public class Carrito extends JFrame {
         btnRegresar.addActionListener(e -> {
             try {
                 control.mostrarProductosFORM();
-            } catch (NegocioException ex) {
+            } catch (Exception ex) {
                 Logger.getLogger(Carrito.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
@@ -75,43 +76,51 @@ public class Carrito extends JFrame {
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
 
-        double subtotalCalculado = 0.0;
+        double subtotalMostrar = 0.0; 
 
-        if (this.control != null && this.control.getCarrito() != null && !this.control.getCarrito().isEmpty()) {
+        try {
+            CarritoDTO miCarrito = control.getCarrito();
 
-            for (ProductoDTO producto : control.getCarrito()) {
-                subtotalCalculado += producto.getPrecio() * producto.getCantidad();
+            if (miCarrito != null && miCarrito.getProductos() != null && !miCarrito.getProductos().isEmpty()) {
+                
+                subtotalMostrar = miCarrito.getSubTotal(); 
 
-                contentPanel.add(crearPanelProducto(producto));
+                for (ProductoSeleccionadoDTO producto : miCarrito.getProductos()) {
+                    contentPanel.add(crearPanelProducto(producto));
+                    contentPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+                }
+
                 contentPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+                JSeparator sep = new JSeparator();
+                sep.setForeground(Color.DARK_GRAY);
+                sep.setMaximumSize(new Dimension(340, 5));
+                contentPanel.add(sep);
+                contentPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+
+                for (ProductoSeleccionadoDTO producto : miCarrito.getProductos()) {
+                    contentPanel.add(crearFilaResumen(
+                            producto.getNombre() + " x" + producto.getCantidad(),
+                            String.format("$%.2f", producto.getImporte()),
+                            false
+                    ));
+                    contentPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+                }
+
+                contentPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+                contentPanel.add(crearFilaResumen("Subtotal", String.format("$%.2f", subtotalMostrar), true));
+
+            } else {
+                JLabel lblVacio = new JLabel("Tu carrito está vacío.");
+                lblVacio.setFont(new Font("Arial", Font.ITALIC, 16));
+                lblVacio.setForeground(Color.GRAY);
+                lblVacio.setAlignmentX(Component.CENTER_ALIGNMENT);
+                contentPanel.add(Box.createRigidArea(new Dimension(0, 50)));
+                contentPanel.add(lblVacio);
             }
 
-            contentPanel.add(Box.createRigidArea(new Dimension(0, 15)));
-            JSeparator sep = new JSeparator();
-            sep.setForeground(Color.DARK_GRAY);
-            sep.setMaximumSize(new Dimension(340, 5));
-            contentPanel.add(sep);
-            contentPanel.add(Box.createRigidArea(new Dimension(0, 15)));
-
-            for (ProductoDTO producto : control.getCarrito()) {
-                contentPanel.add(crearFilaResumen(
-                        producto.getNombre() + " x" + producto.getCantidad(),
-                        String.format("$%.2f", producto.getPrecio() * producto.getCantidad()),
-                        false
-                ));
-                contentPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-            }
-
-            contentPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-            contentPanel.add(crearFilaResumen("Subtotal", String.format("$%.2f", subtotalCalculado), true));
-
-        } else {
-            JLabel lblVacio = new JLabel("Tu carrito está vacío.");
-            lblVacio.setFont(new Font("Arial", Font.ITALIC, 16));
-            lblVacio.setForeground(Color.GRAY);
-            lblVacio.setAlignmentX(Component.CENTER_ALIGNMENT);
-            contentPanel.add(Box.createRigidArea(new Dimension(0, 50)));
-            contentPanel.add(lblVacio);
+        } catch (Exception ex) {
+            Logger.getLogger(Carrito.class.getName()).log(Level.SEVERE, "Error al cargar el carrito", ex);
+            JOptionPane.showMessageDialog(this, "Error al cargar el carrito", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
         contentPanel.add(Box.createVerticalGlue());
@@ -131,7 +140,7 @@ public class Carrito extends JFrame {
 
         BotonNeon btnEntrega = new BotonNeon("FORMA DE ENTREGA");
 
-        if (subtotalCalculado == 0.0) {
+        if (subtotalMostrar == 0.0) {
             btnEntrega.setEnabled(false);
         }
 
@@ -145,7 +154,7 @@ public class Carrito extends JFrame {
         add(footerPanel, BorderLayout.SOUTH);
     }
 
-    private JPanel crearPanelProducto(ProductoDTO producto) {
+    private JPanel crearPanelProducto(ProductoSeleccionadoDTO producto) {
         JPanel panelPrincipal = new JPanel(new BorderLayout(15, 10));
         panelPrincipal.setBackground(control.COLOR_TARJETA);
         panelPrincipal.setBorder(BorderFactory.createCompoundBorder(
@@ -154,18 +163,16 @@ public class Carrito extends JFrame {
         ));
         panelPrincipal.setMaximumSize(new Dimension(340, 100));
 
-        // IMAGEN
         JLabel lblImagen = new JLabel(" IMG");
         lblImagen.setForeground(Color.GRAY);
         lblImagen.setPreferredSize(new Dimension(70, 70));
         lblImagen.setOpaque(true);
         lblImagen.setBackground(new Color(50, 50, 50));
         lblImagen.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
-        ImageIcon imagen = control.obtenerImagen(producto.getImagen());
+        ImageIcon imagen = control.obtenerImagen(producto.getProducto().getImagen());
         Image imgEscalada = imagen.getImage().getScaledInstance(100, 70, Image.SCALE_SMOOTH);
         lblImagen.setIcon(new ImageIcon(imgEscalada));
 
-        // INFO
         JPanel panelInfo = new JPanel();
         panelInfo.setLayout(new BoxLayout(panelInfo, BoxLayout.Y_AXIS));
         panelInfo.setBackground(control.COLOR_TARJETA);
@@ -175,7 +182,7 @@ public class Carrito extends JFrame {
         lblNombre.setFont(new Font("Arial", Font.BOLD, 16));
         lblNombre.setForeground(Color.WHITE);
 
-        JLabel lblPrecio = new JLabel(String.format("$%.2f", producto.getPrecio()));
+        JLabel lblPrecio = new JLabel(String.format("$%.2f", producto.getPrecioActual()));
         lblPrecio.setFont(new Font("Arial", Font.PLAIN, 14));
         lblPrecio.setForeground(control.COLOR_NEON);
 
@@ -187,14 +194,15 @@ public class Carrito extends JFrame {
             public void mouseEntered(MouseEvent e) {
                 lblBasura.setForeground(new Color(255, 80, 80));
             }
-
             public void mouseExited(MouseEvent e) {
                 lblBasura.setForeground(Color.GRAY);
             }
-            // NUEVO: eliminar y refrescar
-
             public void mouseClicked(MouseEvent e) {
-                control.eliminarProducto(producto);
+                try {
+                    control.eliminarProducto(producto);
+                } catch (Exception ex) {
+                    Logger.getLogger(Carrito.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 control.mostrarCarrito();
             }
         });
@@ -224,15 +232,22 @@ public class Carrito extends JFrame {
 
         lblMas.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                control.incrementarCantidad(producto);
+                try {
+                    control.incrementarCantidad(producto);
+                } catch (Exception ex) {
+                    Logger.getLogger(Carrito.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 control.mostrarCarrito();
             }
         });
 
-        // ACCION BOTON
         lblMenos.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                control.decrementarCantidad(producto);
+                try {
+                    control.decrementarCantidad(producto);
+                } catch (Exception ex) {
+                    Logger.getLogger(Carrito.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 control.mostrarCarrito();
             }
         });
@@ -292,7 +307,6 @@ public class Carrito extends JFrame {
                         repaint();
                     }
                 }
-
                 public void mouseExited(MouseEvent e) {
                     over = false;
                     repaint();
@@ -336,5 +350,4 @@ public class Carrito extends JFrame {
             g2.dispose();
         }
     }
-
 }

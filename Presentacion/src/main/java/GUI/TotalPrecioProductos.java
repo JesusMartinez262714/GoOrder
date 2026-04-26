@@ -1,7 +1,9 @@
 package GUI;
 
 import Control.Control;
+import GoOrderDTO.CarritoDTO;
 import GoOrderDTO.ProductoDTO;
+import GoOrderDTO.ProductoSeleccionadoDTO;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,6 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.List;
+import org.example.NegocioException;
 
 public class TotalPrecioProductos extends JFrame {
 
@@ -95,49 +98,49 @@ public class TotalPrecioProductos extends JFrame {
         Font fontBold = new Font("Arial", Font.BOLD, 16);
         Font fontTotal = new Font("Arial", Font.BOLD, 20);
 
-        double subtotalCalculado = 0.0;
+        try {
+            CarritoDTO miCarrito = control.getCarrito();
 
-        if (this.control != null && this.control.getCarrito() != null) {
-            List<ProductoDTO> carrito = this.control.getCarrito();
-            for (ProductoDTO producto : carrito) {
-                String nombreProducto = producto.getNombre();
-                double precioProducto = producto.getPrecio();
-                subtotalCalculado += precioProducto;
+            if (miCarrito != null && miCarrito.getProductos() != null) {
+                
+                for (ProductoSeleccionadoDTO producto : miCarrito.getProductos()) {
+                    String nombreProducto = producto.getNombre() + " (x" + producto.getCantidad() + ")"; 
+                    double importeProducto = producto.getImporte(); 
 
-                interiorTicket.add(crearFila(nombreProducto, String.format("$%.2f", precioProducto), fontNormal, Color.WHITE));
+                    interiorTicket.add(crearFila(nombreProducto, String.format("$%.2f", importeProducto), fontNormal, Color.WHITE));
+                }
+
+                interiorTicket.add(Box.createRigidArea(new Dimension(0, 10)));
+                JSeparator sep1 = new JSeparator();
+                sep1.setForeground(Color.DARK_GRAY);
+                interiorTicket.add(sep1);
+                interiorTicket.add(Box.createRigidArea(new Dimension(0, 10)));
+
+                double subtotal = miCarrito.getSubTotal();
+                double descuento = miCarrito.getDescuento();
+                double totalFinal = miCarrito.getTotal();
+
+                interiorTicket.add(crearFila("Subtotal", String.format("$%.2f", subtotal), fontBold, Color.WHITE));
+
+                if (descuento > 0) {
+                    interiorTicket.add(crearFila("Descuento", String.format("-$%.2f", descuento), fontNormal, COLOR_NEON));
+                }
+
+                double ivaVisual = (subtotal - descuento) * 0.16; 
+                interiorTicket.add(crearFila("I.V.A (Incluido)", String.format("$%.2f", ivaVisual), fontNormal, Color.LIGHT_GRAY));
+
+                interiorTicket.add(Box.createRigidArea(new Dimension(0, 10)));
+                JSeparator sep2 = new JSeparator();
+                sep2.setForeground(Color.DARK_GRAY);
+                interiorTicket.add(sep2);
+                interiorTicket.add(Box.createRigidArea(new Dimension(0, 10)));
+
+                interiorTicket.add(crearFila("TOTAL", String.format("$%.2f", totalFinal), fontTotal, COLOR_NEON));
             }
+            
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar el carrito: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-
-        // Separador
-        interiorTicket.add(Box.createRigidArea(new Dimension(0, 10)));
-        JSeparator sep1 = new JSeparator();
-        sep1.setForeground(Color.DARK_GRAY);
-        interiorTicket.add(sep1);
-        interiorTicket.add(Box.createRigidArea(new Dimension(0, 10)));
-
-        double descuentoAplicado = (this.control != null) ? this.control.getDescuento() : 0.0;
-
-        double subtotalConDescuento = subtotalCalculado - descuentoAplicado;
-        if (subtotalConDescuento < 0) subtotalConDescuento = 0;
-
-        double iva = subtotalConDescuento * 0.16;
-        double totalFinal = subtotalConDescuento + iva;
-
-        interiorTicket.add(crearFila("Subtotal", String.format("$%.2f", subtotalCalculado), fontBold, Color.WHITE));
-
-        if (descuentoAplicado > 0) {
-            interiorTicket.add(crearFila("Descuento", String.format("-$%.2f", descuentoAplicado), fontNormal, COLOR_NEON));
-        }
-
-        interiorTicket.add(crearFila("I.V.A (16%)", String.format("$%.2f", iva), fontNormal, Color.LIGHT_GRAY));
-
-        interiorTicket.add(Box.createRigidArea(new Dimension(0, 10)));
-        JSeparator sep2 = new JSeparator();
-        sep2.setForeground(Color.DARK_GRAY);
-        interiorTicket.add(sep2);
-        interiorTicket.add(Box.createRigidArea(new Dimension(0, 10)));
-
-        interiorTicket.add(crearFila("TOTAL", String.format("$%.2f", totalFinal), fontTotal, COLOR_NEON));
 
         panelTicket.add(interiorTicket);
 

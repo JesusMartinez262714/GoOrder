@@ -1,18 +1,23 @@
 package GUI;
 
 import Control.Control;
+import GoOrderDTO.CarritoDTO;
 import GoOrderDTO.ProductoDTO;
+import GoOrderDTO.ProductoSeleccionadoDTO;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.example.NegocioException;
 
 public class CodigoDescuentoFORM extends JFrame {
 
     private Control control;
-    private double descuentoActual = 0.0;
+    private String descuentoActual = "";
 
     private JTextField txtCodigo;
     private JLabel lblCantidadDescuento;
@@ -27,7 +32,6 @@ public class CodigoDescuentoFORM extends JFrame {
         setResizable(false);
         setLayout(new BorderLayout());
         getContentPane().setBackground(control.COLOR_FONDO);
-
 
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(control.COLOR_FONDO);
@@ -63,8 +67,6 @@ public class CodigoDescuentoFORM extends JFrame {
         headerPanel.add(lblEspacio, BorderLayout.EAST);
         add(headerPanel, BorderLayout.NORTH);
 
-
-
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setBackground(control.COLOR_FONDO);
@@ -91,8 +93,6 @@ public class CodigoDescuentoFORM extends JFrame {
         btnVerificar.setFocusPainted(false);
         btnVerificar.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        //btnVerificar.addActionListener();
-
         panelInput.add(txtCodigo, BorderLayout.CENTER);
         panelInput.add(btnVerificar, BorderLayout.EAST);
 
@@ -107,31 +107,42 @@ public class CodigoDescuentoFORM extends JFrame {
                 new EmptyBorder(15, 15, 15, 15)
         ));
 
-        double subtotalCalculado = 0.0;
         Font fontNormal = new Font("Arial", Font.PLAIN, 15);
         Font fontBold = new Font("Arial", Font.BOLD, 16);
 
-        if (this.control != null && this.control.getCarrito() != null) {
-            for (ProductoDTO p : this.control.getCarrito()) {
-                subtotalCalculado += p.getPrecio();
-                panelResumen.add(crearFilaTexto(p.getNombre(), String.format("$%.2f", p.getPrecio()), fontNormal, Color.WHITE));
+        try {
+            CarritoDTO miCarrito = control.getCarrito();
+
+            if (miCarrito != null && miCarrito.getProductos() != null) {
+                
+                for (ProductoSeleccionadoDTO p : miCarrito.getProductos()) {
+                    panelResumen.add(crearFilaTexto(
+                            p.getNombre() + " x" + p.getCantidad(), 
+                            String.format("$%.2f", p.getImporte()), 
+                            fontNormal, 
+                            Color.WHITE
+                    ));
+                }
+
+                panelResumen.add(Box.createRigidArea(new Dimension(0, 10)));
+                
+                panelResumen.add(crearFilaTexto("Subtotal", String.format("$%.2f", miCarrito.getSubTotal()), fontNormal, Color.WHITE));
+                
+                if (miCarrito.getDescuento() > 0) {
+                    panelResumen.add(crearFilaTexto("Descuento", String.format("-$%.2f", miCarrito.getDescuento()), fontNormal, control.COLOR_NEON));
+                }
+
+                panelResumen.add(Box.createRigidArea(new Dimension(0, 10)));
+                JSeparator sep = new JSeparator();
+                sep.setForeground(Color.DARK_GRAY);
+                panelResumen.add(sep);
+                panelResumen.add(Box.createRigidArea(new Dimension(0, 10)));
+
+                panelResumen.add(crearFilaTexto("TOTAL", String.format("$%.2f", miCarrito.getTotal()), fontBold, Color.WHITE));
             }
+        } catch (Exception ex) {
+            Logger.getLogger(CodigoDescuentoFORM.class.getName()).log(Level.SEVERE, "Error al cargar resumen", ex);
         }
-
-        panelResumen.add(Box.createRigidArea(new Dimension(0, 10)));
-        panelResumen.add(crearFilaTexto("Subtotal", String.format("$%.2f", subtotalCalculado), fontNormal, Color.WHITE));
-
-        panelResumen.add(Box.createRigidArea(new Dimension(0, 10)));
-        JSeparator sep = new JSeparator();
-        sep.setForeground(Color.DARK_GRAY);
-        panelResumen.add(sep);
-        panelResumen.add(Box.createRigidArea(new Dimension(0, 10)));
-
-        double iva = subtotalCalculado * 0.16;
-        double total = subtotalCalculado + iva;
-
-        panelResumen.add(crearFilaTexto("I.V.A", String.format("$%.2f", iva), fontNormal, Color.WHITE));
-        panelResumen.add(crearFilaTexto("TOTAL", String.format("$%.2f", total), fontBold, Color.WHITE));
 
         contentPanel.add(panelResumen);
         contentPanel.add(Box.createRigidArea(new Dimension(0, 30)));
@@ -153,7 +164,6 @@ public class CodigoDescuentoFORM extends JFrame {
         contentPanel.add(Box.createVerticalGlue());
         add(contentPanel, BorderLayout.CENTER);
 
-
         JPanel footerPanel = new JPanel();
         footerPanel.setBackground(control.COLOR_FONDO);
         footerPanel.setBorder(new EmptyBorder(10, 30, 30, 30));
@@ -167,18 +177,25 @@ public class CodigoDescuentoFORM extends JFrame {
         add(footerPanel, BorderLayout.SOUTH);
     }
 
-
     private void accionAplicarDescuento() {
         String textoIngresado = txtCodigo.getText().trim();
         if (textoIngresado.isEmpty()) {
             control.mostrarCodigoDescuentoRechazado();
             return;
         }
-        control.setDescuento(descuentoActual);
-        JOptionPane.showMessageDialog(this, "Descuento aplicado al ticket.");
-        control.mostrarTotalPrecioProductos();
+        
+        try {
+            control.AplicarDescuento(textoIngresado); 
+            
+            JOptionPane.showMessageDialog(this, "Descuento aplicado al ticket.");
+            control.mostrarTotalPrecioProductos();
+            
+        } catch (NegocioException ex) {
+            Logger.getLogger(CodigoDescuentoFORM.class.getName()).log(Level.SEVERE, "Error al aplicar descuento", ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Código Inválido", JOptionPane.WARNING_MESSAGE);
+            txtCodigo.setText(""); 
+        }
     }
-
 
     private JPanel crearFilaTexto(String textoIzq, String textoDer, Font fuente, Color colorTexto) {
         JPanel panelFila = new JPanel(new BorderLayout());
@@ -245,6 +262,4 @@ public class CodigoDescuentoFORM extends JFrame {
             g2.dispose();
         }
     }
-
-
 }

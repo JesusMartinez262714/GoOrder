@@ -7,6 +7,7 @@ package org.example;
 import GoOrderDTO.CodigoDescuentoDTO;
 import Interfaces.IDescuentosBO;
 import Interfaces.IDescuentosDAO;
+import goorderpersistencia.DescuentosDAO;
 import goorderpersistencia.PersistenciaException;
 
 /**
@@ -17,8 +18,8 @@ public class DescuentosBO implements IDescuentosBO{
 
     private IDescuentosDAO descuentosDAO;
     
-    public DescuentosBO(IDescuentosDAO descuentosDAO) {
-        this.descuentosDAO = descuentosDAO;
+    public DescuentosBO() {
+        this.descuentosDAO = new DescuentosDAO();
     }
 
     

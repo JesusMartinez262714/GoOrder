@@ -1,12 +1,11 @@
 
 package Control;
 
-import CURealizarPedido.IRealizarPedidoCU;
 import GUI.*;
+import GoOrderDTO.CarritoDTO;
 import GoOrderDTO.ProductoDTO;
+import GoOrderDTO.ProductoSeleccionadoDTO;
 import GoOrderDTO.SucursalDTO;
-import RealizarPedido.RealizarPedido;
-
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
@@ -14,6 +13,8 @@ import java.util.List;
 
 import javax.swing.*;
 import org.example.NegocioException;
+import org.itson.realizarpedidocue.IRealizarPedidoCUE;
+import org.itson.realizarpedidocue.RealizarPedidoCUE;
 
 public class Control {
     public final Color COLOR_FONDO = new Color(18, 18, 18);
@@ -27,16 +28,14 @@ public class Control {
 
     
     private IRealizarPedidoCUE realizarPedido;
-    
-    private double descuento = 0;
-    private List<ProductoDTO> carrito = new ArrayList<>();
+
     List<ProductoDTO> listaProductos = new ArrayList<>();
     
     
     
     public Control() {
         cargarMenuProductos();
-        realizarPedido = new RealizarPedido();
+        realizarPedido = new RealizarPedidoCUE();
     }
 
     public ImageIcon obtenerImagen(String nombreImagen) {
@@ -58,53 +57,32 @@ public class Control {
     public List<ProductoDTO> obtenerListaProductos() {
         return listaProductos;
     }
-    public void agregarProducto(ProductoDTO producto) {
-        for (ProductoDTO p : carrito) {
-            if (p.getNombre().equalsIgnoreCase(producto.getNombre())) {
-                p.setCantidad(p.getCantidad() + 1); 
-                return;
-            }
-        }
-        producto.setCantidad(1);
-        carrito.add(producto);
+    public void agregarProducto(ProductoSeleccionadoDTO producto) throws NegocioException {
+        realizarPedido.AgregarProductoCarrito(producto);
     }
     
-    public void incrementarCantidad(ProductoDTO producto) {
-        for (ProductoDTO p : carrito) {
-            if (p.getNombre().equalsIgnoreCase(producto.getNombre())) {
-                p.setCantidad(p.getCantidad() + 1);
-                return;
-            }
-        }
+    public void incrementarCantidad(ProductoSeleccionadoDTO producto) throws NegocioException {
+        realizarPedido.IncrementarCantidad(producto);
     }
     
-    public void decrementarCantidad(ProductoDTO producto) {
-        for (ProductoDTO p : carrito) {
-            if (p.getNombre().equalsIgnoreCase(producto.getNombre())) {
-                if (p.getCantidad() > 1) {
-                    p.setCantidad(p.getCantidad() - 1);
-                } else {
-                    carrito.remove(p);
-                }
-                return;
-            }
-        }
+    public void decrementarCantidad(ProductoSeleccionadoDTO producto) throws NegocioException {
+        realizarPedido.DescrementarCantidad(producto);
     }
     
-    public void eliminarProducto(ProductoDTO producto) {
-        carrito.removeIf(p -> p.getNombre().equalsIgnoreCase(producto.getNombre()));
+    public void eliminarProducto(ProductoSeleccionadoDTO producto) throws NegocioException {
+        realizarPedido.EliminarProductoCarrito(producto);
     }
     
-    public List<ProductoDTO> getCarrito() {
-        return carrito;
+    public CarritoDTO getCarrito() throws NegocioException {
+        return realizarPedido.ObtenerCarrito();
+       
     }
-    public void setDescuento(double descuento) {
-        this.descuento = descuento;
+    
+    public void AplicarDescuento(String descuento) throws NegocioException {
+        realizarPedido.AplicarDescuento(descuento);
     }
 
-    public double getDescuento() {
-        return descuento;
-    }
+    
 
     //NAVEGACION DEL SISTEMA
     private JFrame ventanaActual = null;
@@ -118,7 +96,7 @@ public class Control {
     public void mostrarInicio(){
         mostrarPantallas(new Inicio(this));
     }
-    public void mostrarProductosFORM() throws NegocioException{
+    public void mostrarProductosFORM() throws NegocioException, Exception{
         mostrarPantallas(new ProductosFORM(this));
     }
     public void DescripcionProducto(String nombre, String precio) {
@@ -148,7 +126,7 @@ public class Control {
         mostrarPantallas(new AjustarDireccionMapa(this));
     }
     public void mostrarTotalPrecioProductos(){
-        this.setDescuento(30.00);
+        
         mostrarPantallas(new TotalPrecioProductos(this));
     }
     public void mostrarSeleccionFormaPago(){
