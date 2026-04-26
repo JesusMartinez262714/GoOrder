@@ -37,7 +37,7 @@ public class CarritoBO implements ICarritoBO{
             }            
             boolean existe = false;
             for (ProductoSeleccionadoDTO pro: carrito.getProductos()) {
-                if (pro.equals(producto)) {
+                if (pro.getNombre().equals(producto.getNombre())) {
                     pro.setCantidad(pro.getCantidad()+1);
                     pro.setImporte(pro.getPrecioActual() * pro.getCantidad());
                     existe = true;
