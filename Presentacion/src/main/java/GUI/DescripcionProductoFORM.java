@@ -22,9 +22,9 @@ public class DescripcionProductoFORM extends javax.swing.JFrame {
     private ProductoSeleccionadoDTO producto;
     private ProductoDTO productoDescripcion;
     
-    public DescripcionProductoFORM(Control control, ProductoDTO producto) {
+    public DescripcionProductoFORM(Control control, ProductoDTO productoDescripcion) {
         this.control = control; 
-        this.productoDescripcion = producto;
+        this.productoDescripcion = productoDescripcion;
         initComponents();
         
         this.producto = new ProductoSeleccionadoDTO(
