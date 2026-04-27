@@ -18,7 +18,7 @@ public class ProductoDAO implements IProductoDAO {
         productos = new ArrayList<>();
         productos.add(new Producto("Latte", "Un tipo de cafe", 50.00, "latte_vainilla.png"));
         productos.add(new Producto("Paninni", "Queso y Jamon", 50.00, "panini_clasico.png"));
-        productos.add(new Producto("galleta", "con chispas de chocolate", 15.00, "galleta_chispas.png"));
+        productos.add(new Producto("Galleta de chispas", "Galleta con chispas de chocolate", 15.00, "galleta_chispas.png"));
     }
 
     @Override

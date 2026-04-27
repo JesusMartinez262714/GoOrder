@@ -1,8 +1,10 @@
+
 package GUI;
 
 import Control.Control;
 import GoOrderDTO.CarritoDTO;
 import GoOrderDTO.ProductoSeleccionadoDTO;
+import Pattern.IngresarImagen;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -159,16 +161,15 @@ public class Carrito extends JFrame {
         ));
         panelPrincipal.setMaximumSize(new Dimension(340, 100));
 
-        JLabel lblImagen = new JLabel(" IMG");
+        JLabel lblImagen = new JLabel();
         lblImagen.setForeground(Color.GRAY);
         lblImagen.setPreferredSize(new Dimension(70, 70));
         lblImagen.setOpaque(true);
         lblImagen.setBackground(new Color(50, 50, 50));
         lblImagen.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
-        ImageIcon imagen = control.obtenerImagen(producto.getProducto().getImagen());
-        Image imgEscalada = imagen.getImage().getScaledInstance(100, 70, Image.SCALE_SMOOTH);
-        lblImagen.setIcon(new ImageIcon(imgEscalada));
-
+        String nombreImagen = producto.getProducto().getImagen();
+        IngresarImagen.ingresarImagen(lblImagen, nombreImagen, 100, 70);
+        
         JPanel panelInfo = new JPanel();
         panelInfo.setLayout(new BoxLayout(panelInfo, BoxLayout.Y_AXIS));
         panelInfo.setBackground(control.COLOR_TARJETA);

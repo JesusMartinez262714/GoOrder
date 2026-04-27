@@ -13,8 +13,7 @@ public class ProductoSeleccionadoDTO {
     private Double precioActual;
     private ProductoDTO producto;
 
-    public ProductoSeleccionadoDTO(){
-        
+    public ProductoSeleccionadoDTO(){        
     }
     
     public ProductoSeleccionadoDTO(String nombre, Integer cantidad, Double importe, Double precioActual, ProductoDTO producto) {

@@ -5,8 +5,6 @@ import Control.Control;
 import GoOrderDTO.ProductoDTO;
 import GoOrderDTO.ProductoSeleccionadoDTO;
 import java.awt.Color;
-import java.awt.Dimension;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import org.example.NegocioException;
@@ -39,7 +37,7 @@ public class ImplementacionPanel extends javax.swing.JPanel implements IPaneles 
         initComponents();       
         lbNombre.setText(productoDescripcion.getNombre());
         lbPrecio.setText("$"+productoDescripcion.getPrecio());
-        lbImagen.setIcon(new ImageIcon(productoDescripcion.getImagen()));
+        IngresarImagen.ingresarImagen(lbImagen, productoDescripcion.getImagen(), 170, 150);
     }
 
     /**
@@ -192,7 +190,7 @@ public class ImplementacionPanel extends javax.swing.JPanel implements IPaneles 
     }//GEN-LAST:event_btnDescripcionMouseExited
 
     private void btnDescripcionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDescripcionActionPerformed
-        control.mostrarDescripcionProducto();        
+        control.mostrarDescripcionProducto(productoDescripcion);        
     }//GEN-LAST:event_btnDescripcionActionPerformed
 
     @Override

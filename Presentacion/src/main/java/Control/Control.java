@@ -76,8 +76,6 @@ public class Control {
         realizarPedido.AplicarDescuento(descuento);
     }
 
-    
-
     //NAVEGACION DEL SISTEMA
     private JFrame ventanaActual = null;
     private void mostrarPantallas(JFrame nuevaVentana){
@@ -93,11 +91,6 @@ public class Control {
     public void mostrarProductosFORM() throws NegocioException, Exception{
         mostrarPantallas(new CatalogoProductosFORM(this));
     }
-    public void DescripcionProducto(String nombre, String precio) {
-        DescripcionProductoFORM form = new DescripcionProductoFORM(this);
-        form.DescripcionProductoFORM(nombre, precio);
-        form.setVisible(true);
-    }
     public void mostrarSeleccionMetodoEntrega(){
         mostrarPantallas(new SeleccionMetodoEntrega(this));
     }
@@ -105,7 +98,6 @@ public class Control {
         mostrarPantallas(new Carrito(this));
     }
     public void mostrarSeleccionSucursalesDisponibles(){
-
         try {
             List<SucursalDTO>  sucursales = realizarPedido.consultarSucursales();
             mostrarPantallas(new SeleccionSucursalesDisponibles(this,sucursales));
@@ -147,7 +139,10 @@ public class Control {
     public void mostrarCodigoDescuentoRechazado(){
         mostrarPantallas(new CodigoDescuentoRechazado(this));
     }    
-    public void mostrarDescripcionProducto(){
-        mostrarPantallas(new DescripcionProductoFORM(this));
+    public void mostrarCatalogoProductos() {
+        mostrarPantallas(new CatalogoProductosFORM(this));
+    }
+    public void mostrarDescripcionProducto(ProductoDTO productoSeleccionado){
+        mostrarPantallas(new DescripcionProductoFORM(this, productoSeleccionado));
     }
 }

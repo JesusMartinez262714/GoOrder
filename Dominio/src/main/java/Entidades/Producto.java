@@ -14,12 +14,12 @@ public class Producto {
     private String descripcion;
     private Double precio;
     private Disponibilidad disponibilidad;
-    private byte[] imagen;
+    private String imagen;
 
     public Producto() {
     }
 
-    public Producto(Long id, String nombre, String descripcion, Double precio, Disponibilidad disponibilidad, byte[] imagen) {
+    public Producto(Long id, String nombre, String descripcion, Double precio, Disponibilidad disponibilidad, String imagen) {
         this.id = id;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -83,11 +83,11 @@ public class Producto {
         this.disponibilidad = disponibilidad;
     }
 
-    public byte[] getImagen() {
+    public String getImagen() {
         return imagen;
     }
 
-    public void setImagen(byte[] imagen) {
+    public void setImagen(String imagen) {
         this.imagen = imagen;
     }
 
