@@ -97,6 +97,16 @@ public class CatalogoProductosFORM extends javax.swing.JFrame {
         txtProducto.setForeground(new java.awt.Color(255, 255, 255));
         txtProducto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 236, 80)));
         txtProducto.setCaretColor(new java.awt.Color(255, 255, 255));
+        txtProducto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtProductoActionPerformed(evt);
+            }
+        });
+        txtProducto.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtProductoKeyReleased(evt);
+            }
+        });
 
         btnBuscar.setBackground(new java.awt.Color(0, 0, 0));
         btnBuscar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
@@ -159,7 +169,7 @@ public class CatalogoProductosFORM extends javax.swing.JFrame {
 
         jScrollPane1.setViewportView(jPanel2);
 
-        jLabel1.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Arial", 2, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 255, 150));
         jLabel1.setText("Catalogo de Productos");
 
@@ -178,10 +188,10 @@ public class CatalogoProductosFORM extends javax.swing.JFrame {
                         .addGap(15, 15, 15))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(172, 172, 172)
                 .addComponent(jLabel1)
-                .addGap(150, 150, 150))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -242,6 +252,15 @@ public class CatalogoProductosFORM extends javax.swing.JFrame {
     private void btnCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCarritoActionPerformed
         control.mostrarCarrito();        
     }//GEN-LAST:event_btnCarritoActionPerformed
+
+    private void txtProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProductoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtProductoActionPerformed
+
+    private void txtProductoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtProductoKeyReleased
+        String filtro = txtProducto.getText();
+        cargarProductos(filtro);        
+    }//GEN-LAST:event_txtProductoKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;

@@ -80,7 +80,7 @@ public class DescripcionProductoFORM extends javax.swing.JFrame {
         lbDescripcion.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 236, 80)));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 2, 24)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setForeground(new java.awt.Color(0, 255, 150));
         jLabel1.setText("Descripción producto");
         jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 

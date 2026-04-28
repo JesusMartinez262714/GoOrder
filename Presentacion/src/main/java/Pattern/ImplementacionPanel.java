@@ -5,8 +5,12 @@ import Control.Control;
 import GoOrderDTO.ProductoDTO;
 import GoOrderDTO.ProductoSeleccionadoDTO;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import org.example.NegocioException;
 
 /**
@@ -39,7 +43,15 @@ public class ImplementacionPanel extends javax.swing.JPanel implements IPaneles 
         lbPrecio.setText("$"+productoDescripcion.getPrecio());
         IngresarImagen.ingresarImagen(lbImagen, productoDescripcion.getImagen(), 170, 150);
     }
-
+    
+    private void notificacionProducto() {
+        lbNotificacion.setText("Producto añadido exitosamente");
+        Timer timer = new Timer(2000, (ActionEvent e) -> {
+            lbNotificacion.setText("");            
+        });
+        timer.setRepeats(false);
+        timer.start();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -55,6 +67,7 @@ public class ImplementacionPanel extends javax.swing.JPanel implements IPaneles 
         btnAgregar = new BotonRedondeado();
         btnDescripcion = new BotonRedondeado();
         lbImagen = new javax.swing.JLabel();
+        lbNotificacion = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(51, 51, 51));
 
@@ -141,6 +154,8 @@ public class ImplementacionPanel extends javax.swing.JPanel implements IPaneles 
                 .addContainerGap())
         );
 
+        lbNotificacion.setForeground(new java.awt.Color(0, 255, 150));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -148,14 +163,18 @@ public class ImplementacionPanel extends javax.swing.JPanel implements IPaneles 
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lbImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lbImagen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lbNotificacion, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lbImagen, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
+                .addComponent(lbImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lbNotificacion, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -174,6 +193,7 @@ public class ImplementacionPanel extends javax.swing.JPanel implements IPaneles 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         try {
             control.agregarProducto(producto);
+            notificacionProducto();
         } catch (NegocioException ex) {
             JOptionPane.showMessageDialog(this, "Error al agregar producto: " + ex.getMessage());
         }
@@ -204,6 +224,7 @@ public class ImplementacionPanel extends javax.swing.JPanel implements IPaneles 
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel lbImagen;
     private javax.swing.JLabel lbNombre;
+    private javax.swing.JLabel lbNotificacion;
     private javax.swing.JLabel lbPrecio;
     // End of variables declaration//GEN-END:variables
 }
