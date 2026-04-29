@@ -231,10 +231,11 @@ public class Carrito extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 try {
                     control.incrementarCantidad(producto);
+                    lblCantidad.setText(String.valueOf(producto.getCantidad()));
+                    lblPrecio.setText(String.format("$%.2f", producto.getPrecioActual()));
                 } catch (Exception ex) {
                     Logger.getLogger(Carrito.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                control.mostrarCarrito();
             }
         });
 
@@ -242,10 +243,15 @@ public class Carrito extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 try {
                     control.decrementarCantidad(producto);
+                    if (producto.getCantidad() <= 0) {
+                        control.mostrarCarrito();
+                        return;
+                    }
+                    lblCantidad.setText(String.valueOf(producto.getCantidad()));
+                    lblPrecio.setText(String.format("$%.2f", producto.getPrecioActual()));
                 } catch (Exception ex) {
                     Logger.getLogger(Carrito.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                control.mostrarCarrito();
             }
         });
 
