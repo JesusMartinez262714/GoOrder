@@ -147,17 +147,17 @@ public class CodigoDescuentoFORM extends JFrame {
         contentPanel.add(panelResumen);
         contentPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 
-        JLabel lblTextoDescuento = new JLabel("DESCUENTO POR APLICAR:");
-        lblTextoDescuento.setFont(new Font("Arial", Font.PLAIN, 14));
-        lblTextoDescuento.setForeground(Color.LIGHT_GRAY);
-        lblTextoDescuento.setAlignmentX(Component.CENTER_ALIGNMENT);
+//        JLabel lblTextoDescuento = new JLabel("DESCUENTO POR APLICAR:");
+//        lblTextoDescuento.setFont(new Font("Arial", Font.PLAIN, 14));
+//        lblTextoDescuento.setForeground(Color.LIGHT_GRAY);
+//        lblTextoDescuento.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 //        lblCantidadDescuento = new JLabel("$0.00 MXN");
 //        lblCantidadDescuento.setFont(new Font("Arial", Font.BOLD, 36));
 //        lblCantidadDescuento.setForeground(control.COLOR_NEON);
 //        lblCantidadDescuento.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        contentPanel.add(lblTextoDescuento);
+        //contentPanel.add(lblTextoDescuento);
         contentPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 //        contentPanel.add(lblCantidadDescuento);
 
