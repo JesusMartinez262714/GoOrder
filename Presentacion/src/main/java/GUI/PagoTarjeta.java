@@ -1,3 +1,4 @@
+
 package GUI;
 
 import Control.Control;
@@ -10,7 +11,6 @@ import java.awt.event.MouseEvent;
 import org.example.NegocioException;
 
 public class PagoTarjeta extends JFrame {
-
 
     private Control control;
 
@@ -132,6 +132,7 @@ public class PagoTarjeta extends JFrame {
                         "Transacción Exitosa", 
                         JOptionPane.INFORMATION_MESSAGE);
                         control.mostrarAgradecimiento();
+                        control.limpiarCarrito();
                 } else {
                     JOptionPane.showMessageDialog(this, 
                         "El pago fue rechazado. Verifica el número o tus fondos.", 

@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package GUI;
 
 import Control.Control;
@@ -123,7 +120,8 @@ public class PagoReferencia extends JFrame {
                         "¡Pago aprobado con éxito! Tu pedido está confirmado.", 
                         "Transacción Exitosa", 
                         JOptionPane.INFORMATION_MESSAGE);
-                    control.mostrarAgradecimiento();
+                        control.mostrarAgradecimiento();
+                        control.limpiarCarrito();
                 } else {
                     JOptionPane.showMessageDialog(this, 
                         "El pago fue rechazado. Verifica el código o tus fondos.", 

@@ -62,7 +62,6 @@ public class SeleccionFormaPago extends JFrame {
 
         add(headerPanel, BorderLayout.NORTH);
 
-
         JPanel contentPanel = new JPanel();
         contentPanel.setBackground(COLOR_FONDO);
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));

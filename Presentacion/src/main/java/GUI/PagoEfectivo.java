@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package GUI;
 
 import Control.Control;
@@ -10,6 +7,9 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.example.NegocioException;
 
 /**
  *
@@ -95,6 +95,11 @@ public class PagoEfectivo extends JFrame {
 
         btnAceptar.addActionListener(e -> {
             control.mostrarAgradecimiento();
+            try {
+                control.limpiarCarrito();
+            } catch (NegocioException ex) {
+                Logger.getLogger(PagoEfectivo.class.getName()).log(Level.SEVERE, null, ex);
+            }
         });
 
         footerPanel.add(btnAceptar);

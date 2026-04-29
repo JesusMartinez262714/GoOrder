@@ -29,7 +29,7 @@ public class Infraestructura {
         Map<String, Double> referencias = new HashMap<>();
         referencias.put("REF123", 800.00);
         referencias.put("OXXO999", 3000.00);
-        referencias.put("PAY777", 50.00);   
+        referencias.put("PAY777", 50.00);
 
         try (ServerSocket serverSocket = new ServerSocket(9001)) {
             System.out.println("=== BANCO CON SALDOS INICIADO ===");
