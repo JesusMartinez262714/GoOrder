@@ -71,12 +71,7 @@ public class Infraestructura {
 
                     salida.writeBoolean(pagoAprobado);
                     
-                    if(pagoAprobado) {
-                        System.out.println("<- APROBADO: " + motivo);
-                    } else {
-                        System.out.println("<- RECHAZADO: " + motivo);
-                    }
-                    System.out.println("-----------------------------------");
+                    
 
                 } catch (IOException e) {
                     System.out.println("Error de red: " + e.getMessage());

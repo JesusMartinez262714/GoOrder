@@ -133,11 +133,9 @@ public class RealizarPedidoCUE implements IRealizarPedidoCUE {
     
    @Override
     public boolean finalizarCompra(String cuentaCliente, double totalAPagar) {
-        System.out.println("Validando pago con el banco...");
-        // Llamamos al banco
+        
         boolean pagoExitoso = bancoService.procesarPago(cuentaCliente, totalAPagar);
         
-        // Devolvemos el resultado al Control
         return pagoExitoso; 
     }
     

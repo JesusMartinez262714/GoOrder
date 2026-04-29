@@ -99,10 +99,8 @@ public class Control {
         boolean exito = realizarPedido.finalizarCompra(cuenta, totalAPagar);
         
         if (exito) {
-            System.out.println("GUI: Mostrar mensaje de ÉXITO al cliente");
             return true;
         } else {
-            System.out.println("GUI: Mostrar mensaje de ERROR al cliente");
             return false;
         }
     }

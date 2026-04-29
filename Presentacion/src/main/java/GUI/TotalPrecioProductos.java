@@ -135,6 +135,7 @@ public class TotalPrecioProductos extends JFrame {
                 interiorTicket.add(Box.createRigidArea(new Dimension(0, 10)));
 
                 double totalFinal = miCarrito.getTotal()+ ivaVisual;
+                miCarrito.setTotal(totalFinal);
                 interiorTicket.add(crearFila("TOTAL", String.format("$%.2f", totalFinal), fontTotal, COLOR_NEON));
             }
             

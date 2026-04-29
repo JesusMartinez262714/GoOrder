@@ -124,7 +124,7 @@ public class PagoTarjeta extends JFrame {
             try {
                 
                 boolean pagoExitoso = control.intentarPago(txtNumeroTarjeta.getText(), control.getCarrito().getTotal());
-                System.out.println(control.getCarrito().getTotal());
+                
 
                 if (pagoExitoso) {
                     JOptionPane.showMessageDialog(this, 
@@ -149,15 +149,6 @@ public class PagoTarjeta extends JFrame {
         add(footerPanel, BorderLayout.SOUTH);
     }
 
-
-//    private void simularPago() {
-//        if(txtNombre.getText().trim().isEmpty() || txtNumeroTarjeta.getText().trim().isEmpty() || new String(txtCVV.getPassword()).trim().isEmpty()) {
-//            control.mostrarPagoRechazado();
-//            return;
-//        }
-//        JOptionPane.showMessageDialog(this, "¡Pago Aprobado!\nTu orden ha sido confirmada.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-//        control.mostrarAgradecimiento();
-//    }
 
     private JPanel crearSeccion(String titulo, JComponent input) {
         JPanel panel = new JPanel();
