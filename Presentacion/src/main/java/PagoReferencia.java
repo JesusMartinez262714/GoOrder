@@ -2,27 +2,21 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package GUI;
-
 import Control.Control;
-import javax.swing.JFrame;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.*;
 
-/**
- *
- * @author juanl
- */
-public class PagoEfectivo extends JFrame {
+public class PagoReferencia extends JFrame {
 
     private Control control;
+    private JTextField txtReferencia;
 
-    public PagoEfectivo(Control control) {
+    public PagoReferencia(Control control) {
         this.control = control;
 
-        setTitle("GoOrder - Pago en Efectivo");
+        setTitle("GoOrder - Pago con Referencia");
         setSize(400, 650);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -52,7 +46,7 @@ public class PagoEfectivo extends JFrame {
             control.mostrarSeleccionFormaPago();
         });
 
-        JLabel lblTitulo = new JLabel("PAGO EN EFECTIVO");
+        JLabel lblTitulo = new JLabel("PAGO REFERENCIA");
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
         lblTitulo.setForeground(control.COLOR_NEON);
         lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
@@ -65,24 +59,25 @@ public class PagoEfectivo extends JFrame {
         headerPanel.add(lblEspacio, BorderLayout.EAST);
         add(headerPanel, BorderLayout.NORTH);
 
+        // --- CONTENT ---
         JPanel contentPanel = new JPanel();
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setBackground(control.COLOR_FONDO);
-        contentPanel.setBorder(new EmptyBorder(80, 30, 20, 30));
+        contentPanel.setBorder(new EmptyBorder(40, 30, 20, 30));
 
-        JLabel lblIcono = new JLabel("💵"); 
-        lblIcono.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 70));
-        lblIcono.setAlignmentX(Component.CENTER_ALIGNMENT);
-        contentPanel.add(lblIcono);
+        JLabel lblInstrucciones = new JLabel("<html><div style='text-align: center;'>Ingresa tu código de referencia<br>para procesar el cobro:</div></html>");
+        lblInstrucciones.setFont(new Font("Arial", Font.PLAIN, 16));
+        lblInstrucciones.setForeground(Color.LIGHT_GRAY);
+        lblInstrucciones.setAlignmentX(Component.CENTER_ALIGNMENT);
+        contentPanel.add(lblInstrucciones);
         
-        contentPanel.add(Box.createRigidArea(new Dimension(0, 40)));
+        contentPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 
-        JLabel lblInfo = new JLabel("<html><div style='text-align: center;'>El pago se hará en la<br>ventanilla de la sucursal.</div></html>");
-        lblInfo.setFont(new Font("Arial", Font.PLAIN, 22));
-        lblInfo.setForeground(Color.WHITE);
-        lblInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
-        contentPanel.add(lblInfo);
-
+        txtReferencia = crearTextFieldEstilizado();
+        txtReferencia.setText("OXXO999"); 
+        txtReferencia.setHorizontalAlignment(JTextField.CENTER);
+        
+        contentPanel.add(crearSeccion("Código de Autorización", txtReferencia));
         contentPanel.add(Box.createVerticalGlue());
         add(contentPanel, BorderLayout.CENTER);
 
@@ -91,14 +86,66 @@ public class PagoEfectivo extends JFrame {
         footerPanel.setBorder(new EmptyBorder(10, 30, 30, 30));
         footerPanel.setLayout(new BoxLayout(footerPanel, BoxLayout.Y_AXIS));
 
-        BotonNeon btnAceptar = new BotonNeon("ACEPTAR");
+        BotonNeon btnPagar = new BotonNeon("VALIDAR PAGO");
 
-        btnAceptar.addActionListener(e -> {
-            control.mostrarAgradecimiento();
+        btnPagar.addActionListener(e -> {
+            try {
+                boolean pagoExitoso = control.intentarPago(txtReferencia.getText(), control.getCarrito().getTotal());
+
+                if (pagoExitoso) {
+                    JOptionPane.showMessageDialog(this, 
+                        "¡Pago aprobado con éxito! Tu pedido está confirmado.", 
+                        "Transacción Exitosa", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                    control.mostrarAgradecimiento();
+                } else {
+                    JOptionPane.showMessageDialog(this, 
+                        "El pago fue rechazado. Verifica el código o tus fondos.", 
+                        "Transacción Declinada", 
+                        JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception ex) {
+                System.getLogger(PagoReferencia.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
         });
 
-        footerPanel.add(btnAceptar);
+        footerPanel.add(btnPagar);
         add(footerPanel, BorderLayout.SOUTH);
+    }
+
+
+    private JPanel crearSeccion(String titulo, JComponent input) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(control.COLOR_FONDO);
+        panel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel lblTitulo = new JLabel(titulo);
+        lblTitulo.setFont(new Font("Arial", Font.BOLD, 14));
+        lblTitulo.setForeground(Color.LIGHT_GRAY);
+        lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        panel.add(lblTitulo);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        input.setAlignmentX(Component.CENTER_ALIGNMENT);
+        input.setMaximumSize(new Dimension(340, 50));
+        panel.add(input);
+
+        return panel;
+    }
+
+    private JTextField crearTextFieldEstilizado() {
+        JTextField txt = new JTextField();
+        txt.setBackground(control.COLOR_TARJETA);
+        txt.setForeground(Color.WHITE);
+        txt.setFont(new Font("Arial", Font.BOLD, 22));
+        txt.setCaretColor(control.COLOR_NEON);
+        txt.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.DARK_GRAY, 2, true),
+                new EmptyBorder(10, 10, 10, 10)
+        ));
+        return txt;
     }
 
     class BotonNeon extends JButton {

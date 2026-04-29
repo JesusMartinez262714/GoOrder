@@ -94,6 +94,19 @@ public class Control {
         ventanaActual.setVisible(true);
     }
     
+    public boolean intentarPago(String cuenta, double totalAPagar) throws NegocioException {
+        
+        boolean exito = realizarPedido.finalizarCompra(cuenta, totalAPagar);
+        
+        if (exito) {
+            System.out.println("GUI: Mostrar mensaje de ÉXITO al cliente");
+            return true;
+        } else {
+            System.out.println("GUI: Mostrar mensaje de ERROR al cliente");
+            return false;
+        }
+    }
+    
     public void mostrarInicio(){
         mostrarPantallas(new Inicio(this));
     }

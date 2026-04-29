@@ -37,4 +37,6 @@ public interface IRealizarPedidoCUE {
     public abstract CarritoDTO EliminarProductoCarrito(ProductoSeleccionadoDTO producto)throws NegocioException;
     
     public CodigoDescuentoDTO cambiarEstadoDescuento(String codigo)throws NegocioException;
+    
+    public boolean finalizarCompra(String cuentaCliente, double totalAPagar) throws NegocioException;
 }

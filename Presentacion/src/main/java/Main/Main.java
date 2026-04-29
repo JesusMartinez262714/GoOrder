@@ -8,10 +8,12 @@ import Interfaces.IDescuentosBO;
 import Interfaces.IDescuentosDAO;
 import Interfaces.IProductoBO;
 import Interfaces.IProductoDAO;
+import Interfaces.IServicioBanco;
 import goorderpersistencia.CarritoDAO;
 import goorderpersistencia.DescuentosDAO;
 import goorderpersistencia.ProductoDAO;
 import org.example.CarritoBO;
+import org.example.ConectorBanco;
 import org.example.DescuentosBO;
 import org.example.ProductoBO;
 import org.itson.realizarpedidocue.IRealizarPedidoCUE;
@@ -30,8 +32,9 @@ public class Main {
         IDescuentosBO descuentosBO = new DescuentosBO(descuentosDAO);
         ICarritoDAO carritoDAO = new CarritoDAO();
         ICarritoBO carritoBO = new CarritoBO(carritoDAO,descuentosBO);
+        IServicioBanco bancoService = new ConectorBanco();
         
-        IRealizarPedidoCUE realizarPedido = new RealizarPedidoCUE(productoBO,carritoBO);
+        IRealizarPedidoCUE realizarPedido = new RealizarPedidoCUE(productoBO,carritoBO,bancoService);
         Control control = new Control(realizarPedido);
         control.mostrarInicio();
     }    

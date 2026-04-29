@@ -9,10 +9,12 @@ import GoOrderDTO.SucursalDTO;
 import Interfaces.ICarritoBO;
 import Interfaces.IDescuentosBO;
 import Interfaces.IProductoBO;
+import Interfaces.IServicioBanco;
 import Interfaces.ISucursalesDAO;
 import goorderpersistencia.PersistenciaException;
 import goorderpersistencia.SucursalesDAO;
 import java.util.List;
+import org.example.CarritoBO;
 import org.example.NegocioException;
 
 /**
@@ -25,11 +27,13 @@ public class RealizarPedidoCUE implements IRealizarPedidoCUE {
    private ISucursalesDAO sucursalesDAO;
    private ICarritoBO carritoBO;
    private IDescuentosBO descuentosBO;
+   private IServicioBanco bancoService;
     
-   public RealizarPedidoCUE(IProductoBO productoBO,ICarritoBO carritoBO){
+   public RealizarPedidoCUE(IProductoBO productoBO,ICarritoBO carritoBO,IServicioBanco bancoService){
        this.productoBO = productoBO;
        sucursalesDAO = new SucursalesDAO();
        this.carritoBO = carritoBO;
+       this.bancoService = bancoService;
    }
    
     @Override
@@ -127,6 +131,14 @@ public class RealizarPedidoCUE implements IRealizarPedidoCUE {
         return descuentosBO.CambiarEstadoDescuento(codigo);
     }
     
-    
+   @Override
+    public boolean finalizarCompra(String cuentaCliente, double totalAPagar) {
+        System.out.println("Validando pago con el banco...");
+        // Llamamos al banco
+        boolean pagoExitoso = bancoService.procesarPago(cuentaCliente, totalAPagar);
+        
+        // Devolvemos el resultado al Control
+        return pagoExitoso; 
+    }
     
 }

@@ -7,6 +7,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import org.example.NegocioException;
 
 public class PagoTarjeta extends JFrame {
 
@@ -119,21 +120,43 @@ public class PagoTarjeta extends JFrame {
 
         BotonNeon btnPagar = new BotonNeon("PAGAR");
 
-        btnPagar.addActionListener(e -> simularPago());
+        btnPagar.addActionListener(e -> {
+            try {
+                
+                boolean pagoExitoso = control.intentarPago(txtNumeroTarjeta.getText(), control.getCarrito().getTotal());
+                System.out.println(control.getCarrito().getTotal());
+
+                if (pagoExitoso) {
+                    JOptionPane.showMessageDialog(this, 
+                        "¡Pago aprobado con éxito! Tu pedido está confirmado.", 
+                        "Transacción Exitosa", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                        control.mostrarAgradecimiento();
+                } else {
+                    JOptionPane.showMessageDialog(this, 
+                        "El pago fue rechazado. Verifica el número o tus fondos.", 
+                        "Transacción Declinada", 
+                        JOptionPane.ERROR_MESSAGE);
+                }
+                
+            } catch (NegocioException ex) {
+                System.getLogger(PagoTarjeta.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        } );
 
         footerPanel.add(btnPagar);
         add(footerPanel, BorderLayout.SOUTH);
     }
 
 
-    private void simularPago() {
-        if(txtNombre.getText().trim().isEmpty() || txtNumeroTarjeta.getText().trim().isEmpty() || new String(txtCVV.getPassword()).trim().isEmpty()) {
-            control.mostrarPagoRechazado();
-            return;
-        }
-        JOptionPane.showMessageDialog(this, "¡Pago Aprobado!\nTu orden ha sido confirmada.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-        control.mostrarAgradecimiento();
-    }
+//    private void simularPago() {
+//        if(txtNombre.getText().trim().isEmpty() || txtNumeroTarjeta.getText().trim().isEmpty() || new String(txtCVV.getPassword()).trim().isEmpty()) {
+//            control.mostrarPagoRechazado();
+//            return;
+//        }
+//        JOptionPane.showMessageDialog(this, "¡Pago Aprobado!\nTu orden ha sido confirmada.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+//        control.mostrarAgradecimiento();
+//    }
 
     private JPanel crearSeccion(String titulo, JComponent input) {
         JPanel panel = new JPanel();

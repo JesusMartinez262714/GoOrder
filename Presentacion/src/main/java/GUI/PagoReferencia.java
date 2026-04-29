@@ -1,120 +1,225 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package GUI;
 
 import Control.Control;
-
+import java.awt.BasicStroke;
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 
 /**
  *
  * @author juanl
  */
-public class PagoReferencia extends javax.swing.JFrame {
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(PagoReferencia.class.getName());
+public class PagoReferencia extends JFrame {
 
-    /**
-     * Creates new form PagoReferencia
-     */
+    private Control control;
+    private JTextField txtReferencia;
+
     public PagoReferencia(Control control) {
-       
-        initComponents();
+        this.control = control;
+
+        setTitle("GoOrder - Pago con Referencia");
         setSize(400, 650);
-        this.getContentPane().setBackground(Color.green);
-        this.lblInfo.setText("<html>Su codigo para pago<br>con referencia es:</html>");
-        this.lblCodigo.setText(generarCodigo());
-        btnAceptar.addActionListener(e->control.mostrarAgradecimiento());
-         
-    }
-    
-    public String generarCodigo(){
-        String codigo = "";
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setResizable(false);
+        setLayout(new BorderLayout());
+        getContentPane().setBackground(control.COLOR_FONDO);
+
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        headerPanel.setBackground(control.COLOR_FONDO);
+        headerPanel.setBorder(new EmptyBorder(20, 20, 10, 20));
+
+        JButton btnRegresar = new JButton("←");
+        btnRegresar.setFont(new Font("Arial", Font.BOLD, 24));
+        btnRegresar.setForeground(Color.LIGHT_GRAY);
+        btnRegresar.setContentAreaFilled(false);
+        btnRegresar.setBorderPainted(false);
+        btnRegresar.setFocusPainted(false);
+        btnRegresar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        btnRegresar.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent e) { btnRegresar.setForeground(control.COLOR_NEON); }
+            public void mouseExited(MouseEvent e) { btnRegresar.setForeground(Color.LIGHT_GRAY); }
+        });
+
+        btnRegresar.addActionListener(e -> {
+            control.mostrarSeleccionFormaPago();
+        });
+
+        JLabel lblTitulo = new JLabel("PAGO REFERENCIA");
+        lblTitulo.setFont(new Font("Arial", Font.BOLD, 18));
+        lblTitulo.setForeground(control.COLOR_NEON);
+        lblTitulo.setHorizontalAlignment(SwingConstants.CENTER);
+
+        JLabel lblEspacio = new JLabel("    ");
+        lblEspacio.setPreferredSize(btnRegresar.getPreferredSize());
+
+        headerPanel.add(btnRegresar, BorderLayout.WEST);
+        headerPanel.add(lblTitulo, BorderLayout.CENTER);
+        headerPanel.add(lblEspacio, BorderLayout.EAST);
+        add(headerPanel, BorderLayout.NORTH);
+
+        // --- CONTENT ---
+        JPanel contentPanel = new JPanel();
+        contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
+        contentPanel.setBackground(control.COLOR_FONDO);
+        contentPanel.setBorder(new EmptyBorder(40, 30, 20, 30));
+
+        JLabel lblInstrucciones = new JLabel("<html><div style='text-align: center;'>Ingresa tu código de referencia<br>para procesar el cobro:</div></html>");
+        lblInstrucciones.setFont(new Font("Arial", Font.PLAIN, 16));
+        lblInstrucciones.setForeground(Color.LIGHT_GRAY);
+        lblInstrucciones.setAlignmentX(Component.CENTER_ALIGNMENT);
+        contentPanel.add(lblInstrucciones);
         
-        for (int i = 0; i < 11; i++) {
-            int num = (int) (Math.random() * 10);
-            codigo += num;
-            
-        }
-        return codigo;
+        contentPanel.add(Box.createRigidArea(new Dimension(0, 30)));
+
+        txtReferencia = crearTextFieldEstilizado();
+        txtReferencia.setText("OXXO999"); 
+        txtReferencia.setHorizontalAlignment(JTextField.CENTER);
+        
+        contentPanel.add(crearSeccion("Código de Autorización", txtReferencia));
+        contentPanel.add(Box.createVerticalGlue());
+        add(contentPanel, BorderLayout.CENTER);
+
+        JPanel footerPanel = new JPanel();
+        footerPanel.setBackground(control.COLOR_FONDO);
+        footerPanel.setBorder(new EmptyBorder(10, 30, 30, 30));
+        footerPanel.setLayout(new BoxLayout(footerPanel, BoxLayout.Y_AXIS));
+
+        BotonNeon btnPagar = new BotonNeon("VALIDAR PAGO");
+
+        btnPagar.addActionListener(e -> {
+            try {
+                boolean pagoExitoso = control.intentarPago(txtReferencia.getText(), control.getCarrito().getTotal());
+
+                if (pagoExitoso) {
+                    JOptionPane.showMessageDialog(this, 
+                        "¡Pago aprobado con éxito! Tu pedido está confirmado.", 
+                        "Transacción Exitosa", 
+                        JOptionPane.INFORMATION_MESSAGE);
+                    control.mostrarAgradecimiento();
+                } else {
+                    JOptionPane.showMessageDialog(this, 
+                        "El pago fue rechazado. Verifica el código o tus fondos.", 
+                        "Transacción Declinada", 
+                        JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (Exception ex) {
+                System.getLogger(PagoReferencia.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+        });
+
+        footerPanel.add(btnPagar);
+        add(footerPanel, BorderLayout.SOUTH);
     }
 
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        lblInfo = new javax.swing.JLabel();
-        lblCodigo = new javax.swing.JLabel();
-        btnAceptar = new javax.swing.JButton();
+    private JPanel crearSeccion(String titulo, JComponent input) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setBackground(control.COLOR_FONDO);
+        panel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        JLabel lblTitulo = new JLabel(titulo);
+        lblTitulo.setFont(new Font("Arial", Font.BOLD, 14));
+        lblTitulo.setForeground(Color.LIGHT_GRAY);
+        lblTitulo.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
-        jLabel1.setText("Pago referencia");
+        panel.add(lblTitulo);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
 
-        lblInfo.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        input.setAlignmentX(Component.CENTER_ALIGNMENT);
+        input.setMaximumSize(new Dimension(340, 50));
+        panel.add(input);
 
-        lblCodigo.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
+        return panel;
+    }
 
-        btnAceptar.setText("Aceptar");
-        btnAceptar.addActionListener(this::btnAceptarActionPerformed);
+    private JTextField crearTextFieldEstilizado() {
+        JTextField txt = new JTextField();
+        txt.setBackground(control.COLOR_TARJETA);
+        txt.setForeground(Color.WHITE);
+        txt.setFont(new Font("Arial", Font.BOLD, 22));
+        txt.setCaretColor(control.COLOR_NEON);
+        txt.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.DARK_GRAY, 2, true),
+                new EmptyBorder(10, 10, 10, 10)
+        ));
+        return txt;
+    }
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(lblInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 375, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(169, 169, 169))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(55, 55, 55)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 312, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(176, 176, 176)
-                        .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(27, 27, 27)
-                .addComponent(jLabel1)
-                .addGap(59, 59, 59)
-                .addComponent(lblInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 209, Short.MAX_VALUE)
-                .addComponent(btnAceptar, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(77, 77, 77))
-        );
+    class BotonNeon extends JButton {
+        private boolean over = false;
 
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
+        public BotonNeon(String texto) {
+            super(texto);
+            setOpaque(false);
+            setContentAreaFilled(false);
+            setFocusPainted(false);
+            setBorderPainted(false);
+            setCursor(new Cursor(Cursor.HAND_CURSOR));
+            setAlignmentX(Component.CENTER_ALIGNMENT);
+            setPreferredSize(new Dimension(340, 50));
+            setMaximumSize(new Dimension(340, 50));
 
-    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAceptarActionPerformed
+            addMouseListener(new MouseAdapter() {
+                public void mouseEntered(MouseEvent e) { over = true; repaint(); }
+                public void mouseExited(MouseEvent e) { over = false; repaint(); }
+            });
+        }
 
+        @Override
+        protected void paintComponent(Graphics g) {
+            Graphics2D g2 = (Graphics2D) g.create();
+            g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
+            if (over) g2.setColor(control.COLOR_NEON);
+            else g2.setColor(control.COLOR_TARJETA);
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAceptar;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel lblCodigo;
-    private javax.swing.JLabel lblInfo;
-    // End of variables declaration//GEN-END:variables
+            g2.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
+
+            g2.setFont(new Font("Arial", Font.BOLD, 14));
+            if (over) {
+                g2.setColor(Color.BLACK);
+                g2.setStroke(new BasicStroke(2));
+                g2.setColor(Color.WHITE);
+                g2.drawRoundRect(2, 2, getWidth()-5, getHeight()-5, 15, 15);
+                g2.setColor(Color.BLACK);
+            } else {
+                g2.setColor(Color.WHITE);
+            }
+
+            FontMetrics fm = g2.getFontMetrics();
+            int x = (getWidth() - fm.stringWidth(getText())) / 2;
+            int y = (getHeight() + fm.getAscent()) / 2 - 2;
+            g2.drawString(getText(), x, y);
+            g2.dispose();
+        }
+    }
 }
