@@ -6,6 +6,7 @@ package goorderpersistencia;
 
 import Adapters.DescuentoEntityADTO;
 import Entidades.CodigoDescuento;
+import static Enumeradores.EstadoCodigoDesc.COBRADO;
 import static Enumeradores.EstadoCodigoDesc.NOCOBRADO;
 import GoOrderDTO.CodigoDescuentoDTO;
 import Interfaces.IDescuentosDAO;
@@ -30,15 +31,31 @@ public class DescuentosDAO implements IDescuentosDAO{
         
     }
     
+
     @Override
-    public CodigoDescuentoDTO AplicarCodigo(String codigo) throws PersistenciaException {
+    public CodigoDescuentoDTO BuscarDescuento(String codigo) throws PersistenciaException {
         for (CodigoDescuento descuento : descuentos) {
-            if(codigo == descuento.getCodigo() || descuento.getEstado().equals(NOCOBRADO)){
-                return DescuentoEntityADTO.converitADTO(descuento);
-            }
-            
-        }
-        throw new PersistenciaException("Codigo no encontrado.");
+                    if(codigo.equals(descuento.getCodigo()) && descuento.getEstado().equals(NOCOBRADO)){
+                        return DescuentoEntityADTO.converitADTO(descuento);
+                    }
+
+                }
+                throw new PersistenciaException("Codigo no encontrado.");
+    }
+
+    @Override
+    public CodigoDescuentoDTO cambiarEstado(String codigo) throws PersistenciaException {
+         for (CodigoDescuento descuento : descuentos) {
+                    if(codigo.equals(descuento.getCodigo())){
+                        if(descuento.getEstado().equals(NOCOBRADO)){
+                        descuento.setEstado(COBRADO);
+                        return DescuentoEntityADTO.converitADTO(descuento);
+                        }
+                        throw new PersistenciaException("Codigo ya cobrado");
+                    }
+
+                }
+                throw new PersistenciaException("Codigo no encontrado.");
     }
     
 }

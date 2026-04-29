@@ -2,10 +2,12 @@
 package org.itson.realizarpedidocue;
 
 import GoOrderDTO.CarritoDTO;
+import GoOrderDTO.CodigoDescuentoDTO;
 import GoOrderDTO.ProductoDTO;
 import GoOrderDTO.ProductoSeleccionadoDTO;
 import GoOrderDTO.SucursalDTO;
 import Interfaces.ICarritoBO;
+import Interfaces.IDescuentosBO;
 import Interfaces.IProductoBO;
 import Interfaces.ISucursalesDAO;
 import goorderpersistencia.PersistenciaException;
@@ -23,11 +25,12 @@ public class RealizarPedidoCUE implements IRealizarPedidoCUE {
    private IProductoBO productoBO;
    private ISucursalesDAO sucursalesDAO;
    private ICarritoBO carritoBO;
+   private IDescuentosBO descuentosBO;
     
-   public RealizarPedidoCUE(IProductoBO productoBO){
+   public RealizarPedidoCUE(IProductoBO productoBO,ICarritoBO carritoBO){
        this.productoBO = productoBO;
        sucursalesDAO = new SucursalesDAO();
-       carritoBO = new CarritoBO();
+       this.carritoBO = carritoBO;
    }
    
     @Override
@@ -118,6 +121,11 @@ public class RealizarPedidoCUE implements IRealizarPedidoCUE {
     @Override
     public CarritoDTO EliminarProductoCarrito(ProductoSeleccionadoDTO producto) throws NegocioException {
         return carritoBO.EliminarProductoCarrito(producto);
+    }
+
+    @Override
+    public CodigoDescuentoDTO cambiarEstadoDescuento(String codigo) throws NegocioException {
+        return descuentosBO.CambiarEstadoDescuento(codigo);
     }
     
     

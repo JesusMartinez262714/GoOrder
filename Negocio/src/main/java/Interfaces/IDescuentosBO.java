@@ -13,5 +13,7 @@ import org.example.NegocioException;
  */
 public interface IDescuentosBO {
     
-    public CodigoDescuentoDTO aplicarCodigo(String codigo) throws NegocioException;
+    public CodigoDescuentoDTO BuscarDescuento(String codigo) throws NegocioException;
+    
+    public CodigoDescuentoDTO CambiarEstadoDescuento(String codigo) throws NegocioException;
 }

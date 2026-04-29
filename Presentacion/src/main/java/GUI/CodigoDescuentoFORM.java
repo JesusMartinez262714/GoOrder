@@ -185,8 +185,7 @@ public class CodigoDescuentoFORM extends JFrame {
         }
         
         try {
-            control.AplicarDescuento(textoIngresado); 
-            
+            control.AplicarDescuento(txtCodigo.getText());
             JOptionPane.showMessageDialog(this, "Descuento aplicado al ticket.");
             control.mostrarTotalPrecioProductos();
             

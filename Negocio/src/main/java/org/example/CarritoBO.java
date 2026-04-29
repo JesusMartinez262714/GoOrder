@@ -7,6 +7,7 @@ import GoOrderDTO.ProductoSeleccionadoDTO;
 import Interfaces.ICarritoBO;
 import Interfaces.ICarritoDAO;
 import Interfaces.IDescuentosBO;
+import Interfaces.IDescuentosDAO;
 import goorderpersistencia.CarritoDAO;
 import goorderpersistencia.PersistenciaException;
 import java.util.Iterator;
@@ -23,9 +24,9 @@ public class CarritoBO implements ICarritoBO{
     private ICarritoDAO carritoDAO;
     private IDescuentosBO descuentosBO;
     private CarritoDTO carrito;
-    public CarritoBO() {
-        this.carritoDAO = new CarritoDAO();
-        this.descuentosBO = new DescuentosBO();
+    public CarritoBO(ICarritoDAO carritoDAO,IDescuentosBO descuentosBO) {
+        this.carritoDAO = carritoDAO;
+        this.descuentosBO = descuentosBO;
     }
     
     @Override
@@ -104,6 +105,9 @@ public class CarritoBO implements ICarritoBO{
 
                     carrito.setTotal(carrito.getSubTotal()-carrito.getDescuento());
                 }
+                if(pro.getCantidad() == 0){
+                    EliminarProductoCarrito(producto);
+                }
             }
             carritoDAO.ActualizarCarrito(carrito);
             return carrito;
@@ -115,7 +119,7 @@ public class CarritoBO implements ICarritoBO{
     public CarritoDTO AplicarDescuento(String codigo) throws NegocioException {
        try{
             CarritoDTO carrito = carritoDAO.ObtenerCarrito();
-            CodigoDescuentoDTO cupon = descuentosBO.aplicarCodigo(codigo);
+            CodigoDescuentoDTO cupon = descuentosBO.BuscarDescuento(codigo);
             carrito.setDescuento(cupon.getMonto()); 
             carrito.setTotal(carrito.getSubTotal() - carrito.getDescuento());
             carritoDAO.ActualizarCarrito(carrito);
@@ -163,4 +167,6 @@ public class CarritoBO implements ICarritoBO{
             throw new NegocioException("Ocurrió un error al intentar eliminar el producto del carrito");
         }
     }
+    
+    
 }

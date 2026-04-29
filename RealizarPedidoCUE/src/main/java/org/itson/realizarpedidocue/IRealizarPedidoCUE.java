@@ -3,6 +3,7 @@ package org.itson.realizarpedidocue;
 
 
 import GoOrderDTO.CarritoDTO;
+import GoOrderDTO.CodigoDescuentoDTO;
 import GoOrderDTO.ProductoDTO;
 import GoOrderDTO.ProductoSeleccionadoDTO;
 import java.util.List;
@@ -34,4 +35,6 @@ public interface IRealizarPedidoCUE {
     public abstract CarritoDTO AplicarDescuento(String codigo)throws NegocioException;
     
     public abstract CarritoDTO EliminarProductoCarrito(ProductoSeleccionadoDTO producto)throws NegocioException;
+    
+    public CodigoDescuentoDTO cambiarEstadoDescuento(String codigo)throws NegocioException;
 }

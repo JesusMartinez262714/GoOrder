@@ -118,7 +118,6 @@ public class TotalPrecioProductos extends JFrame {
 
                 double subtotal = miCarrito.getSubTotal();
                 double descuento = miCarrito.getDescuento();
-                double totalFinal = miCarrito.getTotal();
 
                 interiorTicket.add(crearFila("Subtotal", String.format("$%.2f", subtotal), fontBold, Color.WHITE));
 
@@ -135,6 +134,7 @@ public class TotalPrecioProductos extends JFrame {
                 interiorTicket.add(sep2);
                 interiorTicket.add(Box.createRigidArea(new Dimension(0, 10)));
 
+                double totalFinal = miCarrito.getTotal()+ ivaVisual;
                 interiorTicket.add(crearFila("TOTAL", String.format("$%.2f", totalFinal), fontTotal, COLOR_NEON));
             }
             
@@ -161,11 +161,21 @@ public class TotalPrecioProductos extends JFrame {
         BotonNeon btnPago = new BotonNeon("FORMA DE PAGO");
 
         btnDescuento.addActionListener(e -> {
-           control.mostrarCodigoDescuento();
+            try {
+                if(control.getCarrito().getDescuento()>0){
+                    JOptionPane.showMessageDialog(this, "Ya aplicaste un descuento " , "Error", JOptionPane.ERROR_MESSAGE);
+                }else{
+                control.mostrarCodigoDescuento();
+                }
+            } catch (NegocioException ex) {
+                System.getLogger(TotalPrecioProductos.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+            }
+           
         });
 
         btnPago.addActionListener(e -> {
         control.mostrarSeleccionFormaPago();
+        
         });
 
         footerPanel.add(btnDescuento);

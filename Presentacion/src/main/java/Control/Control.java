@@ -75,6 +75,10 @@ public class Control {
     public void AplicarDescuento(String descuento) throws NegocioException {
         realizarPedido.AplicarDescuento(descuento);
     }
+    
+    public void CambiarEstadoDescuento(String descuento)throws NegocioException {
+        realizarPedido.cambiarEstadoDescuento(descuento);
+    }
 
     //NAVEGACION DEL SISTEMA
     private JFrame ventanaActual = null;
