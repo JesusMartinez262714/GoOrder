@@ -44,6 +44,7 @@ public class PagoEfectivo extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         btnAceptar.setText("Aceptar");
+        btnAceptar.addActionListener(this::btnAceptarActionPerformed);
 
         lblTitulo.setFont(new java.awt.Font("Segoe UI", 0, 36)); // NOI18N
         lblTitulo.setText("Pago efectivo");
@@ -83,6 +84,10 @@ public class PagoEfectivo extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAceptarActionPerformed
 
 
 

@@ -68,8 +68,7 @@ public class Control {
     }
     
     public CarritoDTO getCarrito() throws NegocioException {
-        return realizarPedido.ObtenerCarrito();
-       
+        return realizarPedido.ObtenerCarrito();      
     }
     
     public void AplicarDescuento(String descuento) throws NegocioException {
@@ -79,9 +78,14 @@ public class Control {
     public void CambiarEstadoDescuento(String descuento)throws NegocioException {
         realizarPedido.cambiarEstadoDescuento(descuento);
     }
+    
+    public void limpiarCarrito() throws NegocioException {
+        realizarPedido.LimpiarCarrito();
+    }
 
     //NAVEGACION DEL SISTEMA
     private JFrame ventanaActual = null;
+    
     private void mostrarPantallas(JFrame nuevaVentana){
         if(ventanaActual != null){
             ventanaActual.dispose();
@@ -89,18 +93,23 @@ public class Control {
         ventanaActual = nuevaVentana;
         ventanaActual.setVisible(true);
     }
+    
     public void mostrarInicio(){
         mostrarPantallas(new Inicio(this));
     }
+    
     public void mostrarProductosFORM() throws NegocioException, Exception{
         mostrarPantallas(new CatalogoProductosFORM(this));
     }
+    
     public void mostrarSeleccionMetodoEntrega(){
         mostrarPantallas(new SeleccionMetodoEntrega(this));
     }
+    
     public void mostrarCarrito(){
         mostrarPantallas(new Carrito(this));
     }
+    
     public void mostrarSeleccionSucursalesDisponibles(){
         try {
             List<SucursalDTO>  sucursales = realizarPedido.consultarSucursales();

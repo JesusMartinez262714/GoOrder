@@ -131,12 +131,9 @@ public class PagoTarjeta extends JFrame {
             control.mostrarPagoRechazado();
             return;
         }
-
         JOptionPane.showMessageDialog(this, "¡Pago Aprobado!\nTu orden ha sido confirmada.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
         control.mostrarAgradecimiento();
-
     }
-
 
     private JPanel crearSeccion(String titulo, JComponent input) {
         JPanel panel = new JPanel();
@@ -229,6 +226,4 @@ public class PagoTarjeta extends JFrame {
             g2.dispose();
         }
     }
-
-
 }

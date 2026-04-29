@@ -1,14 +1,8 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Interface.java to edit this template
- */
+
 package Interfaces;
 
 import GoOrderDTO.CarritoDTO;
-import GoOrderDTO.ProductoDTO;
-import GoOrderDTO.ProductoSeleccionadoDTO;
 import goorderpersistencia.PersistenciaException;
-import java.util.List;
 
 /**
  *
@@ -22,7 +16,5 @@ public interface ICarritoDAO {
     
     public abstract CarritoDTO LimpiarCarrito() throws PersistenciaException;
     
-    public abstract CarritoDTO ObtenerCarrito() throws PersistenciaException;
-    
-    
+    public abstract CarritoDTO ObtenerCarrito() throws PersistenciaException; 
 }

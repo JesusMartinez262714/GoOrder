@@ -7,8 +7,6 @@ import GoOrderDTO.ProductoSeleccionadoDTO;
 import Interfaces.ICarritoBO;
 import Interfaces.ICarritoDAO;
 import Interfaces.IDescuentosBO;
-import Interfaces.IDescuentosDAO;
-import goorderpersistencia.CarritoDAO;
 import goorderpersistencia.PersistenciaException;
 import java.util.Iterator;
 import java.util.logging.Logger;
@@ -167,6 +165,4 @@ public class CarritoBO implements ICarritoBO{
             throw new NegocioException("Ocurrió un error al intentar eliminar el producto del carrito");
         }
     }
-    
-    
 }
