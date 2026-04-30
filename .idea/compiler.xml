@@ -10,6 +10,9 @@
         <module name="Negocio" />
         <module name="DTOs" />
         <module name="Presentacion" />
+        <module name="Infraestructura" />
+        <module name="RealizarPedidoCUE" />
+        <module name="Dominio" />
       </profile>
     </annotationProcessing>
   </component>
