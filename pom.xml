@@ -17,7 +17,6 @@
     <modules>
         <module>Dominio</module>
         <module>DTOs</module>
-        <module>GoOrder</module>
         <module>Infraestructura</module>
         <module>Negocio</module>
         <module>Persistencia</module>

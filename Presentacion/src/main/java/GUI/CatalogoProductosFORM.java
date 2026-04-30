@@ -1,4 +1,3 @@
-
 package GUI;
 
 import Control.Control;
@@ -14,6 +13,9 @@ import javax.swing.JPanel;
 import org.example.NegocioException;
 
 /**
+ * Esta clase es la pantalla principal del menú de la aplicación.
+ * Aquí el usuario puede ver todos los productos disponibles en forma de tarjetas,
+ * buscarlos por su nombre usando una barra de búsqueda, y dirigirse a su carrito de compras.
  *
  * @author Alex García Trejo
  */
@@ -23,53 +25,77 @@ public class CatalogoProductosFORM extends javax.swing.JFrame {
     private Color colorOriginal;
     private Color colorIluminado;
     private ProductoDTO prod;
-    
+
+    /**
+     * Constructor de la pantalla del catálogo.
+     * Se encarga de preparar la ventana, acomodar el diseño en forma de cuadrícula (grid)
+     * para que los productos se vean ordenados de dos en dos, y carga los productos iniciales.
+     *
+     * @param control El objeto principal que maneja los datos y las acciones de la aplicación.
+     */
     public CatalogoProductosFORM(Control control) {
         this.control = control;
         initComponents();
         setLocationRelativeTo(null);
         jPanel2.setLayout(new GridLayout(0, 2, 10, 10));
-        
+
         jPanel2.setOpaque(false);
         JPanel panelContener = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
         panelContener.setBackground(new Color(18, 18, 18));
         panelContener.add(jPanel2);
-        
+
         jScrollPane1.setViewportView(panelContener);
         jScrollPane1.getViewport().setBackground(new Color(18, 18, 18));
         jScrollPane1.setBorder(null);
-        
+
         cargarProductos("");
-    }      
-    
+    }
+
+    /**
+     * Limpia la pantalla y vuelve a pedirle al sistema la lista de productos para dibujarlos.
+     * Si se le pasa un texto, busca solo los productos que coincidan con ese texto;
+     * si se le pasa vacío, muestra todo el menú completo.
+     *
+     * @param producto El nombre del producto que el usuario quiere buscar (puede estar vacío).
+     */
     private void cargarProductos(String producto) {
-        jPanel2.removeAll();     
+        jPanel2.removeAll();
         try {
             if (producto == null || producto.trim().isEmpty()) {
                 for (ProductoDTO prod: control.listarProductos()) {
                     agregarProducto(prod);
                 }
             } else {
-                for (ProductoDTO prod: control.buscarProducto(producto)) { 
+                for (ProductoDTO prod: control.buscarProducto(producto)) {
                     agregarProducto(prod);
                 }
             }
         } catch (NegocioException e) {
             JOptionPane.showMessageDialog(this, "Error al cargar producto(s): " + e.getMessage());
-        }        
+        }
         jPanel2.revalidate();
         jPanel2.repaint();
     }
-    
+
+    /**
+     * Toma la información de un solo producto y utiliza una "Fábrica" (FactoriaPaneles)
+     * para construir su diseño visual (la tarjeta con su foto, precio y botón).
+     * Luego, lo añade a la pantalla.
+     *
+     * @param producto El objeto con los datos del producto a mostrar.
+     */
     private void agregarProducto(ProductoDTO producto) {
         IPaneles panelProducto = FactoriaPaneles.crearPanelProducto(control, producto);
         jPanel2.add(panelProducto.getPanel());
     }
-    
+
+    /**
+     * Borra el texto que el usuario haya escrito en la barra de búsqueda.
+     */
     private void limpiarCampo(){
         txtProducto.setText("");
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -159,12 +185,12 @@ public class CatalogoProductosFORM extends javax.swing.JFrame {
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 532, Short.MAX_VALUE)
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 532, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 556, Short.MAX_VALUE)
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 556, Short.MAX_VALUE)
         );
 
         jScrollPane1.setViewportView(jPanel2);
@@ -176,90 +202,119 @@ public class CatalogoProductosFORM extends javax.swing.JFrame {
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnCarrito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(txtProducto)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(15, 15, 15))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE))
-                .addContainerGap())
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(172, 172, 172)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(btnCarrito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                                .addComponent(txtProducto)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(15, 15, 15))
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE))
+                                .addContainerGap())
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(172, 172, 172)
+                                .addComponent(jLabel1)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnCarrito, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtProducto, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(btnBuscar, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 11, Short.MAX_VALUE)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(btnCarrito, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Acción que ocurre al presionar el botón "Buscar".
+     * Lee lo que el usuario escribió y filtra el catálogo.
+     */
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
         String producto = txtProducto.getText();
         cargarProductos(producto);
         limpiarCampo();
     }//GEN-LAST:event_btnBuscarActionPerformed
 
+    /**
+     * Cambia el color del botón "Buscar" a un tono verde más brillante
+     * cuando el usuario pasa el ratón por encima.
+     */
     private void btnBuscarMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseEntered
-        colorIluminado = new Color(51, 136, 20); 
-        btnBuscar.setBackground(colorIluminado); 
+        colorIluminado = new Color(51, 136, 20);
+        btnBuscar.setBackground(colorIluminado);
     }//GEN-LAST:event_btnBuscarMouseEntered
 
+    /**
+     * Regresa el color del botón "Buscar" a su tono oscuro original
+     * cuando el usuario quita el ratón de encima.
+     */
     private void btnBuscarMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarMouseExited
         colorOriginal = new Color(35, 35, 35);
         btnBuscar.setBackground(colorOriginal);
     }//GEN-LAST:event_btnBuscarMouseExited
 
+    /**
+     * Cambia el color del botón "Ver Carrito" a un tono verde más brillante
+     * cuando el usuario pasa el ratón por encima.
+     */
     private void btnCarritoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCarritoMouseEntered
         colorIluminado = new Color(51, 136, 20);
         btnCarrito.setBackground(colorIluminado);
     }//GEN-LAST:event_btnCarritoMouseEntered
 
+    /**
+     * Regresa el color del botón "Ver Carrito" a su tono oscuro original
+     * cuando el usuario quita el ratón de encima.
+     */
     private void btnCarritoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCarritoMouseExited
         colorOriginal = new Color(35, 35, 35);
         btnCarrito.setBackground(colorOriginal);
     }//GEN-LAST:event_btnCarritoMouseExited
 
+    /**
+     * Acción que ocurre al presionar el botón "Ver Carrito".
+     * Le avisa al controlador que debe cambiar la pantalla para mostrar el carrito de compras.
+     */
     private void btnCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCarritoActionPerformed
-        control.mostrarCarrito();        
+        control.mostrarCarrito();
     }//GEN-LAST:event_btnCarritoActionPerformed
 
     private void txtProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtProductoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtProductoActionPerformed
 
+    /**
+     * Permite que el catálogo se vaya filtrando automáticamente cada vez que el
+     * usuario presiona y suelta una tecla en la barra de búsqueda, haciendo la
+     * búsqueda más dinámica sin tener que presionar el botón.
+     */
     private void txtProductoKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtProductoKeyReleased
         String filtro = txtProducto.getText();
-        cargarProductos(filtro);        
+        cargarProductos(filtro);
     }//GEN-LAST:event_txtProductoKeyReleased
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

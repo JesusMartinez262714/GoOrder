@@ -30,7 +30,6 @@ public class ProductosFORM extends JFrame {
         setLayout(new BorderLayout());
         getContentPane().setBackground(control.COLOR_FONDO);
 
-        // --- NORTE: BÚSQUEDA ---
         JPanel pnlNorte = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 15));
         pnlNorte.setBackground(control.COLOR_FONDO);
         
@@ -50,13 +49,11 @@ public class ProductosFORM extends JFrame {
         pnlNorte.add(txtBuscar);
         pnlNorte.add(btnBuscar);
                         
-        // --- CENTRO: GRID DE PRODUCTOS ---
         pnlGrid = new JPanel();
         pnlGrid.setLayout(new BoxLayout(pnlGrid, BoxLayout.Y_AXIS));
         pnlGrid.setBackground(control.COLOR_FONDO);
         pnlGrid.setBorder(new EmptyBorder(10, 15, 10, 15));
 
-        // Cargamos el catálogo inicial usando ProductoDTO
         for (ProductoDTO producto : control.listarProductos()){
             pnlGrid.add(crearTarjetaProducto(producto));
             pnlGrid.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -68,7 +65,6 @@ public class ProductosFORM extends JFrame {
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBackground(control.COLOR_FONDO);
 
-        // --- SUR: BOTÓN CARRITO ---
         JPanel pnlSur = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 15));
         pnlSur.setBackground(control.COLOR_FONDO);
         
@@ -77,7 +73,6 @@ public class ProductosFORM extends JFrame {
         btnCarrito.addActionListener(e -> control.mostrarCarrito());
         pnlSur.add(btnCarrito);
 
-        // --- ACCIÓN DE BÚSQUEDA ---
         btnBuscar.addActionListener(e -> {
             String nombre = txtBuscar.getText().trim();
             
@@ -112,7 +107,6 @@ public class ProductosFORM extends JFrame {
         add(pnlSur, BorderLayout.SOUTH);
     }
 
-    // El diseño recibe la información del Catálogo (ProductoDTO)
     private JPanel crearTarjetaProducto(ProductoDTO producto) {
         JPanel tarjeta = new JPanel();
         tarjeta.setLayout(new BorderLayout());

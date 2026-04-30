@@ -1,4 +1,3 @@
-
 package GUI;
 
 import Control.Control;
@@ -12,10 +11,24 @@ import java.awt.event.MouseEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * Esta clase representa la pantalla del "Carrito de Compras" de la aplicación.
+ * Aquí el usuario puede ver los productos que ha elegido, cambiar la cantidad,
+ * eliminarlos si ya no los quiere, y ver el subtotal a pagar antes de
+ * elegir cómo quiere que se lo entreguen.
+ */
 public class Carrito extends JFrame {
 
     private Control control;
 
+    /**
+     * Constructor de la ventana del carrito.
+     * Se encarga de armar toda la pantalla: pone el color de fondo, acomoda la lista
+     * de productos que están en el carrito y prepara el botón para pasar a la
+     * forma de entrega. Si el carrito está vacío, muestra un mensaje avisando.
+     *
+     * @param control El controlador principal que maneja los datos y los cambios de pantalla.
+     */
     public Carrito(Control control) {
         this.control = control;
 
@@ -74,14 +87,14 @@ public class Carrito extends JFrame {
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
 
-        double subtotalMostrar = 0.0; 
+        double subtotalMostrar = 0.0;
 
         try {
             CarritoDTO miCarrito = control.getCarrito();
 
             if (miCarrito != null && miCarrito.getProductos() != null && !miCarrito.getProductos().isEmpty()) {
-                
-                subtotalMostrar = miCarrito.getSubTotal(); 
+
+                subtotalMostrar = miCarrito.getSubTotal();
 
                 for (ProductoSeleccionadoDTO producto : miCarrito.getProductos()) {
                     contentPanel.add(crearPanelProducto(producto));
@@ -152,6 +165,14 @@ public class Carrito extends JFrame {
         add(footerPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * Crea una "tarjeta" visual para un producto específico dentro de la lista del carrito.
+     * Esta tarjeta incluye la foto del producto, su nombre, precio, y los botones
+     * para sumar (+), restar (-) o eliminar (el bote de basura) el producto.
+     *
+     * @param producto Los datos del producto que se va a mostrar en esta tarjeta.
+     * @return Un panel (caja visual) listo para agregarse a la pantalla.
+     */
     private JPanel crearPanelProducto(ProductoSeleccionadoDTO producto) {
         JPanel panelPrincipal = new JPanel(new BorderLayout(15, 10));
         panelPrincipal.setBackground(control.COLOR_TARJETA);
@@ -169,7 +190,7 @@ public class Carrito extends JFrame {
         lblImagen.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
         String nombreImagen = producto.getProducto().getImagen();
         IngresarImagen.ingresarImagen(lblImagen, nombreImagen, 100, 70);
-        
+
         JPanel panelInfo = new JPanel();
         panelInfo.setLayout(new BoxLayout(panelInfo, BoxLayout.Y_AXIS));
         panelInfo.setBackground(control.COLOR_TARJETA);
@@ -275,6 +296,15 @@ public class Carrito extends JFrame {
         return panelPrincipal;
     }
 
+    /**
+     * Crea un pequeño renglón de texto para la sección del resumen de cobro (hasta abajo).
+     * Sirve para mostrar cosas como "Hamburguesa x2 ---- $100.00" o el subtotal final.
+     *
+     * @param textoIzquierda El texto que va del lado izquierdo (ej. el nombre del producto).
+     * @param textoDerecha El texto que va del lado derecho (ej. el precio).
+     * @param esTotal Un valor que nos dice si este renglón es el total principal (para pintarlo más grande y llamativo).
+     * @return Un panel con los textos acomodados en los extremos listos para mostrarse.
+     */
     private JPanel crearFilaResumen(String textoIzquierda, String textoDerecha, boolean esTotal) {
         JPanel panel = new JPanel(new BorderLayout());
         panel.setBackground(control.COLOR_FONDO);
@@ -297,10 +327,20 @@ public class Carrito extends JFrame {
         return panel;
     }
 
+    /**
+     * Clase interna para crear botones personalizados en la pantalla del carrito.
+     * Le da un estilo oscuro con bordes redondeados y hace que cambie a un color
+     * neón brillante cuando pasamos el ratón por encima, dándole un toque moderno.
+     */
     class BotonNeon extends JButton {
 
         private boolean over = false;
 
+        /**
+         * Crea el botón con su diseño especial.
+         *
+         * @param texto La palabra que se leerá dentro del botón.
+         */
         public BotonNeon(String texto) {
             super(texto);
             setOpaque(false);
@@ -326,6 +366,13 @@ public class Carrito extends JFrame {
             });
         }
 
+        /**
+         * Este método es el que dibuja los colores del botón en la pantalla.
+         * Revisa si el botón está bloqueado (gris oscuro) o si el ratón está encima
+         * (verde neón) para pintarlo de la forma correcta.
+         *
+         * @param g La herramienta gráfica de Java para dibujar formas y colores.
+         */
         @Override
         protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();

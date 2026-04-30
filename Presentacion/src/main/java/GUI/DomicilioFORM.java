@@ -3,12 +3,18 @@ package GUI;
 import Control.Control;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * Esta clase representa la pantalla donde el usuario escribe los datos de su casa
+ * para que le entreguen su pedido. Aquí puede poner su colonia, calle, número exterior
+ * y cualquier otra referencia útil para el repartidor.
+ */
 public class DomicilioFORM extends JFrame {
 
     private Control control;
@@ -17,6 +23,13 @@ public class DomicilioFORM extends JFrame {
     private JTextField txtDireccion;
     private JTextArea txtEspecificaciones;
 
+    /**
+     * Constructor de la ventana. Se encarga de armar toda la pantalla, acomodar las cajas
+     * de texto para que el usuario escriba su dirección y configurar los botones para
+     * confirmar los datos o abrir el mapa.
+     *
+     * @param control El objeto principal que maneja los datos y nos ayuda a cambiar de pantallas.
+     */
     public DomicilioFORM(Control control) {
         this.control = control;
 
@@ -164,7 +177,14 @@ public class DomicilioFORM extends JFrame {
         add(footerPanel, BorderLayout.SOUTH);
     }
 
-
+    /**
+     * Es un método de ayuda para crear una cajita ordenada que incluye el título (ej. "Calle")
+     * y el espacio donde el usuario va a escribir.
+     *
+     * @param labelText El título que va a aparecer arriba de la caja de texto.
+     * @param textField La caja de texto donde el usuario escribirá.
+     * @return Un pequeño panel ya organizado con el título y la caja listos para agregarse a la pantalla.
+     */
     private JPanel crearPanelInput(String labelText, JTextField textField) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -187,6 +207,13 @@ public class DomicilioFORM extends JFrame {
         return panel;
     }
 
+    /**
+     * Crea un espacio para escribir texto con el diseño oscuro de nuestra aplicación.
+     * También le pone un texto de fondo (como una pista) que desaparece cuando el usuario empieza a escribir.
+     *
+     * @param placeholder El texto de ayuda que aparece cuando la caja está vacía (ej. "Nombre de la calle").
+     * @return La caja de texto ya configurada y lista para usarse.
+     */
     private JTextField crearCampoTexto(String placeholder) {
         JTextField txt = new JTextField(placeholder);
         txt.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -202,6 +229,15 @@ public class DomicilioFORM extends JFrame {
         return txt;
     }
 
+    /**
+     * Le da un toque interactivo a las cajas de texto. Hace que el texto de ayuda desaparezca
+     * cuando el usuario hace clic para escribir, y que vuelva a aparecer si se va sin escribir nada.
+     * También cambia el color del borde para que se note qué caja está seleccionada.
+     *
+     * @param componenteTexto El lugar donde el usuario escribe (puede ser de una línea o un cuadro grande).
+     * @param componenteBorde La parte que dibuja el marco alrededor de la caja para cambiarle el color.
+     * @param placeholder El texto de ayuda que debe mostrarse u ocultarse.
+     */
     private void agregarEfectoFoco(Component componenteTexto, JComponent componenteBorde, String placeholder) {
         componenteTexto.addFocusListener(new FocusAdapter() {
             @Override
@@ -255,10 +291,18 @@ public class DomicilioFORM extends JFrame {
         });
     }
 
-
+    /**
+     * Clase interna que dibuja los botones personalizados de la pantalla.
+     * Les da un estilo oscuro que se ilumina con un color brillante cuando pasamos el ratón encima.
+     */
     class BotonNeon extends JButton {
         private boolean over = false;
 
+        /**
+         * Crea el botón con su diseño especial.
+         *
+         * @param texto La palabra que se leerá dentro del botón.
+         */
         public BotonNeon(String texto) {
             super(texto);
             setOpaque(false);
@@ -274,6 +318,12 @@ public class DomicilioFORM extends JFrame {
             });
         }
 
+        /**
+         * Se encarga de pintar la forma redondeada y los colores del botón dependiendo
+         * de si el ratón está encima o no.
+         *
+         * @param g La herramienta gráfica que usa Java para pintar cosas en la pantalla.
+         */
         @Override
         protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();

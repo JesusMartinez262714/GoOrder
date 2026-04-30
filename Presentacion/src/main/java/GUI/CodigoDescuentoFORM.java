@@ -14,6 +14,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.example.NegocioException;
 
+/**
+ * Esta clase representa la pantalla donde el usuario puede ingresar un código
+ * de promoción o descuento antes de pagar.
+ * También muestra un pequeño resumen tipo "ticket" con los productos
+ * del carrito, el subtotal y el total final a pagar.
+ */
 public class CodigoDescuentoFORM extends JFrame {
 
     private Control control;
@@ -22,6 +28,13 @@ public class CodigoDescuentoFORM extends JFrame {
     private JTextField txtCodigo;
     private JLabel lblCantidadDescuento;
 
+    /**
+     * Constructor de la ventana de descuentos.
+     * Se encarga de armar la interfaz gráfica, crear la caja de texto para escribir
+     * el código, y generar la lista del resumen de compra leyendo los datos del carrito.
+     *
+     * @param control El objeto principal que maneja los datos y los cambios de pantalla en GoOrder.
+     */
     public CodigoDescuentoFORM(Control control) {
         this.control = control;
 
@@ -108,20 +121,20 @@ public class CodigoDescuentoFORM extends JFrame {
             CarritoDTO miCarrito = control.getCarrito();
 
             if (miCarrito != null && miCarrito.getProductos() != null) {
-                
+
                 for (ProductoSeleccionadoDTO p : miCarrito.getProductos()) {
                     panelResumen.add(crearFilaTexto(
-                            p.getNombre() + " x" + p.getCantidad(), 
-                            String.format("$%.2f", p.getImporte()), 
-                            fontNormal, 
+                            p.getNombre() + " x" + p.getCantidad(),
+                            String.format("$%.2f", p.getImporte()),
+                            fontNormal,
                             Color.WHITE
                     ));
                 }
 
                 panelResumen.add(Box.createRigidArea(new Dimension(0, 10)));
-                
+
                 panelResumen.add(crearFilaTexto("Subtotal", String.format("$%.2f", miCarrito.getSubTotal()), fontNormal, Color.WHITE));
-                
+
                 if (miCarrito.getDescuento() > 0) {
                 }
 
@@ -159,18 +172,24 @@ public class CodigoDescuentoFORM extends JFrame {
         add(footerPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * Este método se activa cuando el usuario hace clic en el botón de confirmar.
+     * Lee el código que el usuario escribió en la caja de texto y le pide a la capa de negocio
+     * que valide si existe o no. Si funciona, muestra un mensaje de éxito, de lo contrario
+     * avisa que el código no es válido.
+     */
     private void accionAplicarDescuento() {
         String textoIngresado = txtCodigo.getText().trim();
         if (textoIngresado.isEmpty()) {
             control.mostrarCodigoDescuentoRechazado();
             return;
         }
-        
+
         try {
             control.AplicarDescuento(txtCodigo.getText());
             JOptionPane.showMessageDialog(this, "Descuento aplicado al ticket.");
             control.mostrarTotalPrecioProductos();
-            
+
         } catch (NegocioException ex) {
             JOptionPane.showMessageDialog(this,
                     "El código ingresado no es válido o no existe.",
@@ -180,6 +199,17 @@ public class CodigoDescuentoFORM extends JFrame {
         }
     }
 
+    /**
+     * Es un método de ayuda para crear los renglones del resumen de compra.
+     * Acomoda un texto del lado izquierdo (como el nombre del producto) y
+     * otro del lado derecho (como su precio).
+     *
+     * @param textoIzq El texto que aparecerá a la izquierda.
+     * @param textoDer El texto que aparecerá a la derecha.
+     * @param fuente El tipo de letra y tamaño que se usará.
+     * @param colorTexto El color de las letras.
+     * @return Un pequeño panel ya organizado con los dos textos.
+     */
     private JPanel crearFilaTexto(String textoIzq, String textoDer, Font fuente, Color colorTexto) {
         JPanel panelFila = new JPanel(new BorderLayout());
         panelFila.setOpaque(false);
@@ -197,9 +227,19 @@ public class CodigoDescuentoFORM extends JFrame {
         return panelFila;
     }
 
+    /**
+     * Clase interna para generar el botón llamativo de la pantalla.
+     * Tiene un estilo oscuro por defecto, pero sus bordes y texto cambian de color
+     * al interactuar con el ratón.
+     */
     class BotonNeon extends JButton {
         private boolean over = false;
 
+        /**
+         * Construye el botón personalizado.
+         *
+         * @param texto El mensaje que el botón mostrará en su interior.
+         */
         public BotonNeon(String texto) {
             super(texto);
             setOpaque(false);
@@ -217,6 +257,12 @@ public class CodigoDescuentoFORM extends JFrame {
             });
         }
 
+        /**
+         * Define visualmente cómo se dibuja el botón. Evalúa si el ratón está
+         * pasando por encima para pintar su color de iluminación o mantener el color original.
+         *
+         * @param g La herramienta de Java para pintar gráficos en la pantalla.
+         */
         @Override
         protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();

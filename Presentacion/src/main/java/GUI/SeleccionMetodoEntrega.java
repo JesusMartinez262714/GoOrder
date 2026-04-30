@@ -6,12 +6,24 @@ import Control.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * Esta clase representa la pantalla donde el usuario decide cómo quiere recibir su pedido.
+ * Básicamente, le muestra dos opciones: ir a recogerlo a la sucursal o que se lo lleven a su casa.
+ */
 public class SeleccionMetodoEntrega extends JFrame {
 
     private final Color COLOR_FONDO = new Color(18, 18, 18);
     private final Color COLOR_NEON = new Color(0, 255, 150);
     private final Color COLOR_BOTON = new Color(35, 35, 35);
 
+    /**
+     * Constructor de la ventana. Aquí se arma toda la interfaz gráfica, se ponen
+     * los colores oscuros de fondo, los textos y los botones.
+     * También se le da funcionalidad a los botones para que guarden la decisión
+     * del usuario en el carrito y lo manden a la siguiente pantalla correspondiente.
+     *
+     * @param control El objeto principal que maneja los datos del carrito y nos permite cambiar de pantallas.
+     */
     public SeleccionMetodoEntrega(Control control) {
         setTitle("Seleccionar Metodo de Entrega");
         setSize(400, 650);
@@ -70,8 +82,23 @@ public class SeleccionMetodoEntrega extends JFrame {
         BotonNeon btnSucursal = new BotonNeon("PICK UP");
         BotonNeon btnDomicilio = new BotonNeon("A DOMICILIO");
 
-        btnSucursal.addActionListener(e -> control.mostrarSeleccionSucursalesDisponibles());
-        btnDomicilio.addActionListener(e -> control.mostrarDomicilioFORM());
+        btnSucursal.addActionListener(e -> {
+            try {
+                control.getCarrito().setMetodoEntrega("PICK UP");
+                control.mostrarSeleccionSucursalesDisponibles();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+            }
+        });
+
+        btnDomicilio.addActionListener(e -> {
+            try {
+                control.getCarrito().setMetodoEntrega("DOMICILIO");
+                control.mostrarDomicilioFORM();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+            }
+        });
 
         contentPanel.add(btnSucursal);
         contentPanel.add(Box.createRigidArea(new Dimension(0, 25)));
@@ -90,9 +117,19 @@ public class SeleccionMetodoEntrega extends JFrame {
 
 
 
+    /**
+     * Clase interna que sirve para crear botones llamativos.
+     * Se usa para que los botones tengan bordes redondeados y cambien de color
+     * al pasar el ratón por encima, dándole un toque moderno a la aplicación.
+     */
     class BotonNeon extends JButton {
         private boolean over = false;
 
+        /**
+         * Crea un botón visualmente personalizado.
+         *
+         * @param texto La palabra que se va a mostrar dentro del botón.
+         */
         public BotonNeon(String texto) {
             super(texto);
             setOpaque(false);
@@ -109,6 +146,11 @@ public class SeleccionMetodoEntrega extends JFrame {
             });
         }
 
+        /**
+         * Se encarga de dibujar manualmente la forma y los colores del botón.
+         *
+         * @param g La herramienta de gráficos que Java usa para dibujar en la pantalla.
+         */
         @Override
         protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();

@@ -1,6 +1,7 @@
 package GUI;
 
 import Control.Control;
+import GoOrderDTO.CarritoDTO;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -45,8 +46,18 @@ public class Agradecimiento extends JFrame {
         lblPedido.setFont(new Font("Arial", Font.BOLD, 32));
         lblPedido.setForeground(control.COLOR_NEON);
         lblPedido.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JLabel lblEsperamos = new JLabel("TE ESPERAMOS");
+        String textoMensaje = "TE ESPERAMOS";
+        try {
+            CarritoDTO carrito = control.getCarrito();
+            if (carrito != null && carrito.getMetodoEntrega() != null) {
+                if (carrito.getMetodoEntrega().equals("DOMICILIO")) {
+                    textoMensaje = "TU PEDIDO ESTÁ EN CAMINO";
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println("No se pudo cargar el método de entrega: " + ex.getMessage());
+        }
+        JLabel lblEsperamos = new JLabel(textoMensaje);
         lblEsperamos.setFont(new Font("Arial", Font.PLAIN, 18));
         lblEsperamos.setForeground(Color.LIGHT_GRAY);
         lblEsperamos.setAlignmentX(Component.CENTER_ALIGNMENT);

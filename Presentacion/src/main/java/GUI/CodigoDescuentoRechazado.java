@@ -8,12 +8,24 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * Esta clase representa una pantalla de aviso o alerta en la aplicación GoOrder.
+ * Se muestra específicamente cuando el usuario intenta usar un código de descuento
+ * que está mal escrito, no existe o simplemente no es válido.
+ */
 public class CodigoDescuentoRechazado extends JFrame {
 
 
 
     private Control control;
 
+    /**
+     * Constructor de la ventana. Se encarga de armar la interfaz visual,
+     * mostrando un mensaje grande y claro de que el código falló, y acomodando
+     * un botón en la parte de abajo para que el usuario pueda regresar a intentarlo de nuevo.
+     *
+     * @param control El objeto principal que maneja los datos y nos permite regresar a la pantalla anterior.
+     */
     public CodigoDescuentoRechazado(Control control) {
         this.control = control;
 
@@ -70,10 +82,20 @@ public class CodigoDescuentoRechazado extends JFrame {
         add(footerPanel, BorderLayout.SOUTH);
     }
 
-
+    /**
+     * Clase interna para crear un botón con estilo personalizado.
+     * En esta pantalla en particular, el botón tiene un diseño un poco más discreto
+     * (sin los colores neón brillantes) para indicar que es una acción secundaria
+     * o de "regresar".
+     */
     class BotonNeon extends JButton {
         private boolean over = false;
 
+        /**
+         * Construye el botón personalizado.
+         *
+         * @param texto El texto que aparecerá adentro del botón (ej. "REGRESAR").
+         */
         public BotonNeon(String texto) {
             super(texto);
             setOpaque(false);
@@ -91,6 +113,13 @@ public class CodigoDescuentoRechazado extends JFrame {
             });
         }
 
+        /**
+         * Dibuja los colores y la forma del botón. Cuando el ratón pasa por encima,
+         * hace que el color oscuro se vuelva un poco más claro para darle entender
+         * al usuario que se le puede hacer clic.
+         *
+         * @param g La herramienta gráfica que usa Java para dibujar en la pantalla.
+         */
         @Override
         protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();

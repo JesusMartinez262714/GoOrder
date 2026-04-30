@@ -8,6 +8,10 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Esta clase representa la pantalla donde el usuario puede ver y elegir
+ * a qué sucursal quiere ir a recoger su pedido (cuando selecciona la opción "Pick Up").
+ */
 public class SeleccionSucursalesDisponibles extends JFrame {
 
     private Control control;
@@ -15,6 +19,13 @@ public class SeleccionSucursalesDisponibles extends JFrame {
     private List<PanelSucursal> listaTarjetas = new ArrayList<>();
     private BotonConfirmar btnConfirmar;
 
+    /**
+     * Constructor de la ventana. Se encarga de armar la interfaz gráfica,
+     * crear la lista de sucursales en la pantalla y configurar el botón de confirmar.
+     *
+     * @param control El objeto principal que nos permite cambiar de pantallas y manejar datos.
+     * @param sucursalesDisponibles Una lista con todas las sucursales que se van a mostrar en la pantalla.
+     */
     public SeleccionSucursalesDisponibles(Control control, List<SucursalDTO> sucursalesDisponibles) {
         this.control = control;
 
@@ -77,6 +88,13 @@ public class SeleccionSucursalesDisponibles extends JFrame {
         add(footerPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * Este método se encarga de que solo una sucursal pueda estar seleccionada a la vez.
+     * Si el usuario hace clic en una sucursal, desmarca todas las demás, marca la elegida
+     * y enciende el botón de "Confirmar".
+     *
+     * @param tarjetaSeleccionada El panel visual de la sucursal a la que el usuario le hizo clic.
+     */
     public void gestionarSeleccion(PanelSucursal tarjetaSeleccionada) {
         for (PanelSucursal t : listaTarjetas) {
             t.desmarcar();
@@ -89,11 +107,27 @@ public class SeleccionSucursalesDisponibles extends JFrame {
         btnConfirmar.repaint();
     }
 
+    /**
+     * Permite obtener la sucursal que el usuario eligió al final.
+     *
+     * @return El objeto SucursalDTO con los datos de la sucursal seleccionada.
+     */
     public SucursalDTO getSucursalSeleccionada() {
         return sucursalSeleccionada;
     }
 
+    /**
+     * Clase interna para crear un botón de confirmación personalizado.
+     * Su aspecto cambia (se ilumina) cuando el usuario ya seleccionó una sucursal,
+     * indicando que ya puede avanzar.
+     */
     class BotonConfirmar extends JButton {
+
+        /**
+         * Crea el botón de confirmación.
+         *
+         * @param texto El texto que dirá el botón (ej. "CONFIRMAR").
+         */
         public BotonConfirmar(String texto) {
             super(texto);
             setOpaque(false);
@@ -104,6 +138,12 @@ public class SeleccionSucursalesDisponibles extends JFrame {
             setPreferredSize(new Dimension(300, 50));
         }
 
+        /**
+         * Dibuja los colores del botón dependiendo de si está activado (verde neón)
+         * o desactivado (gris oscuro).
+         *
+         * @param g La herramienta gráfica de Java.
+         */
         @Override
         protected void paintComponent(Graphics g) {
             Graphics2D g2 = (Graphics2D) g.create();
