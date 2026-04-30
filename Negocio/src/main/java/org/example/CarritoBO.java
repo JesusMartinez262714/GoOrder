@@ -102,10 +102,11 @@ public class CarritoBO implements ICarritoBO{
                     carrito.setSubTotal(carrito.getSubTotal()- producto.getPrecioActual());
 
                     carrito.setTotal(carrito.getSubTotal()-carrito.getDescuento());
+                    if(pro.getCantidad() == 0){
+                        EliminarProductoCarrito(producto);
+                    }
                 }
-                if(pro.getCantidad() == 0){
-                    EliminarProductoCarrito(producto);
-                }
+                break;
             }
             carritoDAO.ActualizarCarrito(carrito);
             return carrito;

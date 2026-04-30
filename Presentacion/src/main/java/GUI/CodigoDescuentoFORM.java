@@ -86,15 +86,9 @@ public class CodigoDescuentoFORM extends JFrame {
                 new EmptyBorder(5, 10, 5, 10)
         ));
 
-//        JButton btnVerificar = new JButton("VERIFICAR");
-//        btnVerificar.setBackground(control.COLOR_TARJETA);
-//        btnVerificar.setForeground(Color.WHITE);
-//        btnVerificar.setFont(new Font("Arial", Font.BOLD, 12));
-//        btnVerificar.setFocusPainted(false);
-//        btnVerificar.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
 
         panelInput.add(txtCodigo, BorderLayout.CENTER);
-//        panelInput.add(btnVerificar, BorderLayout.EAST);
 
         contentPanel.add(panelInput);
         contentPanel.add(Box.createRigidArea(new Dimension(0, 30)));
@@ -129,7 +123,6 @@ public class CodigoDescuentoFORM extends JFrame {
                 panelResumen.add(crearFilaTexto("Subtotal", String.format("$%.2f", miCarrito.getSubTotal()), fontNormal, Color.WHITE));
                 
                 if (miCarrito.getDescuento() > 0) {
-//                    panelResumen.add(crearFilaTexto("Descuento", String.format("-$%.2f", miCarrito.getDescuento()), fontNormal, control.COLOR_NEON));
                 }
 
                 panelResumen.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -147,19 +140,8 @@ public class CodigoDescuentoFORM extends JFrame {
         contentPanel.add(panelResumen);
         contentPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 
-//        JLabel lblTextoDescuento = new JLabel("DESCUENTO POR APLICAR:");
-//        lblTextoDescuento.setFont(new Font("Arial", Font.PLAIN, 14));
-//        lblTextoDescuento.setForeground(Color.LIGHT_GRAY);
-//        lblTextoDescuento.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-//        lblCantidadDescuento = new JLabel("$0.00 MXN");
-//        lblCantidadDescuento.setFont(new Font("Arial", Font.BOLD, 36));
-//        lblCantidadDescuento.setForeground(control.COLOR_NEON);
-//        lblCantidadDescuento.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        //contentPanel.add(lblTextoDescuento);
         contentPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-//        contentPanel.add(lblCantidadDescuento);
 
         contentPanel.add(Box.createVerticalGlue());
         add(contentPanel, BorderLayout.CENTER);
@@ -190,9 +172,11 @@ public class CodigoDescuentoFORM extends JFrame {
             control.mostrarTotalPrecioProductos();
             
         } catch (NegocioException ex) {
-            Logger.getLogger(CodigoDescuentoFORM.class.getName()).log(Level.SEVERE, "Error al aplicar descuento", ex);
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Código Inválido", JOptionPane.WARNING_MESSAGE);
-            txtCodigo.setText(""); 
+            JOptionPane.showMessageDialog(this,
+                    "El código ingresado no es válido o no existe.",
+                    "Código no válido",
+                    JOptionPane.WARNING_MESSAGE);
+            System.out.println("Aviso: Intento de descuento fallido. Motivo: " + ex.getMessage());
         }
     }
 

@@ -230,9 +230,18 @@ public class Carrito extends JFrame {
         lblMas.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                 try {
-                    control.incrementarCantidad(producto);
-                    lblCantidad.setText(String.valueOf(producto.getCantidad()));
-                    lblPrecio.setText(String.format("$%.2f", producto.getPrecioActual()));
+                    if (producto.getCantidad() < 50) {
+                        control.incrementarCantidad(producto);
+                        lblCantidad.setText(String.valueOf(producto.getCantidad()));
+                        lblPrecio.setText(String.format("$%.2f", producto.getPrecioActual()));
+                    } else {
+                        JOptionPane.showMessageDialog(
+                                Carrito.this,
+                                "Has alcanzado el límite de 50 unidades para este producto.",
+                                "Límite de cantidad",
+                                JOptionPane.INFORMATION_MESSAGE
+                        );
+                    }
                 } catch (Exception ex) {
                     Logger.getLogger(Carrito.class.getName()).log(Level.SEVERE, null, ex);
                 }
