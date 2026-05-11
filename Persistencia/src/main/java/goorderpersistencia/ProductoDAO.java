@@ -44,7 +44,7 @@ public class ProductoDAO implements IProductoDAO {
             throw new PersistenciaException("Producto(s) no encontrado(s)");
         }
         return resultado;  
-        ///
+        //////
     }
 
     @Override
