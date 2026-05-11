@@ -55,7 +55,7 @@ public class Agradecimiento extends JFrame {
                 }
             }
         } catch (Exception ex) {
-            System.out.println("No se pudo cargar el método de entrega:" + ex.getMessage());
+            System.out.println("No se pudo cargar el método de entrega: " + ex.getMessage());
         }
         JLabel lblEsperamos = new JLabel(textoMensaje);
         lblEsperamos.setFont(new Font("Arial", Font.PLAIN, 18));
