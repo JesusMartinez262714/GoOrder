@@ -1,35 +1,29 @@
 
 package goorderpersistencia;
 
-import Entitys.Producto;
+import Entidades.Producto;
+import Interfaces.IBaseMongoDAO;
 import Interfaces.IProductoDAO;
+import com.mongodb.MongoException;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  *
  * @author
  */
-public class ProductoDAO implements IProductoDAO {
+public class ProductoDAO implements IProductoDAO, IBaseMongoDAO {
 
+    private static final Logger LOGGER = Logger.getLogger(ProductoDAO.class.getName());    
+    
     private List<Producto> productos;
+    private static final String COLLECTION = "Producto";
 
-    public ProductoDAO() {
-        productos = new ArrayList<>();
-        productos.add(new Producto("Latte", "Un tipo de cafe", 50.00, "latte_vainilla.png"));
-        productos.add(new Producto("Paninni", "Queso y Jamon", 50.00, "panini_clasico.png"));
-        productos.add(new Producto("Galleta de chispas", "Galleta con chispas de chocolate", 15.00, "galleta_chispas.png"));
-
-        productos.add(new Producto("Espresso", "Cafe fuerte", 30.00, "espresso.png"));
-        productos.add(new Producto("Capuccino", "Cafe espumado", 50.00, "capuccino.png"));
-        productos.add(new Producto("Mocha", "Cafe chocolate", 55.00, "mocha.png"));
-        productos.add(new Producto("Croissant", "Pan mantequilla", 35.00, "croissant.png"));
-
-        productos.add(new Producto("Muffin", "Pan dulce", 28.00, "muffin.png"));
-        productos.add(new Producto("Brownie", "Pastel chocolate", 32.00, "brownie.png"));
-        productos.add(new Producto("Sandwich", "Pan con jamon", 48.00, "sandwich.png"));
-        
-        productos.add(new Producto("Bagel", "Pan con queso", 40.00, "bagel.png"));      
+    public ProductoDAO() {     
     }
 
     @Override
@@ -50,5 +44,51 @@ public class ProductoDAO implements IProductoDAO {
     public List<Producto> listarProductos() throws PersistenciaException {
         return productos;
     }
+    
+    //----------------------------------------------------------------------------------------------------------
 
+    @Override
+    public Producto crearProducto(Producto producto) throws PersistenciaException {
+        try (MongoClient client = ConexionMongoDB.crearConexion()) {
+            MongoDatabase dataBase = this.obtenerDataBase(client);
+            MongoCollection<Producto> collection = this.obtenerCollection(dataBase);
+            /**
+             * Prueba
+             */
+            collection.insertOne(producto);
+            return producto;
+        } catch (MongoException e) {
+            LOGGER.severe(e.getMessage());
+            throw new PersistenciaException("Error al agregar producto: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public Producto actualizarProducto(String producto) throws PersistenciaException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public Producto eliminarProducto(String producto) throws PersistenciaException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public List<Producto> obtenerProductos(String producto) throws PersistenciaException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    //----------------------------------------------------------------------------------------------------------
+
+    @Override
+    public MongoDatabase obtenerDataBase(MongoClient client) {
+        MongoDatabase dataBase = client.getDatabase(ConexionMongoDB.DATA_BASE);
+        return dataBase;
+    }
+
+    @Override
+    public MongoCollection obtenerCollection(MongoDatabase dataBase) {
+        MongoCollection collection = dataBase.getCollection(COLLECTION).withCodecRegistry(ConexionMongoDB.obtenerCodec());
+        return collection;
+    }
 }
