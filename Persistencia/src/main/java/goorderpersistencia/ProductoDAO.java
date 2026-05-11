@@ -43,7 +43,8 @@ public class ProductoDAO implements IProductoDAO {
         if (resultado.isEmpty()) {
             throw new PersistenciaException("Producto(s) no encontrado(s)");
         }
-        return resultado;        
+        return resultado;  
+        ///
     }
 
     @Override
