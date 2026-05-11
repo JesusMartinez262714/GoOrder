@@ -37,7 +37,7 @@ public class Agradecimiento extends JFrame {
 
         contentPanel.add(Box.createVerticalGlue());
 
-        JLabel lblGracias = new JLabel("¡GRACIAS POR");
+        JLabel lblGracias = new JLabel("GRACIAS POR");
         lblGracias.setFont(new Font("Arial", Font.BOLD, 32));
         lblGracias.setForeground(control.COLOR_NEON);
         lblGracias.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -55,7 +55,7 @@ public class Agradecimiento extends JFrame {
                 }
             }
         } catch (Exception ex) {
-            System.out.println("No se pudo cargar el método de entrega: " + ex.getMessage());
+            System.out.println("No se pudo cargar el método de entrega:" + ex.getMessage());
         }
         JLabel lblEsperamos = new JLabel(textoMensaje);
         lblEsperamos.setFont(new Font("Arial", Font.PLAIN, 18));
