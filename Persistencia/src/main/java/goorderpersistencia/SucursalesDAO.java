@@ -1,7 +1,7 @@
 
 package goorderpersistencia;
 
-import GoOrderDTO.SucursalDTO;
+import DTOs.SucursalDTO;
 import Interfaces.ISucursalesDAO;
 import java.util.ArrayList;
 import java.util.List;
