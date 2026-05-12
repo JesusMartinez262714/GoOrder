@@ -20,6 +20,8 @@ import java.util.logging.Logger;
 public class Carrito extends JFrame {
 
     private Control control;
+    private JPanel contentPanel;
+    private double subtotalMostrar;
 
     /**
      * Constructor de la ventana del carrito.
@@ -82,57 +84,12 @@ public class Carrito extends JFrame {
         headerPanel.add(lblEspacio, BorderLayout.EAST);
         add(headerPanel, BorderLayout.NORTH);
 
-        JPanel contentPanel = new JPanel();
+        contentPanel = new JPanel();
         contentPanel.setBackground(control.COLOR_FONDO);
         contentPanel.setLayout(new BoxLayout(contentPanel, BoxLayout.Y_AXIS));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
 
-        double subtotalMostrar = 0.0;
-
-        try {
-            CarritoDTO miCarrito = control.getCarrito();
-
-            if (miCarrito != null && miCarrito.getProductos() != null && !miCarrito.getProductos().isEmpty()) {
-
-                subtotalMostrar = miCarrito.getSubTotal();
-
-                for (ProductoSeleccionadoDTO producto : miCarrito.getProductos()) {
-                    contentPanel.add(crearPanelProducto(producto));
-                    contentPanel.add(Box.createRigidArea(new Dimension(0, 15)));
-                }
-
-                contentPanel.add(Box.createRigidArea(new Dimension(0, 15)));
-                JSeparator sep = new JSeparator();
-                sep.setForeground(Color.DARK_GRAY);
-                sep.setMaximumSize(new Dimension(340, 5));
-                contentPanel.add(sep);
-                contentPanel.add(Box.createRigidArea(new Dimension(0, 15)));
-
-                for (ProductoSeleccionadoDTO producto : miCarrito.getProductos()) {
-                    contentPanel.add(crearFilaResumen(
-                            producto.getNombre() + " x" + producto.getCantidad(),
-                            String.format("$%.2f", producto.getImporte()),
-                            false
-                    ));
-                    contentPanel.add(Box.createRigidArea(new Dimension(0, 5)));
-                }
-
-                contentPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-                contentPanel.add(crearFilaResumen("Subtotal", String.format("$%.2f", subtotalMostrar), true));
-//lblMas
-            } else {
-                JLabel lblVacio = new JLabel("Tu carrito está vacío.");
-                lblVacio.setFont(new Font("Arial", Font.ITALIC, 16));
-                lblVacio.setForeground(Color.GRAY);
-                lblVacio.setAlignmentX(Component.CENTER_ALIGNMENT);
-                contentPanel.add(Box.createRigidArea(new Dimension(0, 50)));
-                contentPanel.add(lblVacio);
-            }
-
-        } catch (Exception ex) {
-            Logger.getLogger(Carrito.class.getName()).log(Level.SEVERE, "Error al cargar el carrito", ex);
-            JOptionPane.showMessageDialog(this, "Error al cargar el carrito", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        actualizarPantalla();
 
         contentPanel.add(Box.createVerticalGlue());
 
@@ -141,7 +98,7 @@ public class Carrito extends JFrame {
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         scrollPane.setBackground(control.COLOR_FONDO);
         scrollPane.getViewport().setBackground(control.COLOR_FONDO);
-
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         add(scrollPane, BorderLayout.CENTER);
 
         JPanel footerPanel = new JPanel();
@@ -218,10 +175,10 @@ public class Carrito extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 try {
                     control.eliminarProducto(producto);
+                    actualizarPantalla();
                 } catch (Exception ex) {
                     Logger.getLogger(Carrito.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                control.mostrarCarrito();
             }
         });
 
@@ -253,7 +210,10 @@ public class Carrito extends JFrame {
                 try {
                     if (producto.getCantidad() < 50) {
                         control.incrementarCantidad(producto);
-                        control.mostrarCarrito();
+                        int cantidad = Integer.parseInt(lblCantidad.getText()) + 1;
+                        
+                        lblCantidad.setText(String.valueOf(cantidad));
+                        actualizarPantalla();
                     } else {
                         JOptionPane.showMessageDialog(
                                 Carrito.this,
@@ -269,19 +229,15 @@ public class Carrito extends JFrame {
         });
 
         lblMenos.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-                try {
-                    control.decrementarCantidad(producto);
-                    if (producto.getCantidad() <= 0) {
-                        control.mostrarCarrito();
-                        return;
-                    }
-                    control.mostrarCarrito();
-                } catch (Exception ex) {
-                    Logger.getLogger(Carrito.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
+             public void mouseClicked(MouseEvent e) {
+                 try {
+                     control.decrementarCantidad(producto);
+                     actualizarPantalla();
+                 } catch (Exception ex) {
+                     Logger.getLogger(Carrito.class.getName()).log(Level.SEVERE, null, ex);
+                 }
+             }
+         });
 
         panelControles.add(lblMenos);
         panelControles.add(lblCantidad);
@@ -406,5 +362,58 @@ public class Carrito extends JFrame {
             g2.drawString(getText(), x, y);
             g2.dispose();
         }
+    }
+    
+    public void actualizarPantalla(){
+        contentPanel.removeAll();
+        subtotalMostrar = 0.0;
+
+        try {
+            CarritoDTO miCarrito = control.getCarrito();
+
+            if (miCarrito != null && miCarrito.getProductos() != null && !miCarrito.getProductos().isEmpty()) {
+
+                subtotalMostrar = miCarrito.getSubTotal();
+
+                for (ProductoSeleccionadoDTO producto : miCarrito.getProductos()) {
+                    contentPanel.add(crearPanelProducto(producto));
+                    contentPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+                }
+
+                contentPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+                JSeparator sep = new JSeparator();
+                sep.setForeground(Color.DARK_GRAY);
+                sep.setMaximumSize(new Dimension(340, 5));
+                contentPanel.add(sep);
+                contentPanel.add(Box.createRigidArea(new Dimension(0, 15)));
+
+                for (ProductoSeleccionadoDTO producto : miCarrito.getProductos()) {
+                    contentPanel.add(crearFilaResumen(
+                            producto.getNombre() + " x" + producto.getCantidad(),
+                            String.format("$%.2f", producto.getImporte()),
+                            false
+                    ));
+                    contentPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+                }
+
+                contentPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+                contentPanel.add(crearFilaResumen("Subtotal", String.format("$%.2f", subtotalMostrar), true));
+
+            } else {
+                JLabel lblVacio = new JLabel("Tu carrito está vacío.");
+                lblVacio.setFont(new Font("Arial", Font.ITALIC, 16));
+                lblVacio.setForeground(Color.GRAY);
+                lblVacio.setAlignmentX(Component.CENTER_ALIGNMENT);
+                contentPanel.add(Box.createRigidArea(new Dimension(0, 50)));
+                contentPanel.add(lblVacio);
+            }
+
+        } catch (Exception ex) {
+            Logger.getLogger(Carrito.class.getName()).log(Level.SEVERE, "Error al cargar el carrito", ex);
+            JOptionPane.showMessageDialog(this, "Error al cargar el carrito", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        contentPanel.revalidate();
+        contentPanel.repaint();
     }
 }
