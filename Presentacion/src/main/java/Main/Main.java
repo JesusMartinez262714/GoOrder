@@ -21,10 +21,10 @@ import org.itson.realizarpedidocue.RealizarPedidoCUE;
 
 /**
  *
- * @author 
+ *
  */
 
-public class Main {    
+public class Main {
     public static void main(String[] args) {
         IProductoDAO productoDAO = new ProductoDAO();
         IProductoBO productoBO = new ProductoBO(productoDAO);
