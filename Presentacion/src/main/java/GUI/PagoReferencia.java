@@ -93,13 +93,13 @@ public class PagoReferencia extends JFrame {
         lblInstrucciones.setForeground(Color.LIGHT_GRAY);
         lblInstrucciones.setAlignmentX(Component.CENTER_ALIGNMENT);
         contentPanel.add(lblInstrucciones);
-        
+
         contentPanel.add(Box.createRigidArea(new Dimension(0, 30)));
 
         txtReferencia = crearTextFieldEstilizado();
-        txtReferencia.setText("OXXO999"); 
+        txtReferencia.setText("OXXO999");
         txtReferencia.setHorizontalAlignment(JTextField.CENTER);
-        
+
         contentPanel.add(crearSeccion("Código de Autorización", txtReferencia));
         contentPanel.add(Box.createVerticalGlue());
         add(contentPanel, BorderLayout.CENTER);
@@ -113,23 +113,16 @@ public class PagoReferencia extends JFrame {
 
         btnPagar.addActionListener(e -> {
             try {
-                boolean pagoExitoso = control.intentarPago(txtReferencia.getText(), control.getCarrito().getTotal());
-
+                boolean pagoExitoso = control.intentarPago(4, txtReferencia.getText(), control.getCarrito().getTotal());
                 if (pagoExitoso) {
-                    JOptionPane.showMessageDialog(this, 
-                        "¡Pago aprobado con éxito! Tu pedido está confirmado.", 
-                        "Transacción Exitosa", 
-                        JOptionPane.INFORMATION_MESSAGE);
-                        control.mostrarAgradecimiento();
-                        control.limpiarCarrito();
+                    JOptionPane.showMessageDialog(this, "¡Pago aprobado con éxito! Tu pedido está confirmado.", "Transacción Exitosa", JOptionPane.INFORMATION_MESSAGE);
+                    control.mostrarAgradecimiento();
+                    control.limpiarCarrito();
                 } else {
-                    JOptionPane.showMessageDialog(this, 
-                        "El pago fue rechazado. Verifica el código o tus fondos.", 
-                        "Transacción Declinada", 
-                        JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "El pago fue rechazado. Verifica el código o tus fondos.", "Transacción Declinada", JOptionPane.ERROR_MESSAGE);
                 }
             } catch (Exception ex) {
-                System.getLogger(PagoReferencia.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
+                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
 
