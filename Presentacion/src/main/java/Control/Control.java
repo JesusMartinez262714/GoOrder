@@ -47,10 +47,7 @@ public class Control {
 
     private void cargarMenuProductos() {
     }
-    public List<ProductoDTO> obtenerListaProductos() {
-        return listaProductos;
-    }
-    
+
     public void agregarProducto(ProductoSeleccionadoDTO producto) throws NegocioException {
         realizarPedido.AgregarProductoCarrito(producto);
     }
@@ -93,16 +90,15 @@ public class Control {
         ventanaActual = nuevaVentana;
         ventanaActual.setVisible(true);
     }
-    
-    public boolean intentarPago(String cuenta, double totalAPagar) throws NegocioException {
-        
-        boolean exito = realizarPedido.finalizarCompra(cuenta, totalAPagar);
-        
-        if (exito) {
-            return true;
-        } else {
-            return false;
+
+    public boolean intentarPago(int idMetodoPago, String cuenta, double totalAPagar) throws NegocioException {
+        boolean pagoExitoso = realizarPedido.finalizarCompra(cuenta, totalAPagar);
+
+        if (pagoExitoso) {
+            realizarPedido.registrarVentaBaseDatos(totalAPagar, idMetodoPago);
         }
+
+        return pagoExitoso;
     }
     
     public void mostrarInicio(){
